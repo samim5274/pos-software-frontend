@@ -45,6 +45,8 @@ const OrderList = () => import('../components/Dashboard/admin/order/order.vue');
 const OrderDetails = () => import('../components/Dashboard/admin/order/order-details.vue');
 const PrintInvoice = () => import('../components/Dashboard/admin/order/print/print-order-invoice-80mm.vue');
 const OrderPayment = () => import('../components/Dashboard/admin/order/order-payment.vue');
+const DueList = () => import('../components/Dashboard/admin/payment/due-list.vue');
+const DueDetails = () => import('../components/Dashboard/admin/payment/due-details.vue');
 
 
 
@@ -54,6 +56,7 @@ const OrderPayment = () => import('../components/Dashboard/admin/order/order-pay
 
 const SaleReport = () => import('../components/Dashboard/admin/reports/report-sale.vue');
 const PaymentReport = () => import('../components/Dashboard/admin/reports/report-payment.vue');
+const UserReport = () => import('../components/Dashboard/admin/reports/report-user-sale.vue');
 
 
 
@@ -150,6 +153,11 @@ const routes = [
     // Sale Report
     { path: '/admin/reports/sale', component: SaleReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Sale Reports"}},
     { path: '/admin/reports/payment', component: PaymentReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Payments Reports"}},
+    { path: '/admin/reports/user/sale', component: UserReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "user Sale Reports"}},
+    
+    // Due Routes
+    { path: '/admin/payment/due', component: DueList, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Due List"}},
+    { path: '/admin/payment/due/details/:reg/:slug', component: DueDetails, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Due Details"}},
 
 
 

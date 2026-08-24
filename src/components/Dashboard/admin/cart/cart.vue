@@ -295,7 +295,170 @@
 
                         <div class="grid lg:grid-cols-12 gap-8 mt-6">
 
-                            <div class="lg:col-span-8 space-y-5">
+                            
+
+                            <!-- Order Summary Card -->
+                            <div class="lg:col-span-8">
+                                <div
+                                    class="sticky top-10 bg-white dark:bg-[#0f172e] rounded-2xl p-4 sm:p-5 shadow-md border border-slate-200/80 dark:border-slate-700/60 transition-all"
+                                >
+                                    <!-- Header -->
+                                    <h2
+                                        class="text-lg font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2"
+                                    >
+                                        Order Summary
+
+                                        <span
+                                            class="w-2 h-2 rounded-full bg-[#16a34a] dark:bg-[#F97316] animate-pulse"
+                                        ></span>
+                                    </h2>
+
+                                    <div class="space-y-2.5">
+
+                                        <!-- Subtotal -->
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
+                                                Subtotal
+                                            </span>
+
+                                            <span class="text-slate-900 dark:text-white font-bold">
+                                                ৳ {{ formatMoney(subtotal) }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Total Points -->
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
+                                                Total Points
+                                            </span>
+
+                                            <span
+                                                class="text-[#16a34a] dark:text-[#fb923c] font-bold bg-[#16a34a]/10 dark:bg-[#f97316]/20 px-2 py-0.5 rounded-md text-[11px] flex items-center gap-1"
+                                            >
+                                                <i class="fa-solid fa-star text-[9px]"></i>
+                                                {{ formatPoints(totalPoint) }} pts
+                                            </span>
+                                        </div>
+
+                                        <!-- Discount -->
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
+                                                Discount
+                                            </span>
+
+                                            <span class="text-red-500 dark:text-red-400 font-bold">
+                                                - ৳ {{ formatMoney(manualDiscount) }}
+                                            </span>
+                                        </div>
+
+                                        <!-- VAT -->
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
+                                                VAT ({{ formatRate(form.vat) }}%)
+                                            </span>
+
+                                            <span class="text-slate-900 dark:text-white font-bold">
+                                                + ৳ {{ formatMoney(vatAmount) }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Divider -->
+                                        <div class="h-px bg-slate-100 dark:bg-slate-700 my-3"></div>
+
+                                        <!-- Total Payable -->
+                                        <div class="flex justify-between items-center gap-3">
+                                            <span
+                                                class="text-sm font-bold text-slate-900 dark:text-white"
+                                            >
+                                                Total Payable
+                                            </span>
+
+                                            <div class="text-right">
+                                                <p
+                                                    class="text-2xl font-black text-[#16a34a] dark:text-[#F97316] tracking-tight whitespace-nowrap"
+                                                >
+                                                    ৳ {{ formatMoney(totalPayable) }}
+                                                </p>
+
+                                                <p
+                                                    class="text-[9px] font-bold text-slate-400 uppercase tracking-wider"
+                                                >
+                                                    Including VAT
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Received -->
+                                        <div class="flex justify-between items-center text-sm pt-1">
+                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
+                                                Received
+                                            </span>
+
+                                            <span class="font-bold text-slate-900 dark:text-white">
+                                                ৳ {{ formatMoney(receivedAmount) }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Return -->
+                                        <div
+                                            v-if="changeAmount > 0"
+                                            class="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20"
+                                        >
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span
+                                                    class="text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-2"
+                                                >
+                                                    <i class="fa-solid fa-arrow-rotate-left text-xs"></i>
+                                                    Return
+                                                </span>
+
+                                                <span
+                                                    class="text-emerald-700 dark:text-emerald-400 font-black"
+                                                >
+                                                    ৳ {{ formatMoney(changeAmount) }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Due -->
+                                        <div
+                                            v-if="dueAmount > 0"
+                                            class="px-3 py-2 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20"
+                                        >
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span
+                                                    class="text-red-700 dark:text-red-400 font-semibold flex items-center gap-2"
+                                                >
+                                                    <i class="fa-solid fa-clock text-xs"></i>
+                                                    Due
+                                                </span>
+
+                                                <span
+                                                    class="text-red-700 dark:text-red-400 font-black"
+                                                >
+                                                    ৳ {{ formatMoney(dueAmount) }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fully Paid -->
+                                        <div
+                                            v-if="
+                                                totalPayable > 0 &&
+                                                receivedAmount >= totalPayable &&
+                                                changeAmount === 0
+                                            "
+                                            class="pt-1 flex items-center justify-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400"
+                                        >
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            Fully Paid
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-4 space-y-5">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-[#0F172E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                                     <!-- Phone Number Input -->
                                     <div class="space-y-1.5">
@@ -365,7 +528,7 @@
                                         </label>
                                         <div class="relative flex">
                                             <input
-                                                v-model.number="form.vat"
+                                                v-model.number="form.vat" @keydown.enter="handleCheckout"
                                                 type="number"
                                                 id="vat"
                                                 name="vat"
@@ -386,7 +549,7 @@
                                         </label>
                                         <div class="relative flex">
                                             <input
-                                                v-model.number="form.discount"
+                                                v-model.number="form.discount" @keydown.enter="handleCheckout"
                                                 type="number"
                                                 id="discount"
                                                 name="discount"
@@ -419,207 +582,6 @@
                                         </div>
                                     </div>
 
-                                </div>
-                            </div>
-
-                            <!-- Order Summary Card -->
-                            <div class="lg:col-span-4">
-                                <div
-                                    class="sticky top-10 bg-white dark:bg-[#0f172e] rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200/80 dark:border-slate-700/60 transition-all"
-                                >
-                                    <!-- Header -->
-                                    <h2
-                                        class="text-xl font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2"
-                                    >
-                                        Order Summary
-
-                                        <span
-                                            class="w-2.5 h-2.5 rounded-full bg-[#16a34a] dark:bg-[#F97316] animate-pulse"
-                                        ></span>
-                                    </h2>
-
-                                    <div class="space-y-4">
-
-                                        <!-- ========================= -->
-                                        <!-- Subtotal -->
-                                        <!-- ========================= -->
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                Subtotal
-                                            </span>
-
-                                            <span class="text-slate-900 dark:text-white font-bold">
-                                                ৳ {{ formatMoney(subtotal) }}
-                                            </span>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Total Points -->
-                                        <!-- ========================= -->
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                Total Points
-                                            </span>
-
-                                            <span
-                                                class="text-[#16a34a] dark:text-[#fb923c] font-bold bg-[#16a34a]/10 dark:bg-[#f97316]/20 px-2.5 py-1 rounded-lg text-xs flex items-center gap-1"
-                                            >
-                                                <i class="fa-solid fa-star text-[10px]"></i>
-
-                                                {{ formatPoints(totalPoint) }} pts
-                                            </span>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Discount -->
-                                        <!-- ========================= -->
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                Discount
-                                            </span>
-
-                                            <span class="text-red-500 dark:text-red-400 font-bold">
-                                                - ৳ {{ formatMoney(manualDiscount) }}
-                                            </span>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- VAT -->
-                                        <!-- ========================= -->
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                VAT ({{ formatRate(form.vat) }}%)
-                                            </span>
-
-                                            <span class="text-slate-900 dark:text-white font-bold">
-                                                + ৳ {{ formatMoney(vatAmount) }}
-                                            </span>
-                                        </div>
-
-
-                                        <!-- Divider -->
-                                        <div
-                                            class="h-px bg-slate-100 dark:bg-slate-700 my-5"
-                                        ></div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Total Payable -->
-                                        <!-- ========================= -->
-                                        <div class="flex justify-between items-end gap-4">
-
-                                            <span
-                                                class="text-base font-bold text-slate-900 dark:text-white mb-1"
-                                            >
-                                                Total Payable
-                                            </span>
-
-                                            <div class="text-right">
-
-                                                <p
-                                                    class="text-3xl font-black text-[#16a34a] dark:text-[#F97316] tracking-tight whitespace-nowrap"
-                                                >
-                                                    ৳ {{ formatMoney(totalPayable) }}
-                                                </p>
-
-                                                <p
-                                                    class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1"
-                                                >
-                                                    Including VAT
-                                                </p>
-
-                                            </div>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Received Amount -->
-                                        <!-- ========================= -->
-                                        <div
-                                            class="flex justify-between items-center text-sm pt-3"
-                                        >
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                Received
-                                            </span>
-
-                                            <span class="font-bold text-slate-900 dark:text-white">
-                                                ৳ {{ formatMoney(receivedAmount) }}
-                                            </span>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Return / Change Amount -->
-                                        <!-- ========================= -->
-                                        <div
-                                            v-if="changeAmount > 0"
-                                            class="mt-2 px-3 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20"
-                                        >
-                                            <div class="flex justify-between items-center text-sm">
-
-                                                <span
-                                                    class="text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-2"
-                                                >
-                                                    <i class="fa-solid fa-arrow-rotate-left text-xs"></i>
-                                                    Return
-                                                </span>
-
-                                                <span
-                                                    class="text-emerald-700 dark:text-emerald-400 font-black"
-                                                >
-                                                    ৳ {{ formatMoney(changeAmount) }}
-                                                </span>
-
-                                            </div>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Due Amount -->
-                                        <!-- ========================= -->
-                                        <div
-                                            v-if="dueAmount > 0"
-                                            class="mt-2 px-3 py-2.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20"
-                                        >
-                                            <div class="flex justify-between items-center text-sm">
-
-                                                <span
-                                                    class="text-red-700 dark:text-red-400 font-semibold flex items-center gap-2"
-                                                >
-                                                    <i class="fa-solid fa-clock text-xs"></i>
-                                                    Due
-                                                </span>
-
-                                                <span
-                                                    class="text-red-700 dark:text-red-400 font-black"
-                                                >
-                                                    ৳ {{ formatMoney(dueAmount) }}
-                                                </span>
-
-                                            </div>
-                                        </div>
-
-
-                                        <!-- ========================= -->
-                                        <!-- Fully Paid Status -->
-                                        <!-- ========================= -->
-                                        <div
-                                            v-if="
-                                                totalPayable > 0 &&
-                                                receivedAmount >= totalPayable &&
-                                                changeAmount === 0
-                                            "
-                                            class="mt-3 flex items-center justify-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400"
-                                        >
-                                            <i class="fa-solid fa-circle-check"></i>
-
-                                            Fully Paid
-                                        </div>
-
-                                    </div>
                                 </div>
                             </div>
 
@@ -657,7 +619,6 @@ import { useCartStore } from './cart.js';
 
 import AdminNavbar from '../admin-navbar.vue';
 import AdminHeader from '../admin-header.vue';
-import AdminMain from '../admin-main.vue';
 import Message from '../../../Message/message.vue';
 import FooterSection from "../../../footer.vue";
 
@@ -1366,10 +1327,6 @@ function applyTheme(dark) {
     isDark.value = dark;
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("theme", dark ? "dark" : "light");
-}
-
-function toggleTheme() {
-    applyTheme(!isDark.value);
 }
 
 function toggleDarkMode() {

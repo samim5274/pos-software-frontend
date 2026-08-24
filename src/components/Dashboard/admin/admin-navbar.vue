@@ -73,6 +73,22 @@
                     </button>
                 </li>
 
+                <li>
+                    <button
+                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
+                            focus:outline-none focus:ring-2 focus:ring-slate-500/40
+                            hover:bg-slate-100 dark:hover:bg-white/10"
+                        :class="activeKey === 'dueCollection'
+                        ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-white/10 dark:text-white dark:ring-white/10'
+                        : ''"
+                        @click="pick('dueCollection')">
+                        <span class="opacity-90 w-5 text-center">
+                        <i class="fa-solid fa-coins"></i>
+                        </span>
+                        <span class="text-sm font-medium">Due Collection</span>
+                    </button>
+                </li>
+
                 <!-- Product Details Dropdown -->
                 <li>
                     <button
@@ -339,6 +355,18 @@
                                 Payment Report's
                                 </button>
                             </li>
+
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'report_user'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('report_user')">
+                                User Report's
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -514,6 +542,8 @@ const routeMap = {
     dashboard: "/admin/dashboard",
     profile: "/admin/profile",
     cart: "/sale-cart",
+    
+    dueCollection: "/admin/payment/due",
 
     products: "/admin/products",
     create: "/admin/create-product",
@@ -529,6 +559,7 @@ const routeMap = {
     // reports
     report_sale: "/admin/reports/sale",
     report_payment: "/admin/reports/payment",    
+    report_user: "/admin/reports/user/sale",    
 
 
     // Others
@@ -558,6 +589,8 @@ const routeMatch = [
     { key: "profile", prefixes: ["/admin/profile"] },
     { key: "cart", prefixes: ["/sale-cart"] },
 
+    { key: "dueCollection", prefixes: ["/admin/payment/due"] },     
+
     { key: "setting", prefixes: ["/admin/setting"] },
 
     { key: "products", prefixes: ["/admin/products", "/admin/product-edit"] },
@@ -573,6 +606,7 @@ const routeMatch = [
 
     { key: "report_sale", prefixes: ["/admin/reports/sale"] },
     { key: "report_payment", prefixes: ["/admin/reports/payment"] },    
+    { key: "report_user", prefixes: ["/admin/reports/user/sale"] },    
 
 
     { key: "notice", prefixes: ["/admin/notice"] },
@@ -734,6 +768,7 @@ watch(
         const reportKeys = [
         "report_sale", 
         "report_payment", 
+        "report_user"
         ];
         if (reportKeys.includes(k)) {
         reportPagesOpen.value = true;
