@@ -301,7 +301,10 @@
                                         <!-- Payment history -->
                                         <div v-if="orderPayments.length" class="pt-4 border-t border-slate-100 dark:border-slate-800">
                                             <div class="flex items-center justify-between mb-3">
-                                                <h4 class="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">Payment history</h4>
+                                                <h4 class="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                                                    Payment History
+                                                </h4>
+
                                                 <span class="text-[11px] font-semibold text-slate-400">
                                                     {{ orderPayments.length }} transaction<span v-if="orderPayments.length !== 1">s</span>
                                                 </span>
@@ -311,25 +314,287 @@
                                                 <div
                                                     v-for="(payment, index) in orderPayments"
                                                     :key="payment.id || index"
-                                                    class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700"
+                                                    class="rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 overflow-hidden"
                                                 >
-                                                    <div class="min-w-0">
-                                                        <div class="flex items-center gap-2">
-                                                            <span class="text-xs font-bold text-slate-800 dark:text-slate-200 font-mono">
-                                                                {{ payment.payment_number || payment.receipt_no || `Payment #${index + 1}` }}
-                                                            </span>
-                                                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold uppercase">
-                                                                {{ payment.payment_method || 'N/A' }}
-                                                            </span>
+                                                    <!-- Payment Summary -->
+                                                    <button
+                                                        type="button"
+                                                        @click="togglePaymentDetails(payment.id || index)"
+                                                        class="w-full flex items-center justify-between gap-3 px-3 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                                    >
+                                                        <div class="min-w-0 flex-1">
+                                                            <div class="flex items-center gap-2 flex-wrap">
+                                                                <!-- Payment Number -->
+                                                                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 font-mono">
+                                                                    {{ payment.payment_number || payment.receipt_no || `Payment #${index + 1}` }}
+                                                                </span>
+
+                                                                <!-- Payment Type -->
+                                                                <span
+                                                                    v-if="payment.payment_type"
+                                                                    class="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 font-semibold uppercase"
+                                                                >
+                                                                    {{ payment.payment_type }}
+                                                                </span>
+
+                                                                <!-- Payment Method -->
+                                                                <span
+                                                                    class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-semibold uppercase"
+                                                                >
+                                                                    {{ payment.payment_method || 'N/A' }}
+                                                                </span>
+                                                            </div>
+
+                                                            <p class="text-[11px] text-slate-400 mt-1">
+                                                                {{ payment.user?.name || 'N/A' }}
+
+                                                                <span v-if="payment.paid_at">
+                                                                    · {{ formatDateTime(payment.paid_at) }}
+                                                                </span>
+                                                            </p>
                                                         </div>
-                                                        <p class="text-[11px] text-slate-400 mt-0.5">
-                                                            {{ payment.user?.name || 'N/A' }}
-                                                            <span v-if="payment.paid_at">· {{ formatDateTime(payment.paid_at) }}</span>
-                                                        </p>
+
+                                                        <!-- Amount + Arrow -->
+                                                        <div class="shrink-0 flex items-center gap-2">
+                                                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                                                                + {{ money(payment.amount) }}
+                                                            </span>
+
+                                                            <svg
+                                                                class="w-4 h-4 text-slate-400 transition-transform duration-200"
+                                                                :class="{
+                                                                    'rotate-180': expandedPaymentId === (payment.id || index)
+                                                                }"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <path
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M19 9l-7 7-7-7"
+                                                                />
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+
+                                                    <!-- Payment Details -->
+                                                    <div
+                                                        v-if="expandedPaymentId === (payment.id || index)"
+                                                        class="px-3 pb-3"
+                                                    >
+                                                        <div class="pt-3 border-t border-slate-200 dark:border-slate-700">
+                                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
+                                                                <!-- Payment ID -->
+                                                                <div
+                                                                    v-if="payment.id"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Payment ID
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        #{{ payment.id }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Payment Number -->
+                                                                <div
+                                                                    v-if="payment.payment_number"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Payment Number
+                                                                    </p>
+                                                                    <p class="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.payment_number }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Receipt No -->
+                                                                <div
+                                                                    v-if="payment.receipt_no"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Receipt No
+                                                                    </p>
+                                                                    <p class="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.receipt_no }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Payment Type -->
+                                                                <div
+                                                                    v-if="payment.payment_type"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Payment Type
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5 capitalize">
+                                                                        {{ payment.payment_type }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Payment Method -->
+                                                                <div
+                                                                    v-if="payment.payment_method"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Payment Method
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.payment_method }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Amount -->
+                                                                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Amount
+                                                                    </p>
+                                                                    <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                                                                        {{ money(payment.amount) }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Currency -->
+                                                                <div
+                                                                    v-if="payment.currency"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Currency
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5 uppercase">
+                                                                        {{ payment.currency }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Paid At -->
+                                                                <div
+                                                                    v-if="payment.paid_at"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Paid At
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ formatDateTime(payment.paid_at) }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Verified At -->
+                                                                <div
+                                                                    v-if="payment.verified_at"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Verified At
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ formatDateTime(payment.verified_at) }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Customer -->
+                                                                <div
+                                                                    v-if="payment.customer"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Customer
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.customer?.name || 'N/A' }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Received By -->
+                                                                <div
+                                                                    v-if="payment.received_by"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Received By
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.receiver?.name || payment.received_by }}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- Verified By -->
+                                                                <div
+                                                                    v-if="payment.verified_by"
+                                                                    class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                                >
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Verified By
+                                                                    </p>
+                                                                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5">
+                                                                        {{ payment.verified_by?.name || payment.verified_by }}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- Remarks -->
+                                                            <div
+                                                                v-if="payment.remarks"
+                                                                class="mt-2 p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700"
+                                                            >
+                                                                <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                    Remarks
+                                                                </p>
+
+                                                                <p class="text-xs text-slate-700 dark:text-slate-300 mt-1 whitespace-pre-wrap">
+                                                                    {{ payment.remarks }}
+                                                                </p>
+                                                            </div>
+
+                                                            <!-- Technical Information -->
+                                                            <div
+                                                                v-if="payment.ip_address || payment.user_agent"
+                                                                class="mt-2"
+                                                            >
+                                                                <div class="px-2.5 py-2 rounded-lg bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700">
+                                                                    <p class="text-[10px] uppercase font-bold tracking-wide text-slate-400 mb-2">
+                                                                        Technical Information
+                                                                    </p>
+
+                                                                    <div class="space-y-2">
+
+                                                                        <!-- IP Address -->
+                                                                        <div v-if="payment.ip_address">
+                                                                            <p class="text-[10px] font-semibold text-slate-400">
+                                                                                IP Address
+                                                                            </p>
+
+                                                                            <p class="text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
+                                                                                {{ payment.ip_address }}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <!-- User Agent -->
+                                                                        <div v-if="payment.user_agent">
+                                                                            <p class="text-[10px] font-semibold text-slate-400">
+                                                                                User Agent
+                                                                            </p>
+
+                                                                            <p class="text-[11px] font-mono text-slate-600 dark:text-slate-400 break-all leading-relaxed">
+                                                                                {{ payment.user_agent }}
+                                                                            </p>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <span class="shrink-0 font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                                                        + {{ money(payment.amount) }}
-                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1178,7 +1443,12 @@ const currentDue = computed(() => {
 
 const isFullyPaid = computed(() => currentDue.value <= 0);
 
+const expandedPaymentId = ref(null);
 
+function togglePaymentDetails(id) {
+    expandedPaymentId.value =
+        expandedPaymentId.value === id ? null : id;
+}
 
 
 
