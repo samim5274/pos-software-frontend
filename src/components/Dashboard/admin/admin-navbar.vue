@@ -300,84 +300,6 @@
 
 
 
-
-
-                <!-- Order -->
-                <li>
-                    <button
-                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
-                            focus:outline-none focus:ring-2 focus:ring-slate-500/40
-                            hover:bg-slate-100 dark:hover:bg-white/10"
-                        :class="reportPagesOpen
-                        ? 'bg-slate-100 ring-1 ring-slate-200 dark:bg-white/10 dark:ring-white/10'
-                        : ''"
-                        @click="reportPagesOpen = !reportPagesOpen"
-                        type="button">
-                        <span class="opacity-90">
-                        <i class="fa-solid fa-sliders"></i>
-                        </span>
-                        <span class="text-sm font-medium flex-1">Reports</span>
-
-                        <svg
-                        class="h-4 w-4 transition-transform opacity-80"
-                        :class="reportPagesOpen ? 'rotate-180' : ''"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-
-                    <div v-show="reportPagesOpen" class="mt-1 ml-6 mr-2 rounded-xl ring-1
-                            bg-slate-50 ring-slate-200
-                            dark:bg-black/20 dark:ring-white/10">
-                        <ul class="py-2">
-                            <li>
-                                <button
-                                class="w-full px-4 py-2 text-sm text-left transition
-                                        hover:bg-white dark:hover:bg-white/10"
-                                :class="activeKey === 'report_sale'
-                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
-                                    : 'text-slate-700 dark:text-slate-200/90'"
-                                @click="pick('report_sale')">
-                                Sale Report's
-                                </button>
-                            </li>
-
-                            <li>
-                                <button
-                                class="w-full px-4 py-2 text-sm text-left transition
-                                        hover:bg-white dark:hover:bg-white/10"
-                                :class="activeKey === 'report_payment'
-                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
-                                    : 'text-slate-700 dark:text-slate-200/90'"
-                                @click="pick('report_payment')">
-                                Payment Report's
-                                </button>
-                            </li>
-
-                            <li>
-                                <button
-                                class="w-full px-4 py-2 text-sm text-left transition
-                                        hover:bg-white dark:hover:bg-white/10"
-                                :class="activeKey === 'report_user'
-                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
-                                    : 'text-slate-700 dark:text-slate-200/90'"
-                                @click="pick('report_user')">
-                                User Report's
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-
-
-
-
-
-
                 <li>
                     <button
                         class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
@@ -452,6 +374,97 @@
                         </span>
                         <span class="text-sm font-medium">Notice</span>
                     </button>
+                </li>
+
+
+
+
+
+
+
+
+
+
+                <!-- Order -->
+                <li>
+                    <button
+                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
+                            focus:outline-none focus:ring-2 focus:ring-slate-500/40
+                            hover:bg-slate-100 dark:hover:bg-white/10"
+                        :class="reportPagesOpen
+                        ? 'bg-slate-100 ring-1 ring-slate-200 dark:bg-white/10 dark:ring-white/10'
+                        : ''"
+                        @click="reportPagesOpen = !reportPagesOpen"
+                        type="button">
+                        <span class="opacity-90">
+                        <i class="fa-solid fa-sliders"></i>
+                        </span>
+                        <span class="text-sm font-medium flex-1">Reports</span>
+
+                        <svg
+                        class="h-4 w-4 transition-transform opacity-80"
+                        :class="reportPagesOpen ? 'rotate-180' : ''"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div v-show="reportPagesOpen" class="mt-1 ml-6 mr-2 rounded-xl ring-1
+                            bg-slate-50 ring-slate-200
+                            dark:bg-black/20 dark:ring-white/10">
+                        <ul class="py-2">
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'report_sale'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('report_sale')">
+                                Sale Report's
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'report_payment'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('report_payment')">
+                                Payment Report's
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'report_user'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('report_user')">
+                                User Report's
+                                </button>
+                            </li>
+
+                            <hr class="border-0 border-t border-slate-400 dark:border-slate-700">
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'report_customer'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('report_customer')">
+                                Customer Report's
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
 
@@ -559,7 +572,8 @@ const routeMap = {
     // reports
     report_sale: "/admin/reports/sale",
     report_payment: "/admin/reports/payment",    
-    report_user: "/admin/reports/user/sale",    
+    report_user: "/admin/reports/user/sale",  
+    report_customer: "/admin/reports/customer",  
 
 
     // Others
@@ -606,7 +620,8 @@ const routeMatch = [
 
     { key: "report_sale", prefixes: ["/admin/reports/sale"] },
     { key: "report_payment", prefixes: ["/admin/reports/payment"] },    
-    { key: "report_user", prefixes: ["/admin/reports/user/sale"] },    
+    { key: "report_user", prefixes: ["/admin/reports/user/sale"] },   
+    { key: "report_customer", prefixes: ["/admin/reports/customer"] },   
 
 
     { key: "notice", prefixes: ["/admin/notice"] },
@@ -768,7 +783,8 @@ watch(
         const reportKeys = [
         "report_sale", 
         "report_payment", 
-        "report_user"
+        "report_user", 
+        "report_customer"
         ];
         if (reportKeys.includes(k)) {
         reportPagesOpen.value = true;

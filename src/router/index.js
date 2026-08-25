@@ -57,6 +57,7 @@ const DueDetails = () => import('../components/Dashboard/admin/payment/due-detai
 const SaleReport = () => import('../components/Dashboard/admin/reports/report-sale.vue');
 const PaymentReport = () => import('../components/Dashboard/admin/reports/report-payment.vue');
 const UserReport = () => import('../components/Dashboard/admin/reports/report-user-sale.vue');
+const CustomerReport = () => import('../components/Dashboard/admin/reports/report-customer-due.vue');
 
 
 
@@ -153,7 +154,8 @@ const routes = [
     // Sale Report
     { path: '/admin/reports/sale', component: SaleReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Sale Reports"}},
     { path: '/admin/reports/payment', component: PaymentReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Payments Reports"}},
-    { path: '/admin/reports/user/sale', component: UserReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "user Sale Reports"}},
+    { path: '/admin/reports/user/sale', component: UserReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "User Sale Reports"}},
+    { path: '/admin/reports/customer', component: CustomerReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Customer Due Report's"}},
     
     // Due Routes
     { path: '/admin/payment/due', component: DueList, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Due List"}},
