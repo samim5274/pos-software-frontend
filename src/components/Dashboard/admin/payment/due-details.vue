@@ -452,6 +452,16 @@
                                                                     </p>
                                                                 </div>
 
+                                                                <!-- Discount -->
+                                                                <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
+                                                                    <p class="text-[10px] uppercase font-semibold text-slate-400">
+                                                                        Discount
+                                                                    </p>
+                                                                    <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                                                                        {{ money(payment.discount) }}
+                                                                    </p>
+                                                                </div>
+
                                                                 <!-- Amount -->
                                                                 <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
                                                                     <p class="text-[10px] uppercase font-semibold text-slate-400">
