@@ -626,7 +626,7 @@ const routeMatch = [
 
     { key: "product_stock", prefixes: ["/admin/product/stock"] },
     { key: "purchase_product", prefixes: ["/admin/product/purchase/stock"] },
-    { key: "purchase_list", prefixes: ["/admin/product/purchase/list", "/admin/purchase/order/details"] },
+    { key: "purchase_list", prefixes: ["/admin/product/purchase/list", "/admin/purchase/details"] },
     { key: "report_stock", prefixes: ["/admin/reports/stock"] },
 
     { key: "order_payment", prefixes: ["/admin/orders/payment"] },
