@@ -211,7 +211,19 @@
                                     ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
                                     : 'text-slate-700 dark:text-slate-200/90'"
                                 @click="pick('purchase_product')">
-                                Purchase Stock In
+                                Purchase
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                class="w-full px-4 py-2 text-sm text-left transition
+                                        hover:bg-white dark:hover:bg-white/10"
+                                :class="activeKey === 'purchase_list'
+                                    ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
+                                    : 'text-slate-700 dark:text-slate-200/90'"
+                                @click="pick('purchase_list')">
+                                Purchase List
                                 </button>
                             </li>
 
@@ -564,6 +576,7 @@ const routeMap = {
 
     product_stock: "/admin/product/stock",
     purchase_product: "/admin/product/purchase/stock",
+    purchase_list: "/admin/product/purchase/list",
     report_stock: "/admin/reports/stock",
 
     orders: "/admin/orders",
@@ -613,6 +626,7 @@ const routeMatch = [
 
     { key: "product_stock", prefixes: ["/admin/product/stock"] },
     { key: "purchase_product", prefixes: ["/admin/product/purchase/stock"] },
+    { key: "purchase_list", prefixes: ["/admin/product/purchase/list", "/admin/purchase/order/details"] },
     { key: "report_stock", prefixes: ["/admin/reports/stock"] },
 
     { key: "order_payment", prefixes: ["/admin/orders/payment"] },
@@ -706,7 +720,12 @@ watch(
 watch(
     () => activeKey.value,
     (k) => {
-        const stockPageKey = ["product_stock", "report_stock", "purchase_product"];
+        const stockPageKey = [
+            "product_stock", 
+            "report_stock", 
+            "purchase_product", 
+            "purchase_list"
+        ];
         if (stockPageKey.includes(k)) {
         stockPagesOpen.value = true;
         }

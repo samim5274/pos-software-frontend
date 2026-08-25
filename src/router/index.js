@@ -32,6 +32,8 @@ const ProductStock = () => import('../components/Dashboard/admin/stock/product-s
 const StockReport = () => import('../components/Dashboard/admin/stock/report-stock.vue');
 const StockReportPrint = () => import('../components/Dashboard/admin/stock/stock-report-print.vue');
 const PurchaseProductStock = () => import('../components/Dashboard/admin/stock/purchase-product.vue');
+const PurchaseList = () => import('../components/Dashboard/admin/stock/purchase-list.vue');
+const PurchaseDetails = () => import('../components/Dashboard/admin/stock/purchase-order-details.vue');
 
 
 
@@ -135,7 +137,8 @@ const routes = [
     { path: '/admin/reports/stock', component: StockReport, meta: { requiresAuth: true, roles: ['staff', 'admin', 'super_admin'], title: "Stock Report's - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
     { path: '/admin/stock-report-print', component: StockReportPrint, meta: { requiresAuth: true, roles: ['staff', 'admin', 'super_admin'], title: "Stock Report Print's - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
     { path: '/admin/product/purchase/stock', component: PurchaseProductStock, meta: { requiresAuth: true, roles: ['staff', 'admin', 'super_admin'], title: "Purchase product stocks - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
-    
+    { path: '/admin/product/purchase/list', component: PurchaseList, meta: { requiresAuth: true, roles: ['staff', 'admin', 'super_admin'], title: "Purchase List - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
+    { path: '/admin/purchase/details/:reg/:order_number/:slug', component: PurchaseDetails, meta: { requiresAuth: true, roles: ['staff', 'admin', 'super_admin'], title: "Purchase Details - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
     
     
     
