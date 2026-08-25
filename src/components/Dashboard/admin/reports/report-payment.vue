@@ -225,9 +225,9 @@
 
                                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                                     <template v-if="filteredPayments && filteredPayments.length > 0">
-                                        <tr v-for="(payment, index) in filteredPayments" :key="payment.id"
+                                        <tr v-for="(payment, index) in filteredPayments"  :key="payment.id" 
                                             class="transition-colors group hover:bg-slate-50/80 dark:hover:bg-slate-800/50"
-                                            :class="index % 2 === 1 ? 'bg-slate-50/40 dark:bg-slate-800/20 print:bg-slate-50' : ''">
+                                            :class="index % 2 === 1 ? 'bg-slate-50/40 dark:bg-slate-800/20 print:bg-slate-50' : ''" @click="viewOrderDetails(payment)">
 
                                             <!-- Date -->
                                             <td class="px-6 py-4 whitespace-nowrap print:px-3 print:py-2">
@@ -623,6 +623,27 @@ function getTypeBadge(type) {
         sign: '',
     };
 }
+
+
+
+
+
+
+
+
+
+function viewOrderDetails(payment){
+    router.push(`/admin/payment/due/details/${payment.order.reg}/${payment.order.slug}`);
+}
+
+
+
+
+
+
+
+
+
 
 /* =============================================================
    Dark / light mode

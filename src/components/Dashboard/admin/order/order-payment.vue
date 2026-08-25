@@ -216,6 +216,9 @@
                                             <!-- Date -->
                                             <td class="px-4 py-2.5 text-xs text-slate-600 dark:text-slate-400 font-medium">
                                                 {{ payment.paid_at ? formatDate(payment.paid_at) : 'N/A' }}
+                                                <div class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+                                                    {{ payment.remarks || '' }}
+                                                </div>
                                             </td>
 
                                             <!-- Amount (BDT) -->
