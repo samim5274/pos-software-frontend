@@ -13,7 +13,7 @@
                     @close="mobileMenu = false" />
 
                 <div class="flex-1 min-w-0 flex flex-col">
-                    <!-- <AdminMain /> -->
+                    <AdminMain />
                 </div>
             </div>
             <FooterSection />
