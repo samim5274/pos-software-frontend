@@ -9,31 +9,35 @@
             <p>Mobile: +880 1533-021557 &nbsp;|&nbsp; Email: ogrova2026@gmail.com &nbsp;|&nbsp; www.ogrova.com</p>
         </div>
 
-        <div class="dashed-line"></div>
+        <div class="dashed-line thin"></div>
 
         <!-- Invoice Title & Meta -->
         <div class="invoice-meta-bar" v-if="order">
-            <div class="inv-title">INVOICE</div>
+            <div class="meta-bar-top">
+                <span class="inv-title">INVOICE</span>
+                <span class="inv-sub">#{{ order.reg ?? 'N/A' }}</span>
+            </div>
 
             <div class="meta-grid">
                 <div class="meta-col">
-                    <div class="row"><span class="label">Invoice No:</span><span class="value">{{ order.reg ?? 'N/A' }}</span></div>
-                    <div class="row"><span class="label">Order Number:</span><span class="value">{{ order.order_number ?? 'N/A' }}</span></div>
+                    <div class="row"><span class="label">Order No:</span><span class="value">{{ order.order_number ?? 'N/A' }}</span></div>
                     <div class="row"><span class="label">Date:</span><span class="value">{{ formatDate(order.order_date) }}</span></div>
                 </div>
                 <div class="meta-col">
                     <div class="row"><span class="label">Prepared By:</span><span class="value">{{ order?.user?.name ?? '-' }}</span></div>
-                    <div class="row"><span class="label">Payment Method:</span><span class="value capitalize">{{ getPaymentMethod(order.payment_method)?.label ?? 'N/A' }}</span></div>
+                    <div class="row"><span class="label">Payment:</span><span class="value capitalize">{{ getPaymentMethod(order.payment_method)?.label ?? 'N/A' }}</span></div>
+                </div>
+                <div class="meta-col">
                     <div class="row"><span class="label">Status:</span><span class="value">{{ formatStatus(order.status) }}</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="dashed-line"></div>
+        <div class="dashed-line thin"></div>
 
         <!-- ================= BILL TO / SUPPLIER ================= -->
         <div class="parties-grid" v-if="order">
-            <div class="party-box">
+            <div class="party-box party-box--supplier">
                 <p class="party-title">Bill From (Supplier)</p>
                 <p class="party-name">{{ order.supplier?.name || order.supplier_name || 'N/A' }}</p>
                 <p v-if="order.supplier?.company_name">{{ order.supplier.company_name }}</p>
@@ -42,14 +46,14 @@
                 <p v-if="fullSupplierAddress">{{ fullSupplierAddress }}</p>
             </div>
 
-            <div class="party-box">
+            <div class="party-box party-box--customer">
                 <p class="party-title">Bill To (Customer)</p>
-                <p class="party-name">{{ order.customer_name || 'N/A' }}</p>
-                <p v-if="order.customer_phone">Phone: {{ order.customer_phone }}</p>
-                <p v-if="order.customer_email">Email: {{ order.customer_email }}</p>
-                <p v-if="order.customer_address">{{ order.customer_address }}</p>
+                <p class="party-name">{{ order.supplier_name || 'N/A' }}</p>
+                <p v-if="order.supplier_phone">Phone: {{ order.supplier_phone }}</p>
             </div>
         </div>
+
+        <div class="dashed-line thin"></div>
 
         <div class="dashed-line"></div>
 
@@ -58,11 +62,9 @@
             <thead>
                 <tr>
                     <th class="col-sl">#</th>
-                    <th class="col-name">Item Description</th>
-                    <th class="col-sku">SKU</th>
+                    <th class="col-name">Item</th>
                     <th class="col-qty text-center">Qty</th>
                     <th class="col-price text-right">Unit Price</th>
-                    <th class="col-disc text-right">Discount</th>
                     <th class="col-total text-right">Amount</th>
                 </tr>
             </thead>
@@ -74,10 +76,8 @@
                         <div v-if="item.variant?.name" class="item-sub">Variant: {{ item.variant.name }}</div>
                         <div v-if="item.note" class="item-sub">Note: {{ item.note }}</div>
                     </td>
-                    <td class="col-sku">{{ item.product?.sku || item.sku || '-' }}</td>
                     <td class="col-qty text-center">{{ item.quantity ?? 1 }}</td>
                     <td class="col-price text-right">{{ formatMoney(item.unit_price ?? item.price) }}</td>
-                    <td class="col-disc text-right">{{ Number(item.discount || 0) > 0 ? formatMoney(item.discount) : '-' }}</td>
                     <td class="col-total text-right">
                         {{ formatMoney(
                             item.subtotal ??
@@ -116,16 +116,59 @@
                     <span class="label">Total Payable:</span>
                     <span class="value">৳{{ formatMoney(order.payable_amount) }}</span>
                 </div>
-                <div class="row"><span class="label">Paid Amount:</span><span class="value">৳{{ formatMoney(paidAmount) }}</span></div>
+                <!-- <div class="row"><span class="label">Paid Amount:</span><span class="value">৳{{ formatMoney(paidAmount) }}</span></div>
                 <div class="row bold due-row" v-if="Number(order.due_amount) > 0">
                     <span class="label">Due Amount:</span>
                     <span class="value">৳{{ formatMoney(order.due_amount) }}</span>
                 </div>
-                <div class="paid-badge" v-else>Fully Paid</div>
+                <div class="paid-badge" v-else>Fully Paid</div> -->
             </div>
         </div>
 
         <div class="dashed-line"></div>
+
+        <!-- ================= PAYMENT HISTORY ================= -->
+        <div class="payment-history" v-if="payments && payments.length">
+            <p class="section-title">Payment History</p>
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th class="col-sl">#</th>
+                        <th class="col-pnum">Payment No.</th>
+                        <th class="col-method">Method</th>
+                        <th class="col-date">Paid At</th>
+                        <th class="col-by">Received By</th>
+                        <th class="col-type">Discount</th>
+                        <th class="col-amount text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, idx) in payments" :key="item.id ?? idx">
+                        <td class="col-sl">{{ idx + 1 }}</td>
+                        <td class="col-pnum">{{ item.payment_number || item.receipt_no || `#${idx + 1}` }}</td>
+                        <td class="col-method capitalize">{{ item.payment_method || 'N/A' }}</td>
+                        <td class="col-date">{{ item.paid_at ? formatDateTime(item.paid_at) : '-' }}</td>
+                        <td class="col-by">{{ item.user?.name || 'N/A' }}</td>
+                        <td class="col-type capitalize">-৳{{ item.discount || '-' }}</td>
+                        <td class="col-amount text-right">৳{{ formatMoney(item.amount) }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="bold">
+                        <td colspan="6" class="text-right">Total Paid:</td>
+                        <td class="text-right">৳{{ formatMoney(totalPaidFromHistory) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="dashed-line" v-if="payments && payments.length"></div>
+            <div class="row bold due-row" v-if="Number(order.due_amount) > 0">
+                <span class="label">Due Amount:</span>
+                <span class="value">৳{{ formatMoney(order.due_amount) }}</span>
+            </div>
+            <div class="paid-badge" v-else>Fully Paid</div>
+        </div>
+
+        <div class="dashed-line" v-if="payments && payments.length"></div>
 
         <!-- ================= SIGNATURES ================= -->
         <div class="signatures flex justify-between">
@@ -196,6 +239,20 @@ const formatDate = (date) => {
     });
 };
 
+// Used by Payment History table (date + time)
+const formatDateTime = (date) => {
+    if (!date) return "-";
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "-";
+    return d.toLocaleString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+};
+
 const formatStatus = (status) => {
     if (!status) return "N/A";
     return String(status).replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -223,6 +280,11 @@ const fullSupplierAddress = computed(() => {
     const s = order.value?.supplier;
     if (!s) return "";
     return [s.address, s.city, s.postal_code, s.country].filter(Boolean).join(", ");
+});
+
+// Sum of all payment history rows (fixes previous reference to undefined "orderPayments")
+const totalPaidFromHistory = computed(() => {
+    return (payments.value || []).reduce((sum, p) => sum + Number(p.amount || 0), 0);
 });
 
 // ==========================================
@@ -352,54 +414,74 @@ onMounted(async () => {
     border-bottom: 1px dotted #666;
     margin: 6px 0;
 }
-
-/* Invoice meta */
-.invoice-meta-bar { text-align: center; }
+/* Invoice meta (compact) */
+.invoice-meta-bar {
+    padding: 2px 0;
+}
+.meta-bar-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
 .inv-title {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 800;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+}
+.inv-sub {
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
 }
 .meta-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 24px;
-    text-align: left;
-    max-width: 480px;
-    margin: 0 auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px 16px;
+    font-size: 11px;
 }
-.meta-col .row { margin-bottom: 3px; }
-
-/* Generic label/value row */
+.meta-col .row { margin-bottom: 1px; }
 .row {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
 }
-.label { color: #444; }
+.label { color: #666; }
 .value { text-align: right; font-weight: 600; }
 
-/* ================= Bill From / Bill To ================= */
+/* Bill From / Bill To (compact) */
 .parties-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 10px;
+    margin: 0;
 }
-.party-box p { margin: 2px 0; font-size: 12px; }
+.party-box {
+    border-left: 2px solid #333;
+    padding: 2px 8px;
+}
+.party-box--supplier { border-left-color: #333; }
+.party-box--customer { border-left-color: #0a7a3d; }
+.party-box p {
+    margin: 1px 0;
+    font-size: 11px;
+    line-height: 1.3;
+}
 .party-title {
-    font-size: 10.5px;
+    font-size: 9px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #555;
-    margin-bottom: 4px !important;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 2px !important;
 }
+.party-box--supplier .party-title { color: #555; }
+.party-box--customer .party-title { color: #0a7a3d; }
 .party-name {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 700;
+    margin-bottom: 1px !important;
 }
-
 /* ================= Items Table ================= */
 .items-table {
     width: 100%;
@@ -423,12 +505,10 @@ onMounted(async () => {
     vertical-align: top;
     font-size: 12px;
 }
-.col-sl { width: 4%; }
-.col-name { width: 34%; }
-.col-sku { width: 12%; font-size: 11px; color: #555; }
-.col-qty { width: 8%; }
-.col-price { width: 14%; }
-.col-disc { width: 12%; }
+.col-sl { width: 6%; }
+.col-name { width: 50%; }
+.col-qty { width: 12%; }
+.col-price { width: 16%; }
 .col-total { width: 16%; }
 
 .item-title { font-weight: 600; }
@@ -438,6 +518,44 @@ onMounted(async () => {
     text-align: center;
     padding: 20px 0;
     color: #777;
+    font-size: 12px;
+}
+
+/* ================= Payment History ================= */
+.payment-history {
+    margin: 8px 0;
+}
+.section-title {
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+    margin-bottom: 6px;
+}
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+.payment-table th, .payment-table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.payment-table thead th {
+    background: #f7f7f7;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 9.5px;
+    letter-spacing: 0.3px;
+}
+.payment-table .col-amount { color: #0a7a3d; font-weight: 600; }
+.payment-table tfoot td {
+    border-top: 1.4px solid #000;
+    border-bottom: none;
     font-size: 12px;
 }
 
@@ -542,10 +660,12 @@ onMounted(async () => {
         box-shadow: none;
     }
 
-    .items-table {
+    .items-table,
+    .payment-table {
         page-break-inside: auto;
     }
-    .items-table tr {
+    .items-table tr,
+    .payment-table tr {
         page-break-inside: avoid;
         page-break-after: auto;
     }

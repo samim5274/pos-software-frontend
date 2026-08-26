@@ -884,8 +884,8 @@
                         <!-- Header -->
                         <!-- ================================================= -->
 
-                        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between"
->
+                        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            
                             <div class="flex items-center gap-3">
 
                                 <div

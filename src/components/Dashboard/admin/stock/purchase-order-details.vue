@@ -124,6 +124,15 @@
                                     Download Invoice
                                 </button> -->
 
+                                <button v-if="order.status == 'partially_paid'"
+                                    type="button"
+                                    @click.stop="openDueCollection(order)"
+                                    class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition shadow-sm"
+                                >
+                                    <i class="fa-solid fa-money-check mr-1.5"></i>
+                                    Collect due
+                                </button>
+
                                 <button
                                     type="button"
                                     @click="printOrder(order)"
@@ -1242,6 +1251,494 @@
             </div>
         </div>
 
+
+
+
+
+
+
+
+
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition duration-300 ease-out"
+                enter-from-class="opacity-0 scale-95"
+                enter-to-class="opacity-100 scale-100"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="opacity-100 scale-100"
+                leave-to-class="opacity-0 scale-95"
+            >
+                <div
+                    v-if="isDueCollectionModalOpen"
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md"
+                    @click.self="closeDueCollectionModal"
+                >
+                    <div
+                        @click.stop
+                        class="relative w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden"
+                    >
+
+                        <!-- ================================================= -->
+                        <!-- Header -->
+                        <!-- ================================================= -->
+
+                        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            
+                            <div class="flex items-center gap-3">
+
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center"
+                                >
+                                    <i class="fa-solid fa-money-check-dollar"></i>
+                                </div>
+
+                                <div>
+                                    <h3
+                                        class="text-base font-bold text-slate-900 dark:text-white"
+                                    >
+                                        Due Collection
+                                    </h3>
+
+                                    <p
+                                        class="text-xs text-slate-500 dark:text-slate-400"
+                                    >
+                                        Collect payment for this order
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                @click="closeDueCollectionModal"
+                                :disabled="isSavingDueCollection"
+                                class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition-colors disabled:opacity-50"
+                            >
+                                <i class="fa-solid fa-xmark text-sm"></i>
+                            </button>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- Body -->
+                        <!-- ================================================= -->
+
+                        <div class="p-5 space-y-4">
+
+                            <!-- Order Information -->
+
+                            <div
+                                class="rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 p-3.5"
+                            >
+
+                                <div class="flex items-center justify-between gap-3">
+
+                                    <div>
+                                        <p
+                                            class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
+                                        >
+                                            Order Number
+                                        </p>
+
+                                        <p
+                                            class="mt-0.5 text-sm font-black text-slate-900 dark:text-white"
+                                        >
+                                            #{{ selectedDueOrder?.order_number }}
+                                        </p>
+                                    </div>
+
+                                    <div class="text-right">
+
+                                        <p
+                                            class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
+                                        >
+                                            Total Payable
+                                        </p>
+
+                                        <p
+                                            class="mt-0.5 text-base font-black text-emerald-600 dark:text-orange-400"
+                                        >
+                                            ৳ {{ formatMoney(dueCollectionTotal) }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
+                                    Payment Method
+                                    <span class="text-rose-500 font-bold">*</span>
+                                </label>
+
+                                <div class="relative">
+                                    <!-- Input Icon -->
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-400">
+                                        <i class="fa-solid fa-wallet"></i>
+                                    </span>
+
+                                    <select
+                                        v-model="paymentMethod"
+                                        class="w-full pl-8 pr-8 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 dark:border-slate-700/80 outline-none transition-all appearance-none cursor-pointer focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 dark:focus:border-emerald-500 dark:focus:bg-slate-800"
+                                        :class="{
+                                            '!border-rose-500 focus:!ring-rose-500/10': paymentMethodError
+                                        }"
+                                    >
+                                        <option value="1" disabled selected>-- Select Method --</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="bkash">bKash</option>
+                                        <option value="nagad">Nagad</option>
+                                        <option value="card">Card</option>
+                                        <option value="bank">Bank</option>
+                                    </select>
+
+                                    <!-- Custom Dropdown Chevron Icon -->
+                                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </span>
+                                </div>
+
+                                <!-- Error Message -->
+                                <p v-if="paymentMethodError" class="text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                                    {{ paymentMethodError }}
+                                </p>
+                            </div>
+
+
+                            <!-- ================================================= -->
+                            <!-- Discount -->
+                            <!-- ================================================= -->
+
+                            <div>
+
+                                <label
+                                    class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider"
+                                >
+                                    Discount
+
+                                    <span class="text-slate-400 font-normal normal-case">
+                                        (Optional)
+                                    </span>
+                                </label>
+
+                                <div class="relative">
+
+                                    <span
+                                        class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-400"
+                                    >
+                                        ৳
+                                    </span>
+
+                                    <input
+                                        v-model="dueDiscountAmount"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        class="w-full pl-8 pr-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 dark:border-slate-700/80 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 dark:focus:border-emerald-500 dark:focus:bg-slate-800"
+                                        :class="{
+                                            '!border-rose-500 focus:!ring-rose-500/10':
+                                                dueDiscountAmountError
+                                        }"
+                                        @keyup.enter="saveDueCollection"
+                                    />
+
+                                </div>
+
+                                <p
+                                    v-if="dueDiscountAmountError"
+                                    class="text-xs text-rose-500 mt-1.5 flex items-center gap-1"
+                                >
+                                    <i
+                                        class="fa-solid fa-circle-exclamation text-[10px]"
+                                    ></i>
+
+                                    {{ dueDiscountAmountError }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- ================================================= -->
+                            <!-- Net Payable -->
+                            <!-- ================================================= -->
+
+                            <div
+                                class="flex items-center justify-between text-sm"
+                            >
+
+                                <span
+                                    class="font-medium text-slate-500 dark:text-slate-400"
+                                >
+                                    Net Payable
+                                </span>
+
+                                <span
+                                    class="font-black text-slate-900 dark:text-white"
+                                >
+                                    ৳ {{ formatMoney(dueCollectionNetPayable) }}
+                                </span>
+
+                            </div>
+
+
+                            <!-- ================================================= -->
+                            <!-- Received Amount -->
+                            <!-- ================================================= -->
+
+                            <div>
+
+                                <label
+                                    class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider"
+                                >
+                                    Received Amount
+                                    <span class="text-rose-500">*</span>
+                                </label>
+
+                                <div class="relative">
+
+                                    <span
+                                        class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-400"
+                                    >
+                                        ৳
+                                    </span>
+
+                                    <input
+                                        v-model="dueReceivedAmount"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="Enter received amount"
+                                        autofocus
+                                        class="w-full pl-8 pr-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 dark:border-slate-700/80 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 dark:focus:border-emerald-500 dark:focus:bg-slate-800"
+                                        :class="{
+                                            '!border-rose-500 focus:!ring-rose-500/10':
+                                                dueReceivedAmountError
+                                        }"
+                                        @keyup.enter="saveDueCollection"
+                                    />
+
+                                </div>
+
+                                <p
+                                    v-if="dueReceivedAmountError"
+                                    class="text-xs text-rose-500 mt-1.5 flex items-center gap-1"
+                                >
+                                    <i
+                                        class="fa-solid fa-circle-exclamation text-[10px]"
+                                    ></i>
+
+                                    {{ dueReceivedAmountError }}
+                                </p>
+
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider"
+                                >
+                                    Remark
+                                </label>
+
+                                <textarea
+                                    v-model="paymentRemarks"
+                                    rows="3"
+                                    maxlength="1000"
+                                    placeholder="Enter payment remark..."
+                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 dark:border-slate-700/80 outline-none resize-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 dark:focus:border-indigo-500 dark:focus:bg-slate-800"
+                                    :class="{
+                                        '!border-rose-500 focus:!ring-rose-500/10':
+                                            paymentRemarksError
+                                    }"
+                                ></textarea>
+
+                                <div class="flex justify-between items-center mt-1.5">
+                                    <p
+                                        v-if="paymentRemarksError"
+                                        class="text-xs text-rose-500 flex items-center gap-1"
+                                    >
+                                        <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+                                        {{ paymentRemarksError }}
+                                    </p>
+
+                                    <span
+                                        class="text-[10px] text-slate-400 ml-auto"
+                                    >
+                                        {{ paymentRemarks.length }}/1000
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <!-- ================================================= -->
+                            <!-- Payment Result -->
+                            <!-- ================================================= -->
+
+                            <div
+                                class="rounded-xl border overflow-hidden"
+                            >
+
+                                <!-- Due -->
+
+                                <div
+                                    v-if="dueCollectionDue > 0"
+                                    class="flex items-center justify-between px-3.5 py-3 bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20"
+                                >
+
+                                    <div
+                                        class="flex items-center gap-2 text-red-700 dark:text-red-400"
+                                    >
+                                        <i class="fa-solid fa-clock text-xs"></i>
+
+                                        <span class="text-sm font-bold">
+                                            Due
+                                        </span>
+                                    </div>
+
+                                    <span
+                                        class="text-base font-black text-red-700 dark:text-red-400"
+                                    >
+                                        ৳ {{ formatMoney(dueCollectionDue) }}
+                                    </span>
+
+                                </div>
+
+
+                                <!-- Return -->
+
+                                <div
+                                    v-else-if="dueCollectionReturn > 0"
+                                    class="flex items-center justify-between px-3.5 py-3 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20"
+                                >
+
+                                    <div
+                                        class="flex items-center gap-2 text-emerald-700 dark:text-emerald-400"
+                                    >
+                                        <i
+                                            class="fa-solid fa-arrow-rotate-left text-xs"
+                                        ></i>
+
+                                        <span class="text-sm font-bold">
+                                            Return
+                                        </span>
+                                    </div>
+
+                                    <span
+                                        class="text-base font-black text-emerald-700 dark:text-emerald-400"
+                                    >
+                                        ৳ {{ formatMoney(dueCollectionReturn) }}
+                                    </span>
+
+                                </div>
+
+
+                                <!-- Fully Paid -->
+
+                                <div
+                                    v-else-if="dueCollectionIsFullyPaid"
+                                    class="flex items-center justify-center gap-2 px-3.5 py-3 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+                                >
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    <span class="text-sm font-bold">
+                                        Fully Paid
+                                    </span>
+
+                                </div>
+
+
+                                <!-- No Payment -->
+
+                                <div
+                                    v-else
+                                    class="flex items-center justify-between px-3.5 py-3 bg-slate-50 dark:bg-slate-800/60"
+                                >
+
+                                    <span
+                                        class="text-sm font-semibold text-slate-500 dark:text-slate-400"
+                                    >
+                                        Payment Status
+                                    </span>
+
+                                    <span
+                                        class="text-xs font-bold text-slate-400"
+                                    >
+                                        Enter received amount
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- Footer -->
+                        <!-- ================================================= -->
+
+                        <div
+                            class="px-5 py-4 bg-slate-50/80 dark:bg-slate-800/40 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-end gap-3"
+                        >
+
+                            <button
+                                type="button"
+                                @click="closeDueCollectionModal"
+                                :disabled="isSavingDueCollection"
+                                class="px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/70 border border-slate-200/80 dark:text-slate-300 dark:hover:text-white dark:bg-slate-800 dark:hover:bg-slate-700/80 dark:border-slate-700/80 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Cancel
+                            </button>
+
+
+                            <button
+                                type="button"
+                                @click="saveDueCollection"
+                                :disabled="isSavingDueCollection"
+                                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+
+                                <i
+                                    v-if="isSavingDueCollection"
+                                    class="fa-solid fa-spinner fa-spin text-xs"
+                                ></i>
+
+                                <i
+                                    v-else
+                                    class="fa-solid fa-check text-xs"
+                                ></i>
+
+                                <span>
+                                    {{
+                                        isSavingDueCollection
+                                            ? "Saving..."
+                                            : "Collect Payment"
+                                    }}
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
+
+
+
+
+
+
+
+
+
     </div>
     <FooterSection />
 </template>
@@ -1331,6 +1828,34 @@ async function fetchOrderDetails() {
         loading.value = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =====================================================
@@ -1440,6 +1965,19 @@ const formatStatus = (status) => {
         .replace(/_/g, " ")
         .replace(/\b\w/g, char => char.toUpperCase());
 };
+
+function formatMoney(value) {
+    const amount = Number(value ?? 0);
+
+    if (!Number.isFinite(amount)) {
+        return "0.00";
+    }
+
+    return amount.toLocaleString("en-BD", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
 
 
 // =====================================================
@@ -1688,6 +2226,32 @@ function togglePaymentDetails(id) {
 const orderPayments = computed(() => payments.value || []);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // =====================================================
 // Product Details
 // =====================================================
@@ -1805,6 +2369,318 @@ async function downloadInvoice() {
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const isDueCollectionModalOpen = ref(false);
+const selectedDueOrder = ref(null);
+
+const dueReceivedAmount = ref("");
+const dueDiscountAmount = ref("");
+const paymentMethod = ref("cash");
+const paymentRemarks = ref("");
+
+const dueReceivedAmountError = ref("");
+const dueDiscountAmountError = ref("");
+const paymentMethodError = ref("");
+const paymentRemarksError = ref("");
+
+const isSavingDueCollection = ref(false);
+
+function openDueCollection(order) {
+    selectedDueOrder.value = order;
+
+    dueReceivedAmount.value = "";
+    dueDiscountAmount.value = "";
+    paymentMethod.value = "cash";
+    paymentRemarks.value = "";
+
+    dueReceivedAmountError.value = "";
+    dueDiscountAmountError.value = "";
+    paymentMethodError.value = "";
+    paymentRemarksError.value = "";
+
+    isDueCollectionModalOpen.value = true;
+}
+
+function closeDueCollectionModal() {
+    if (isSavingDueCollection.value) return;
+
+    isDueCollectionModalOpen.value = false;
+    selectedDueOrder.value = null;
+
+    dueReceivedAmount.value = "";
+    dueDiscountAmount.value = "";
+    paymentMethod.value = "cash";
+    paymentRemarks.value = "";
+
+    dueReceivedAmountError.value = "";
+    dueDiscountAmountError.value = "";
+    paymentMethodError.value = "";
+    paymentRemarksError.value = "";
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Current Collection Values
+|--------------------------------------------------------------------------
+*/
+
+// Total payable amount of the order being collected
+const dueCollectionTotal = computed(() => {
+    return Number(selectedDueOrder.value?.payable_amount || 0);
+});
+
+const dueCollectionCurrentDue = computed(() => {
+    return Math.max(
+        0,
+        Number(selectedDueOrder.value?.due_amount || 0)
+    );
+});
+
+const dueCollectionDiscount = computed(() => {
+    const value = Number(dueDiscountAmount.value || 0);
+
+    return Number.isFinite(value) && value > 0
+        ? value
+        : 0;
+});
+
+const dueCollectionReceived = computed(() => {
+    const value = Number(dueReceivedAmount.value || 0);
+
+    return Number.isFinite(value) && value > 0
+        ? value
+        : 0;
+});
+
+// Net payable after applying discount, before received amount
+const dueCollectionNetPayable = computed(() => {
+    return Math.max(
+        0,
+        dueCollectionCurrentDue.value - dueCollectionDiscount.value
+    );
+});
+
+const dueCollectionRemaining = computed(() => {
+    return Math.max(
+        0,
+        dueCollectionCurrentDue.value -
+        dueCollectionDiscount.value -
+        dueCollectionReceived.value
+    );
+});
+
+// Used by the template's "Payment Result" block
+const dueCollectionDue = dueCollectionRemaining;
+
+const dueCollectionReturn = computed(() => {
+    return Math.max(
+        0,
+        dueCollectionReceived.value -
+        Math.max(
+            0,
+            dueCollectionCurrentDue.value -
+            dueCollectionDiscount.value
+        )
+    );
+});
+
+const dueCollectionIsFullyPaid = computed(() => {
+    return (
+        dueCollectionCurrentDue.value > 0 &&
+        dueCollectionRemaining.value === 0
+    );
+});
+
+/*
+|--------------------------------------------------------------------------
+| Validation
+|--------------------------------------------------------------------------
+*/
+function validateDueCollection() {
+    let valid = true;
+
+    dueReceivedAmountError.value = "";
+    dueDiscountAmountError.value = "";
+    paymentMethodError.value = "";
+    paymentRemarksError.value = "";
+
+    const received = Number(dueReceivedAmount.value);
+    const discount = Number(dueDiscountAmount.value || 0);
+    const due = Number(selectedDueOrder.value?.due_amount || 0);
+
+    if (
+        dueReceivedAmount.value === "" ||
+        !Number.isFinite(received) ||
+        received <= 0
+    ) {
+        dueReceivedAmountError.value =
+            "Please enter a valid received amount.";
+        valid = false;
+    }
+
+    if (
+        !Number.isFinite(discount) ||
+        discount < 0
+    ) {
+        dueDiscountAmountError.value =
+            "Please enter a valid discount.";
+        valid = false;
+    }
+
+    if (discount > due) {
+        dueDiscountAmountError.value =
+            "Discount cannot exceed current due.";
+        valid = false;
+    }
+
+    if (received + discount > due) {
+        dueReceivedAmountError.value =
+            `Received + discount cannot exceed due amount ৳${formatMoney(due)}.`;
+        valid = false;
+    }
+
+    if (!paymentMethod.value) {
+        paymentMethodError.value =
+            "Please select a payment method.";
+        valid = false;
+    }
+
+    if (paymentRemarks.value.length > 1000) {
+        paymentRemarksError.value =
+            "Remark cannot exceed 1000 characters.";
+        valid = false;
+    }
+
+    return valid;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Save Due Collection
+|--------------------------------------------------------------------------
+*/
+
+async function saveDueCollection() {
+    if (isSavingDueCollection.value) return;
+
+    if (!validateDueCollection()) return;
+
+    const order = selectedDueOrder.value;
+
+    if (!order?.reg) {
+        errorMsg.value = "Invalid order.";
+        return;
+    }
+
+    try {
+        isSavingDueCollection.value = true;
+        errorMsg.value = "";
+
+        const payload = {
+            reg: order.reg,
+            amount: Number(dueReceivedAmount.value),
+            discount: Number(dueDiscountAmount.value || 0),
+            payment_method: paymentMethod.value,
+            remarks: paymentRemarks.value.trim() || null,
+        };
+
+        const res = await api.post("/purchase/due/collection", payload);
+
+        if (res.data?.success) {
+            // Save success message
+            successMsg.value =
+                res.data.message || "Payment collected successfully.";
+
+            // Close modal immediately
+            isDueCollectionModalOpen.value = false;
+
+            // Reset modal data
+            selectedDueOrder.value = null;
+            dueReceivedAmount.value = "";
+            dueDiscountAmount.value = "";
+            paymentMethod.value = "cash";
+            paymentRemarks.value = "";
+
+            dueReceivedAmountError.value = "";
+            dueDiscountAmountError.value = "";
+            paymentMethodError.value = "";
+            paymentRemarksError.value = "";
+
+            // Refresh order data
+            await fetchOrderDetails();
+
+            return;
+        }
+
+        errorMsg.value =
+            res.data?.message || "Unable to collect due payment.";
+
+    } catch (error) {
+        console.error("Due collection failed:", error);
+
+        errorMsg.value =
+            error.response?.data?.message ||
+            error.response?.data?.errors?.amount?.[0] ||
+            error.response?.data?.errors?.discount?.[0] ||
+            error.message ||
+            "Unable to collect due payment.";
+
+    } finally {
+        isSavingDueCollection.value = false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =====================================================
