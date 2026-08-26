@@ -1025,191 +1025,168 @@
                             <!-- RIGHT -->
                             <div class="space-y-6">
 
-                                <div class="sticky top-16">
+                                <div class="sticky top-20">
 
                                     <!-- Supplier -->
-                                    <div
-                                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden"
-                                    >
-                                        <div
-                                            class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50"
-                                        >
+                                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                                        <!-- Header -->
+                                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
                                             <h3 class="font-bold text-slate-900 dark:text-white">
                                                 Supplier Details
                                             </h3>
                                         </div>
 
                                         <div class="p-6">
-
-                                            <!-- Supplier Avatar -->
+                                            <!-- Supplier Avatar & Header Info -->
                                             <div class="text-center mb-6">
-
                                                 <div class="relative inline-flex mb-4">
-                                                    <div
-                                                        class="h-20 w-20 rounded-2xl
-                                                            bg-gradient-to-tr from-indigo-600 to-purple-500
-                                                            flex items-center justify-center
-                                                            text-white text-2xl font-bold
-                                                            shadow-lg shadow-indigo-500/30"
-                                                    >
+                                                    <div class="h-20 w-20 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/30">
                                                         {{ supplierInitials }}
                                                     </div>
 
-                                                    <div
-                                                        class="absolute -bottom-2 -right-2
-                                                            bg-green-500
-                                                            border-4 border-white dark:border-slate-900
-                                                            h-6 w-6 rounded-full"
-                                                        title="Active"
+                                                    <!-- Status Badge -->
+                                                    <div 
+                                                        class="absolute -bottom-2 -right-2 h-6 w-6 rounded-full border-4 border-white dark:border-slate-900"
+                                                        :class="(order.supplier?.status === 'active' || order.supplier?.status == 1) ? 'bg-green-500' : 'bg-red-500'"
+                                                        :title="order.supplier?.status || 'Active'"
                                                     ></div>
                                                 </div>
 
                                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white">
-                                                    {{ order.supplier_name || order.supplier?.name || 'Unknown Supplier' }}
+                                                    {{ order.supplier?.name || order.supplier_name || 'Unknown Supplier' }}
                                                 </h4>
 
-                                                <p class="text-sm text-slate-500 mt-1">
-                                                    {{ order.supplier_phone || order.supplier?.phone || 'No phone number' }}
+                                                <p v-if="order.supplier?.company_name" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">
+                                                    {{ order.supplier.company_name }}
                                                 </p>
 
+                                                <p class="text-sm text-slate-500 mt-1">
+                                                    {{ order.supplier?.phone || order.supplier_phone || 'No phone number' }}
+                                                </p>
                                             </div>
 
-
-                                            <!-- Supplier Information -->
-                                            <div
-                                                class="rounded-2xl
-                                                    border border-slate-200/70 dark:border-slate-800
-                                                    bg-white dark:bg-slate-900
-                                                    divide-y divide-slate-100 dark:divide-slate-800
-                                                    shadow-sm"
-                                            >
-
-                                                <!-- Supplier Name -->
+                                            <!-- Supplier Details List -->
+                                            <div class="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 divide-y divide-slate-100 dark:divide-slate-800 shadow-sm">
+                                                
+                                                <!-- Code & ID -->
                                                 <div class="flex items-center gap-3 p-4">
-
-                                                    <span
-                                                        class="flex items-center justify-center
-                                                            w-8 h-8 rounded-lg
-                                                            bg-slate-50 dark:bg-slate-800
-                                                            ring-1 ring-slate-200/80 dark:ring-slate-700
-                                                            text-slate-500 dark:text-slate-400 shrink-0"
-                                                    >
-                                                        <i class="fa-regular fa-user text-[13px]"></i>
+                                                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                        <i class="fa-solid fa-barcode text-[13px]"></i>
                                                     </span>
-
                                                     <div class="min-w-0">
-                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">
-                                                            Supplier Name
-                                                        </p>
-
-                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
-                                                            {{ order.supplier_name || order.supplier?.name || 'N/A' }}
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-
-
-                                                <!-- Phone -->
-                                                <div class="flex items-center gap-3 p-4">
-
-                                                    <span
-                                                        class="flex items-center justify-center
-                                                            w-8 h-8 rounded-lg
-                                                            bg-slate-50 dark:bg-slate-800
-                                                            ring-1 ring-slate-200/80 dark:ring-slate-700
-                                                            text-slate-500 dark:text-slate-400 shrink-0"
-                                                    >
-                                                        <i class="fa-solid fa-phone text-[13px]"></i>
-                                                    </span>
-
-                                                    <div class="min-w-0">
-                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">
-                                                            Phone Number
-                                                        </p>
-
-                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
-                                                            {{ order.supplier_phone || order.supplier?.phone || 'N/A' }}
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-
-
-                                                <!-- Supplier ID -->
-                                                <div class="flex items-center gap-3 p-4">
-
-                                                    <span
-                                                        class="flex items-center justify-center
-                                                            w-8 h-8 rounded-lg
-                                                            bg-slate-50 dark:bg-slate-800
-                                                            ring-1 ring-slate-200/80 dark:ring-slate-700
-                                                            text-slate-500 dark:text-slate-400 shrink-0"
-                                                    >
-                                                        <i class="fa-solid fa-truck-field text-[13px]"></i>
-                                                    </span>
-
-                                                    <div class="min-w-0">
-                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">
-                                                            Supplier ID
-                                                        </p>
-
+                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Supplier Code / ID</p>
                                                         <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                                                            {{ order.supplier_id || 'N/A' }}
+                                                            {{ order.supplier?.code || order.supplier_id || 'N/A' }}
                                                         </p>
                                                     </div>
+                                                </div>
 
+                                                <!-- Alternate Phone -->
+                                                <div v-if="order.supplier?.phone_alt" class="flex items-center gap-3 p-4">
+                                                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                        <i class="fa-solid fa-phone-volume text-[13px]"></i>
+                                                    </span>
+                                                    <div class="min-w-0">
+                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Alt Phone</p>
+                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
+                                                            {{ order.supplier.phone_alt }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Email -->
+                                                <div class="flex items-center gap-3 p-4">
+                                                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                        <i class="fa-regular fa-envelope text-[13px]"></i>
+                                                    </span>
+                                                    <div class="min-w-0">
+                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Email</p>
+                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
+                                                            {{ order.supplier?.email || 'N/A' }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Full Address -->
+                                                <div class="flex items-center gap-3 p-4">
+                                                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                        <i class="fa-solid fa-location-dot text-[13px]"></i>
+                                                    </span>
+                                                    <div class="min-w-0">
+                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Address</p>
+                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">
+                                                            {{ [order.supplier?.address, order.supplier?.city, order.supplier?.postal_code, order.supplier?.country].filter(Boolean).join(', ') || 'N/A' }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Trade License & Tax Number -->
+                                                <div class="flex items-center gap-3 p-4">
+                                                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 text-slate-500 dark:text-slate-400 shrink-0">
+                                                        <i class="fa-solid fa-file-invoice text-[13px]"></i>
+                                                    </span>
+                                                    <div class="min-w-0">
+                                                        <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider">Trade License / Tax No</p>
+                                                        <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">
+                                                            {{ order.supplier?.trade_license || 'N/A' }} <span v-if="order.supplier?.tax_number">({{ order.supplier.tax_number }})</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Financial Information (Opening Balance, Credit Limit, Credit Days) -->
+                                                <div class="p-4 grid grid-cols-3 gap-2 bg-slate-50/50 dark:bg-slate-800/30">
+                                                    <div>
+                                                        <p class="text-[9px] text-slate-400 uppercase font-semibold">Opening Bal.</p>
+                                                        <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
+                                                            {{ order.supplier?.opening_balance ?? '0.00' }}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-[9px] text-slate-400 uppercase font-semibold">Credit Limit</p>
+                                                        <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
+                                                            {{ order.supplier?.credit_limit ?? '0.00' }}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-[9px] text-slate-400 uppercase font-semibold">Credit Days</p>
+                                                        <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
+                                                            {{ order.supplier?.credit_days ? order.supplier.credit_days + ' Days' : 'N/A' }}
+                                                        </p>
+                                                    </div>
                                                 </div>
 
                                             </div>
-
 
                                             <!-- Processed By -->
-                                            <div
-                                                v-if="order.user"
-                                                class="mt-5 p-4 rounded-xl
-                                                    bg-slate-50 dark:bg-slate-800/50
-                                                    border border-slate-100 dark:border-slate-800"
-                                            >
-                                                <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider mb-1">
-                                                    Processed By
-                                                </p>
-
-                                                <p class="text-sm font-bold text-slate-800 dark:text-slate-100">
-                                                    {{ order.user.name }}
-                                                </p>
-
-                                                <p class="text-xs text-slate-500 mt-0.5">
-                                                    {{ order.user.user_id }}
-                                                </p>
+                                            <div v-if="order.user" class="mt-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                                                <p class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider mb-1">Processed By</p>
+                                                <p class="text-sm font-bold text-slate-800 dark:text-slate-100">{{ order.user.name }}</p>
+                                                <p class="text-xs text-slate-500 mt-0.5">{{ order.user.user_id }}</p>
                                             </div>
 
-
-                                            <!-- Remarks -->
-                                            <div
-                                                v-if="order.remarks"
-                                                class="mt-5"
-                                            >
-                                                <div
-                                                    class="w-full flex items-start gap-3.5
-                                                        pl-4 border-l-2
-                                                        border-amber-300 dark:border-amber-600"
-                                                >
+                                            <!-- Supplier Notes / Order Remarks -->
+                                            <div v-if="order.supplier?.notes || order.remarks" class="mt-5 space-y-3">
+                                                <!-- Supplier Notes -->
+                                                <div v-if="order.supplier?.notes" class="w-full flex items-start gap-3.5 pl-4 border-l-2 border-indigo-400 dark:border-indigo-600">
                                                     <div class="min-w-0 flex-1">
-
-                                                        <p
-                                                            class="text-[10.5px]
-                                                                text-amber-600 dark:text-amber-500
-                                                                uppercase font-bold tracking-wider mb-1"
-                                                        >
-                                                            <i class="fa-regular fa-comment-dots mr-1"></i>
-                                                            Note
+                                                        <p class="text-[10.5px] text-indigo-600 dark:text-indigo-400 uppercase font-bold tracking-wider mb-1">
+                                                            <i class="fa-regular fa-note-sticky mr-1"></i> Supplier Note
                                                         </p>
+                                                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                                                            {{ order.supplier.notes }}
+                                                        </p>
+                                                    </div>
+                                                </div>
 
+                                                <!-- Order Remarks -->
+                                                <div v-if="order.remarks" class="w-full flex items-start gap-3.5 pl-4 border-l-2 border-amber-300 dark:border-amber-600">
+                                                    <div class="min-w-0 flex-1">
+                                                        <p class="text-[10.5px] text-amber-600 dark:text-amber-500 uppercase font-bold tracking-wider mb-1">
+                                                            <i class="fa-regular fa-comment-dots mr-1"></i> Order Remark
+                                                        </p>
                                                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">
                                                             {{ order.remarks }}
                                                         </p>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -1757,8 +1734,7 @@ function printOrder(purchaseOrder) {
         return;
     }
 
-    win.location.href =
-        `/admin/purchase/order/invoice-print/${purchaseOrder.reg}`;
+    win.location.href = `/admin/purchase/order/invoice-print/${purchaseOrder.reg}`;
 }
 
 

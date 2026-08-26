@@ -15,32 +15,31 @@
                 </button>
                 
                 <!-- WhatsApp Button -->
-                <a 
+                <!-- <a 
                     href="https://wa.me/8801533021557" 
                     target="_blank" rel="noopener noreferrer"    aria-label="Chat with Ogrova on WhatsApp"    title="WhatsApp"
                     class="relative h-12 w-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95
                         bg-[#25D366] hover:bg-[#20bd5a] text-white">
                     
-                    <!-- Pulse Effect Layers -->
                     <span aria-hidden="true" class="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-40"></span>
                     <span aria-hidden="true" class="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-20"></span>
                     
                     <i class="fa-brands fa-whatsapp text-2xl relative z-10" aria-hidden="true"></i>
-                </a>
+                </a> -->
             </div>
 
             <!-- 2. BIG FOOTER MAIN LINKS GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-8 pb-12 text-slate-600 dark:text-slate-400">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 pb-12 text-slate-600 dark:text-slate-400">
     
-                <!-- 1. Profile & Contact Section (Takes 4 columns on large screens) -->
+                <!-- 1. Profile & Contact Section (Takes 4 columns) -->
                 <div class="lg:col-span-4 space-y-6">
                     <!-- Logo -->
-                    <div class="flex items-center gap-2">
-                        <div class="h-10 w-10 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center transition-transform group-hover:scale-105">
-                            <img src="/logo/logo.avif" alt="Logo" class="w-8 h-8 object-contain dark:hidden" />
-                            <img src="/logo/white-logo.avif" alt="Logo" class="hidden dark:block w-8 h-8 object-contain" />
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-center transition-transform hover:scale-105 shadow-sm">
+                            <img src="/logo/logo.avif" alt="Logo" class="w-7 h-7 object-contain dark:hidden" />
+                            <img src="/logo/white-logo.avif" alt="Logo" class="hidden dark:block w-7 h-7 object-contain" />
                         </div>
-                        <span class="text-lg font-black text-slate-900 dark:text-white tracking-tight uppercase">
+                        <span class="text-xl font-black text-slate-900 dark:text-white tracking-tight uppercase">
                             Ogro<span class="text-orange-500">v</span><span class="text-emerald-600">a</span> Pos
                         </span>
                     </div>
@@ -50,99 +49,103 @@
                         Your premium multi-brand e-commerce destination. Experience unmatched quality, ultra-fast delivery, and elite support tailored just for you.
                     </p>
                     
-                    <!-- Contact Info (From image_690a3a.png layout) -->
+                    <!-- Contact Info -->
                     <ul class="space-y-3 text-sm font-medium">
                         <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-location-dot text-base text-emerald-600 dark:text-orange-500 mt-0.5 w-4 text-center"></i>
+                            <i class="fa-solid fa-location-dot text-base text-emerald-600 dark:text-orange-500 mt-0.5 w-4 text-center shrink-0"></i>
                             <span>Khilkhet, Dhaka, Bangladesh</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-phone text-sm text-emerald-600 dark:text-orange-500 w-4 text-center"></i>
+                            <i class="fa-solid fa-phone text-sm text-emerald-600 dark:text-orange-500 w-4 text-center shrink-0"></i>
                             <a href="tel:+8801533021557" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors">
                                 +880 1533-021557
                             </a>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-envelope text-sm text-emerald-600 dark:text-orange-500 w-4 text-center"></i>
-                            <a href="mailto:contact@ghorerbazar.com" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors truncate">info@ogrova.com</a>
+                            <i class="fa-solid fa-envelope text-sm text-emerald-600 dark:text-orange-500 w-4 text-center shrink-0"></i>
+                            <a href="mailto:info@ogrova.com" class="hover:text-emerald-600 dark:hover:text-orange-400 transition-colors truncate">
+                                info@ogrova.com
+                            </a>
                         </li>
                     </ul>
 
                     <!-- Socials -->
-                    <div class="flex items-center gap-3 pt-1">
-                        <a href="https://www.facebook.com/ogrova2026" target="_blank" rel="noopener noreferrer"  aria-label="Visit Ogrova on Facebook"  title="Facebook" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
-                        <!-- <a href="#" target="_blank" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-x-twitter text-xs"></i></a> -->
-                        <a href="https://www.instagram.com/ogrova2026/" target="_blank" rel="noopener noreferrer"  aria-label="Visit Ogrova on Instagram"  title="Instagram" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
-                        <a href="https://www.linkedin.com/company/143007240" target="_blank" rel="noopener noreferrer"  aria-label="Visit Ogrova on LinkedIn"  title="LinkedIn" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm"><i class="fa-brands fa-linkedin text-xs"></i></a>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="https://www.facebook.com/ogrova2026" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook" class="h-9 w-9 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm">
+                            <i class="fa-brands fa-facebook-f text-xs"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ogrova2026/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" class="h-9 w-9 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm">
+                            <i class="fa-brands fa-instagram text-xs"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/143007240" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" class="h-9 w-9 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-emerald-600 hover:text-white dark:hover:bg-orange-500 hover:border-transparent shadow-sm">
+                            <i class="fa-brands fa-linkedin text-xs"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- 2. Information Column (Takes 2 columns) -->
-                <div class="lg:col-span-2">
-                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Information</h4>
+                <!-- 2. Information Column (Takes 3 columns) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
+                        Information
+                    </h4>
                     <ul class="space-y-2.5 text-sm font-medium">
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">About Us</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Contact Us</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</router-link></li>
-                        <li><router-link to="/" aria-label="Terms and Conditions" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Security</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">About Us</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Contact Us</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Company Information</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Terms & Conditions</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Privacy Policy</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Security</router-link></li>
                     </ul>
                 </div>
 
-                <!-- 3. Shop By Column (Takes 2 columns) -->
+                <!-- 3. Support Column (Takes 2 columns) -->
                 <div class="lg:col-span-2">
-                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Shop By</h4>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
+                        Support
+                    </h4>
                     <ul class="space-y-2.5 text-sm font-medium">
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Groceries & Fresh</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Premium Electronics</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Fashion & Apparel</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Nuts & Seeds</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Support Center</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">How to Order</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Track Your Order</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Payment Methods</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Shipping Info</router-link></li>
+                        <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">FAQ</router-link></li>
                     </ul>
                 </div>
 
-                <!-- 4. Support Column (Takes 2 columns) -->
-                <div class="lg:col-span-2">
-                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Support</h4>
-                    <ul class="space-y-2.5 text-sm font-medium">
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Support Center</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">How to Order</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Track Your Order</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Payment Methods</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Shipping Info</router-link></li>
-                        <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">FAQ</router-link></li>
-                    </ul>
-                </div>
-
-                <!-- 5. Consumer Policy Column (Takes 2 columns) -->
-                <div class="lg:col-span-2 space-y-5">
+                <!-- 4. Consumer Policy & App Download Column (Takes 3 columns) -->
+                <div class="lg:col-span-3 space-y-6">
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Consumer Policy</h4>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
+                            Consumer Policy
+                        </h4>
                         <ul class="space-y-2.5 text-sm font-medium">
-                            <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Return & Refund</router-link></li>
-                            <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</router-link></li>
-                            <li><router-link to="/" class="hover:translate-x-1 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Exchange</router-link></li>
+                            <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Return & Refund</router-link></li>
+                            <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Cancellation</router-link></li>
+                            <li><router-link to="/" class="hover:translate-x-1.5 text-slate-500 dark:text-slate-400 transition-all duration-300 inline-block hover:text-emerald-600 dark:hover:text-orange-400">Exchange</router-link></li>
                         </ul>
                     </div>
                     
-                    <!-- Download App On Mobile Section -->
-                    <div class="pt-2">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3">Download App</span>
-                        <div class="flex flex-col sm:flex-row lg:flex-col gap-2">
-                            <!-- Google Play Store Button -->
-                            <a href="#" class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-lg transition-all border border-transparent hover:border-slate-700 w-fit">
-                                <i class="fa-brands fa-google-play text-lg"></i>
+                    <!-- Mobile App Downloads -->
+                    <div class="pt-1">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">
+                            Download App
+                        </span>
+                        <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5">
+                            <!-- Google Play Store -->
+                            <a href="#" class="flex items-center gap-3 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-white rounded-xl transition-all border border-slate-800 dark:border-slate-700/60 shadow-sm hover:scale-[1.02] w-full sm:w-auto lg:w-full">
+                                <i class="fa-brands fa-google-play text-xl text-emerald-400"></i>
                                 <div class="text-left">
-                                    <p class="text-[9px] uppercase tracking-tight text-slate-400 font-medium leading-none">Get it on</p>
-                                    <p class="text-xs font-bold font-sans tracking-wide leading-tight">Google Play</p>
+                                    <p class="text-[9px] uppercase tracking-wider text-slate-400 font-medium leading-none">Get it on</p>
+                                    <p class="text-xs font-bold font-sans tracking-wide leading-tight mt-0.5">Google Play</p>
                                 </div>
                             </a>
-                            <!-- App Store Button -->
-                            <a href="#" class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-lg transition-all border border-transparent hover:border-slate-700 w-fit">
-                                <i class="fa-brands fa-apple text-xl"></i>
+                            <!-- App Store -->
+                            <a href="#" class="flex items-center gap-3 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-white rounded-xl transition-all border border-slate-800 dark:border-slate-700/60 shadow-sm hover:scale-[1.02] w-full sm:w-auto lg:w-full">
+                                <i class="fa-brands fa-apple text-2xl text-slate-200"></i>
                                 <div class="text-left">
-                                    <p class="text-[9px] uppercase tracking-tight text-slate-400 font-medium leading-none">Download on the</p>
-                                    <p class="text-xs font-bold font-sans tracking-wide leading-tight">App Store</p>
+                                    <p class="text-[9px] uppercase tracking-wider text-slate-400 font-medium leading-none">Download on the</p>
+                                    <p class="text-xs font-bold font-sans tracking-wide leading-tight mt-0.5">App Store</p>
                                 </div>
                             </a>
                         </div>
