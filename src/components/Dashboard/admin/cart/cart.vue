@@ -205,7 +205,7 @@
                                 </div>
                                 <!-- Product Table Container -->
                                 <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 overflow-hidden shadow-sm">
-                                    <div class="max-h-[27rem] overflow-y-auto custom-scrollbar">
+                                    <div class="max-h-[16rem] overflow-y-auto custom-scrollbar">
                                         <table class="w-full text-left border-collapse">
 
                                             <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-[10px] uppercase font-black text-slate-400 tracking-wider">
@@ -460,125 +460,137 @@
 
                             <div class="lg:col-span-4 space-y-5">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-[#0F172E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                
                                     <!-- Phone Number Input -->
                                     <div class="space-y-1.5">
                                         <label for="phone_number" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                            Customer Phone Number
+                                        Customer Phone Number
                                         </label>
-                                        <input type="tel" id="phone_number" name="phone_number" v-model="form.phone_number" placeholder="017XXXXXXXX"
-                                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" />
+                                        <input 
+                                        type="tel" 
+                                        id="phone_number" 
+                                        name="phone_number" 
+                                        v-model="form.phone_number" 
+                                        placeholder="017XXXXXXXX"
+                                        class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" 
+                                        />
                                     </div>
+
+                                    <!-- Customer Name Input -->
                                     <div class="space-y-1.5">
                                         <label for="customer_name" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                            Customer Name
+                                        Customer Name
                                         </label>
-                                        <input type="text" id="customer_name" name="customer_name" v-model="form.customer_name" placeholder="Mr. Hossain"
-                                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" />
+                                        <input 
+                                        type="text" 
+                                        id="customer_name" 
+                                        name="customer_name" 
+                                        v-model="form.customer_name" 
+                                        placeholder="Mr. Hossain"
+                                        class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" 
+                                        />
                                     </div>
-                                
+
                                     <!-- Payment Method Selection -->
-                                    <div class="space-y-1 md:col-span-2 border-t border-slate-100 dark:border-slate-800 pt-2">
+                                    <div class="space-y-2 md:col-span-2 border-t border-slate-100 dark:border-slate-800 pt-3">
+                                        <div class="flex items-center justify-between">
                                         <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                                             Select Payment Method
                                         </label>
-                                        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="cash" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    Cash
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="bkash" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    bKash
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="nagad" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    Nagad
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="rocket" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    Rocket
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="card" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    Card
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" v-model="form.payment_method" value="bank" class="peer hidden" />
-                                                <div class="text-center p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/20 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] transition-all">
-                                                    Bank
-                                                </div>
-                                            </label>
+                                        <span class="text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                                            Selected: <strong class="capitalize text-slate-700 dark:text-slate-200">{{ form.payment_method }}</strong>
+                                        </span>
+                                        </div>
+
+                                        <!-- 7-Column Responsive Layout -->
+                                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
+                                        <label 
+                                            v-for="method in paymentMethods" 
+                                            :key="method.id" 
+                                            class="cursor-pointer group relative"
+                                        >
+                                            <input 
+                                            type="radio" 
+                                            v-model="form.payment_method" 
+                                            :value="method.id" 
+                                            class="peer hidden" 
+                                            />
+                                            <div class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 text-xs font-medium text-slate-600 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/15 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] peer-checked:font-semibold hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-150 select-none">
+                                            
+                                            <!-- Checkmark badge when selected -->
+                                            <span class="absolute top-1 right-1 opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                <svg class="w-3 h-3 text-[#16a34a] dark:text-[#f97316]" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </span>
+
+                                            <span>{{ method.label }}</span>
+                                            </div>
+                                        </label>
                                         </div>
                                     </div>
 
                                     <!-- VAT Input -->
-                                    <div class="space-y-1.5 ">
+                                    <div class="space-y-1.5">
                                         <label for="vat" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                            VAT (%)
+                                        VAT (%)
                                         </label>
                                         <div class="relative flex">
-                                            <input
-                                                v-model.number="form.vat" @keydown.enter="handleCheckout"
-                                                type="number"
-                                                id="vat"
-                                                name="vat"
-                                                placeholder="0"
-                                                min="0"
-                                                max="100"
-                                                step="any"
-                                                class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
-                                            />
-                                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">%</span>
+                                        <input
+                                            v-model.number="form.vat" 
+                                            @keydown.enter="handleCheckout"
+                                            type="number"
+                                            id="vat"
+                                            name="vat"
+                                            placeholder="0"
+                                            min="0"
+                                            max="100"
+                                            step="any"
+                                            class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                        />
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">%</span>
                                         </div>
                                     </div>
 
                                     <!-- Discount Input -->
                                     <div class="space-y-1.5">
                                         <label for="discount" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                            Discount
+                                        Discount
                                         </label>
                                         <div class="relative flex">
-                                            <input
-                                                v-model.number="form.discount" @keydown.enter="handleCheckout"
-                                                type="number"
-                                                id="discount"
-                                                name="discount"
-                                                placeholder="0.00"
-                                                min="0"
-                                                :max="subtotal"
-                                                step="any"
-                                                class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
-                                            />
-                                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">৳</span>
+                                        <input
+                                            v-model.number="form.discount" 
+                                            @keydown.enter="handleCheckout"
+                                            type="number"
+                                            id="discount"
+                                            name="discount"
+                                            placeholder="0.00"
+                                            min="0"
+                                            :max="subtotal"
+                                            step="any"
+                                            class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                        />
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">৳</span>
                                         </div>
                                     </div>
 
                                     <!-- Received Amount Input -->
                                     <div class="space-y-1.5 md:col-span-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                                         <label for="received_amount" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                            Received Amount (৳)
+                                        Received Amount (৳)
                                         </label>
                                         <div class="relative">
-                                            <input
-                                                v-model.number="form.received_amount" @keydown.enter="handleCheckout"
-                                                type="number"
-                                                id="received_amount"
-                                                name="received_amount"
-                                                placeholder="0.00"
-                                                min="0"
-                                                step="any"
-                                                class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-base font-semibold text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
-                                            />
+                                        <input
+                                            v-model.number="form.received_amount" 
+                                            @keydown.enter="handleCheckout"
+                                            type="number"
+                                            id="received_amount"
+                                            name="received_amount"
+                                            placeholder="0.00"
+                                            min="0"
+                                            step="any"
+                                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-base font-semibold text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                        />
                                         </div>
                                     </div>
 
@@ -664,7 +676,15 @@ const form = reactive({
     received_amount: 0,
 });
 
-
+const paymentMethods = [
+    { id: 'cash', label: 'Cash' },
+    { id: 'bkash', label: 'bKash' },
+    { id: 'nagad', label: 'Nagad' },
+    { id: 'rocket', label: 'Rocket' },
+    { id: 'card', label: 'Card' },
+    { id: 'bank', label: 'Bank' },
+    { id: 'wallet', label: 'Wallet' },
+]
 
 
 
@@ -1252,6 +1272,7 @@ const handleCheckout = async () => {
             form.received_amount = 0;
             form.discount = 0;
             form.vat = 0;
+            form.payment_method = "cash";
             form.customer_name = "";
             form.phone_number = "";
         } else {
