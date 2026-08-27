@@ -472,55 +472,44 @@
                                             <!-- Status -->
                                             <!-- ============================= -->
                                             <td class="px-4 py-3">
-
                                                 <span
                                                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border"
                                                     :class="{
-                                                        'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20':
-                                                            order.status === 'pending',
-
-                                                        'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20':
-                                                            order.status === 'unpaid',
-
-                                                        'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20':
-                                                            order.status === 'partially_paid',
-
-                                                        'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20':
-                                                            order.status === 'completed',
-
-                                                        'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20':
-                                                            order.status === 'paid',
-
-                                                        'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20':
-                                                            order.status === 'returned'
-                                                    }"
+                                                        pending: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
+                                                        unpaid: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20',
+                                                        partially_paid: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20',
+                                                        completed: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+                                                        paid: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+                                                        returned: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20'
+                                                    }[order.status] || 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-500/10 dark:text-slate-400 dark:border-slate-500/20'"
                                                 >
-
+                                                    <!-- Dynamic Colored Dot -->
                                                     <span
                                                         class="h-1.5 w-1.5 rounded-full"
                                                         :class="{
-                                                            'bg-amber-500': order.status === 'pending',
-                                                            'bg-rose-500': order.status === 'unpaid',
-                                                            'bg-blue-500': order.status === 'partially_paid',
-                                                            'bg-emerald-500': order.status === 'completed',
-                                                            'bg-emerald-500': order.status === 'paid',
-                                                            'bg-orange-500': order.status === 'returned'
-                                                        }"
+                                                            pending: 'bg-amber-500',
+                                                            unpaid: 'bg-rose-500',
+                                                            partially_paid: 'bg-blue-500',
+                                                            completed: 'bg-emerald-500',
+                                                            paid: 'bg-emerald-500',
+                                                            returned: 'bg-orange-500'
+                                                        }[order.status] || 'bg-slate-400'"
                                                     ></span>
 
-                                                    {{
-                                                        {
-                                                            pending: 'Pending',
-                                                            unpaid: 'Unpaid',
-                                                            partially_paid: 'Partially Paid',
-                                                            completed: 'Completed',
-                                                            paid: 'Paid',
-                                                            returned: 'Returned'
-                                                        }[order.status] || order.status || 'Unknown'
-                                                    }}
-
+                                                    <!-- Dynamic Status Text -->
+                                                    <span>
+                                                        {{
+                                                            {
+                                                                pending: 'Pending',
+                                                                unpaid: 'Unpaid',
+                                                                partially_paid: 'Partially Paid',
+                                                                completed: 'Completed',
+                                                                paid: 'Paid',
+                                                                returned: 'Returned'
+                                                            }[order.status] || order.status || 'Unknown'
+                                                        }}
+                                                    </span>
                                                 </span>
-
                                             </td>
 
 

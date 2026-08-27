@@ -102,7 +102,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="label">Stock Quantity</label>
-                                <input type="number" v-model="form.stock_quantity" min="0" class="input" placeholder="e.g 15 pcs"/>
+                                <input type="number" readonly v-model="form.stock_quantity" min="0" class="input" placeholder="e.g 15 pcs"/>
                             </div>
 
                             <div>
@@ -351,7 +351,7 @@ const initialForm = {
     purchase_price:'',
     price: '',
     discount: '',
-    stock_quantity: '',
+    stock_quantity: '0',
     min_stock: '',
     images: [],       // for uploaded files
 

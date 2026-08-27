@@ -80,7 +80,7 @@
 
                             <div>
                                 <label class="label">Stock Quantity</label>
-                                <input type="number" v-model="form.stock_quantity" class="input" placeholder="e.g 15 pcs"/>
+                                <input type="number" readonly v-model="form.stock_quantity" class="input" placeholder="e.g 15 pcs"/>
                             </div>
                         </div>
 
