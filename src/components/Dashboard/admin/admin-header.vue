@@ -205,7 +205,7 @@
                         </div>
                         <div class="py-2">
                             <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('profile')">Profile</button>
-                            <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('accounts')">Account</button>
+                            <!-- <button class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/10" @click="pickProfile('accounts')">Account</button> -->
                         </div>
                         <div v-if="isLoggedIn" class="border-t border-slate-200 dark:border-white/10">
                             <button class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-slate-50 dark:text-red-300 dark:hover:bg-white/10" @click="pickProfile('logout')">
@@ -303,7 +303,7 @@ async function pickProfile(action) {
     console.log("profile action:", action);
     closeAll(); 
     if (action === "profile") {
-        return router.push("/profile");
+        return router.push("/admin/profile");
     }
     if (action === "accounts") {
         return router.push("/setting"); 
