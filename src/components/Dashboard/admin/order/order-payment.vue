@@ -110,6 +110,9 @@
                                         <th class="px-4 py-3 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">
                                             Amount (BDT)
                                         </th>
+                                        <th class="px-4 py-3 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
 
@@ -152,7 +155,6 @@
                                         <tr
                                             v-for="payment in orderPayments"
                                             :key="payment.id"
-                                            @click="viewOrderDetails(payment)"
                                             class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors cursor-pointer group"
                                         >
                                             <!-- Payment Number & Receipt -->
@@ -236,6 +238,31 @@
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2
                                                     }) }}
+                                                </div>
+                                            </td>
+
+                                            <td class="px-4 py-2 text-center whitespace-nowrap">
+                                                <div class="inline-flex items-center p-1 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 border border-gray-200/60 dark:border-gray-700/60 shadow-sm">
+                                                    <!-- Print Button -->
+                                                    <button
+                                                        type="button" @click.stop="printOrder(payment)"
+                                                        title="Print Order"
+                                                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
+                                                    >
+                                                        <i class="fa-solid fa-print text-xs"></i>
+                                                    </button>
+
+                                                    <!-- Return Line -->
+                                                    <!-- <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"></div> -->
+
+                                                    <!-- Return Button -->
+                                                    <!-- <button
+                                                        type="button" @click.stop="returnOrder(payment)"
+                                                        title="Return Order"
+                                                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
+                                                    >
+                                                        <i class="fa-solid fa-arrow-rotate-left text-xs"></i>
+                                                    </button> -->
                                                 </div>
                                             </td>
                                         </tr>
@@ -333,7 +360,7 @@
 <script setup>
 import { onMounted, ref, computed, watch } from "vue";
 import { useRouter } from 'vue-router'
-import api, {makeImg} from '../../../../services/api.js'
+import api from '../../../../services/api.js'
 
 import Navbar from "../../admin/admin-navbar.vue";
 import HeaderSection from "../../admin/admin-header.vue";
@@ -548,16 +575,6 @@ const filteredOrders = computed(() => {
 
 
 
-function viewOrderDetails(payment) {
-    const order = payment?.order;
-
-    if (!order?.reg || !order?.slug) {
-        errorMsg.value = 'Order information is not available.';
-        return;
-    }
-
-    router.push(`/admin/orders/${order.reg}/${order.slug}`);
-}
 
 
 
@@ -568,14 +585,15 @@ function viewOrderDetails(payment) {
 // =============================
 // Print / Download invoice
 // =============================
-function printOrder(order) {
+function printOrder(payment) {
+    console.log(payment)
     const win = window.open("about:blank", "_blank");
     if(!win){
         alert("Popup blocked! Allow popups.");
         return;
     }
-    // console.log(order)
-    win.location.href = `/admin/order/invoice-print/${order.reg}`;
+    
+    win.location.href = `/admin/order/payment/invoice-print/${payment.payment_number}/${payment.order_id}`;
 }
 
 

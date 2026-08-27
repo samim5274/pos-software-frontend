@@ -47,6 +47,7 @@ const SaleCart = () => import('../components/Dashboard/admin/cart/cart.vue');
 const OrderList = () => import('../components/Dashboard/admin/order/order.vue');
 const OrderDetails = () => import('../components/Dashboard/admin/order/order-details.vue');
 const PrintInvoice = () => import('../components/Dashboard/admin/order/print/print-order-invoice-80mm.vue');
+const PrintPaymentInvoice = () => import('../components/Dashboard/admin/order/print/print-payment-invoice-A4.vue');
 const OrderPayment = () => import('../components/Dashboard/admin/order/order-payment.vue');
 const DueList = () => import('../components/Dashboard/admin/payment/due-list.vue');
 const DueDetails = () => import('../components/Dashboard/admin/payment/due-details.vue');
@@ -154,6 +155,7 @@ const routes = [
     { path: '/admin/orders/:reg/:slug', component: OrderDetails, meta: { requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Order Details - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
     // Print invoice
     { path: '/admin/order/invoice-print/:reg', component: PrintInvoice, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Print Order Details"}},
+    { path: '/admin/order/payment/invoice-print/:payment_number/:order_id', component: PrintPaymentInvoice, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Print Order Payment Details"}},
     { path: '/admin/orders/payment', component: OrderPayment, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Order Payment Details"}},
 
     // Sale Report
