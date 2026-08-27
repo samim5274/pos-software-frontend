@@ -355,6 +355,7 @@
                                                 'hover:border-l-rose-500': order.status === 'unpaid',
                                                 'hover:border-l-blue-500': order.status === 'partially_paid',
                                                 'hover:border-l-emerald-500': order.status === 'completed',
+                                                'hover:border-l-emerald-500': order.status === 'paid',
                                                 'hover:border-l-orange-500': order.status === 'returned'
                                             }"
                                         >
@@ -487,6 +488,9 @@
                                                         'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20':
                                                             order.status === 'completed',
 
+                                                        'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20':
+                                                            order.status === 'paid',
+
                                                         'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20':
                                                             order.status === 'returned'
                                                     }"
@@ -499,6 +503,7 @@
                                                             'bg-rose-500': order.status === 'unpaid',
                                                             'bg-blue-500': order.status === 'partially_paid',
                                                             'bg-emerald-500': order.status === 'completed',
+                                                            'bg-emerald-500': order.status === 'paid',
                                                             'bg-orange-500': order.status === 'returned'
                                                         }"
                                                     ></span>
@@ -509,6 +514,7 @@
                                                             unpaid: 'Unpaid',
                                                             partially_paid: 'Partially Paid',
                                                             completed: 'Completed',
+                                                            paid: 'Paid',
                                                             returned: 'Returned'
                                                         }[order.status] || order.status || 'Unknown'
                                                     }}
@@ -547,38 +553,6 @@
                                                 <div
                                                     class="inline-flex items-center p-1 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 border border-gray-200/60 dark:border-gray-700/60 shadow-sm"
                                                 >
-
-                                                    <!-- View -->
-                                                    <button
-                                                        type="button"
-                                                        @click.stop="viewOrderDetails(order)"
-                                                        title="View Purchase Order"
-                                                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
-                                                    >
-                                                        <i class="fa-solid fa-eye text-xs"></i>
-                                                    </button>
-
-
-                                                    <div
-                                                        class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"
-                                                    ></div>
-
-
-                                                    <!-- Edit -->
-                                                    <button
-                                                        type="button"
-                                                        @click.stop="editPurchaseOrder(order)"
-                                                        title="Edit Purchase Order"
-                                                        class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
-                                                    >
-                                                        <i class="fa-solid fa-pencil text-xs"></i>
-                                                    </button>
-
-
-                                                    <div
-                                                        class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"
-                                                    ></div>
-
 
                                                     <!-- Print -->
                                                     <button
@@ -794,7 +768,7 @@
 <script setup>
 import { onMounted, ref, computed, watch } from "vue";
 import { useRouter } from 'vue-router'
-import api, {makeImg} from '../../../../services/api.js'
+import api from '../../../../services/api.js'
 
 import Navbar from "../../admin/admin-navbar.vue";
 import HeaderSection from "../../admin/admin-header.vue";
@@ -1101,17 +1075,32 @@ function editPurchaseOrder(order) {
 
 
 // Print Purchase Order
-function printPurchaseOrder(order) {
-    if (!order?.id) {
-        console.warn('Invalid purchase order:', order);
+function printPurchaseOrder(purchaseOrder) {
+        if (!purchaseOrder?.reg) {
+        errorMsg.value =
+            "Invalid purchase order reference.";
+
         return;
     }
 
-    console.log('Print Purchase Order:', order);
+    const win =
+        window.open(
+            "about:blank",
+            "_blank"
+        );
+
+    if (!win) {
+
+        alert(
+            "Popup blocked! Please allow popups."
+        );
+
+        return;
+    }
+
+    win.location.href = `/admin/purchase/order/invoice-print/${purchaseOrder.reg}`;
 
 }
-
-
 
 
 

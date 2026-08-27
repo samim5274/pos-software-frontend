@@ -586,7 +586,7 @@ const filteredOrders = computed(() => {
 // Print / Download invoice
 // =============================
 function printOrder(payment) {
-    console.log(payment)
+    // console.log(payment)
     const win = window.open("about:blank", "_blank");
     if(!win){
         alert("Popup blocked! Allow popups.");

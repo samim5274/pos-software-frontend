@@ -219,27 +219,32 @@
                                                         {{ order.payment_method }}
                                                     </span>
                                                 </div>
+
                                                 <!-- Payment Status Badges based on model constants -->
                                                 <div class="text-[10px] font-semibold mt-0.5 flex items-center gap-1">
+                                                    <!-- Status Color Dot Indicator -->
                                                     <span
-                                                        class="h-1 w-1 rounded-full"
+                                                        class="h-1.5 w-1.5 rounded-full"
                                                         :class="{
-                                                            'bg-amber-500': order.status === 'pending',
-                                                            'bg-rose-500': order.status === 'unpaid',
-                                                            'bg-blue-500': order.status === 'partially_paid',
-                                                            'bg-emerald-500': order.status === 'completed',
-                                                            'bg-orange-500': order.status === 'returned',
-                                                        }"
+                                                            pending: 'bg-amber-500',
+                                                            unpaid: 'bg-rose-500',
+                                                            partially_paid: 'bg-blue-500',
+                                                            completed: 'bg-emerald-500',
+                                                            paid: 'bg-emerald-500',
+                                                            returned: 'bg-orange-500'
+                                                        }[order.status] || 'bg-slate-400'"
                                                     ></span>
 
+                                                    <!-- Status Text -->
                                                     <span
                                                         :class="{
-                                                            'text-amber-600 dark:text-amber-400': order.status === 'pending',
-                                                            'text-rose-600 dark:text-rose-400': order.status === 'unpaid',
-                                                            'text-blue-600 dark:text-blue-400': order.status === 'partially_paid',
-                                                            'text-emerald-600 dark:text-emerald-400': order.status === 'completed',
-                                                            'text-orange-600 dark:text-orange-400': order.status === 'returned',
-                                                        }"
+                                                            pending: 'text-amber-600 dark:text-amber-400',
+                                                            unpaid: 'text-rose-600 dark:text-rose-400',
+                                                            partially_paid: 'text-blue-600 dark:text-blue-400',
+                                                            completed: 'text-emerald-600 dark:text-emerald-400',
+                                                            paid: 'text-emerald-600 dark:text-emerald-400',
+                                                            returned: 'text-orange-600 dark:text-orange-400'
+                                                        }[order.status] || 'text-slate-500 dark:text-slate-400'"
                                                     >
                                                         {{
                                                             {
@@ -247,7 +252,8 @@
                                                                 unpaid: 'Unpaid',
                                                                 partially_paid: 'Partially Paid',
                                                                 completed: 'Completed',
-                                                                returned: 'Returned',
+                                                                paid: 'Paid',
+                                                                returned: 'Returned'
                                                             }[order.status] || order.status
                                                         }}
                                                     </span>
@@ -280,23 +286,21 @@
                                                         <i class="fa-solid fa-print text-xs"></i>
                                                     </button>
 
-                                                    <!-- Divider Line -->
-                                                    <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"></div>
+                                                    <!-- <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"></div>
 
-                                                    <!-- Edit Button -->
                                                     <button
                                                         type="button"
                                                         title="Edit Order"
                                                         class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
                                                     >
                                                         <i class="fa-solid fa-pencil text-xs"></i>
-                                                    </button>
+                                                    </button> -->
 
                                                     <!-- Return Line -->
-                                                    <div class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"></div>
+                                                    <div v-if="order.status != 'returned'" class="w-[1px] h-4 bg-gray-200 dark:bg-gray-700 mx-0.5"></div>
 
                                                     <!-- Return Button -->
-                                                    <button
+                                                    <button v-if="order.status != 'returned'"
                                                         type="button" @click.stop="returnOrder(order)"
                                                         title="Return Order"
                                                         class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-gray-500 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-gray-700 active:scale-95 transition-all duration-150"
@@ -601,7 +605,6 @@ function printOrder(order) {
 // Return invoice
 // =============================
 async function returnOrder(order) {
-    loading.value = true;
 
     const confirmed = window.confirm(
         `Are you sure you want to return this order?`
@@ -611,20 +614,64 @@ async function returnOrder(order) {
         return;
     }
 
-    try{
-        const res = await api.post(`/orders/return/${order.reg}/${order.slug}/${order.id}`);
+    loading.value = true;
+    successMsg.value = "";
+    errorMsg.value = "";
+
+    try {
+
+        const res = await api.post(
+            `/orders/return/${order.reg}/${order.slug}/${order.id}`
+        );
+
+        // console.log("RETURN ORDER RESPONSE:", res.data);
+
         if (res.data?.success) {
-            successMsg.value = res.data?.message || "Order returned successfully.";
+
+            successMsg.value =
+                res.data?.message ||
+                "Order returned successfully.";
+
             errorMsg.value = "";
+
+            // Refresh order list
+            await fetchOrders();
+
         } else {
-            errorMsg.value = res.data?.message || "Failed to return order.";
+
             successMsg.value = "";
+
+            errorMsg.value = String(
+                res.data?.message ||
+                "Failed to return order."
+            );
         }
-        await fetchOrders();
-    } catch(err){
-        errorMsg.value = err || "Something is wrong to return orders.";
-        console.log(err);
+
+    } catch (err) {
+
+        console.error("RETURN ORDER ERROR:", err);
+
+        successMsg.value = "";
+
+        /*
+        |--------------------------------------------------------------------------
+        | Laravel 422 validation message
+        |--------------------------------------------------------------------------
+        */
+
+        const responseData = err?.response?.data;
+
+        errorMsg.value = String(
+            responseData?.message ||
+            responseData?.errors?.order?.[0] ||
+            responseData?.errors?.status?.[0] ||
+            responseData?.errors?.payment?.[0] ||
+            err?.message ||
+            "Something went wrong while returning the order."
+        );
+
     } finally {
+
         loading.value = false;
     }
 }
