@@ -205,7 +205,7 @@
                                 </div>
                                 <!-- Product Table Container -->
                                 <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 overflow-hidden shadow-sm">
-                                    <div class="max-h-[16rem] overflow-y-auto custom-scrollbar">
+                                    <div class="max-h-[27rem] overflow-y-auto custom-scrollbar">
                                         <table class="w-full text-left border-collapse">
 
                                             <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-[10px] uppercase font-black text-slate-400 tracking-wider">
