@@ -49,7 +49,6 @@
                             </div>
                             <button
                                 type="button"
-                                @click="window.print()"
                                 class="print:hidden flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
                             >
                                 <i class="fa-solid fa-print text-xs"></i>
@@ -59,7 +58,7 @@
                     </div>
 
                     <!-- ==================== TOTAL AMOUNT CARDS ==================== -->
-                    <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 print:grid-cols-6 print:gap-2">
+                    <div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 print:grid-cols-5 print:gap-2">
 
                         <!-- SUBTOTAL -->
                         <div class="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 print:rounded-lg print:border-slate-300 print:p-3 print:shadow-none">
@@ -94,13 +93,6 @@
                             <p class="text-[9px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-500">Payable Amount</p>
                             <h4 class="mt-1 truncate text-lg font-black text-emerald-700 dark:text-emerald-400">৳ {{ Number(saleSummary?.payableAmount || 0).toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</h4>
                             <p class="mt-0.5 text-[10px] font-medium text-emerald-600/70 dark:text-emerald-500/60">Net total revenue</p>
-                        </div>
-
-                        <!-- TOTAL POINTS -->
-                        <div class="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900 print:rounded-lg print:border-slate-300 print:p-3 print:shadow-none">
-                            <p class="text-[9px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-500">Total Points</p>
-                            <h4 class="mt-1 truncate text-lg font-black text-violet-600 dark:text-violet-400">{{ Number(saleSummary?.point || 0).toLocaleString('en-BD') }}</h4>
-                            <p class="mt-0.5 text-[10px] font-medium text-slate-400 dark:text-slate-500">Reward points earned</p>
                         </div>
 
                     </div>
