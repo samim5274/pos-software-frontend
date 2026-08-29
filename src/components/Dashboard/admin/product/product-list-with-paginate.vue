@@ -21,8 +21,8 @@
             />
 
             <!-- Content -->
-            <div class="min-h-screen w-full bg-gray-50 dark:bg-slate-950 transition-colors duration-200 p-6">
-                <div class="mx-auto bg-white dark:bg-slate-900 shadow-lg rounded-2xl p-4">
+            <div class="flex-1 min-w-0 flex flex-col">
+                <div class="min-h-screen bg-gray-50 dark:bg-[#0f172e]">
 
                     <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white"><i class="fa-solid fa-dolly"></i> Products Details</h2>
                     <input type="search" v-model="searchQuery" @input="onSearch" placeholder="Search products..." class="mb-4 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-700 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:focus:border-blue-400 dark:focus:ring-blue-900/30">
