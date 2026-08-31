@@ -44,6 +44,7 @@ const PurchaseInvoicePrint = () => import('../components/Dashboard/admin/stock/p
 
 
 const SaleCart = () => import('../components/Dashboard/admin/cart/cart.vue');
+const SaleReturn = () => import('../components/Dashboard/admin/cart/sale-return.vue');
 const OrderList = () => import('../components/Dashboard/admin/order/order.vue');
 const OrderDetails = () => import('../components/Dashboard/admin/order/order-details.vue');
 const PrintInvoice = () => import('../components/Dashboard/admin/order/print/print-order-invoice-80mm.vue');
@@ -161,7 +162,8 @@ const routes = [
     { path: '/admin/order/invoice-print/:reg', component: PrintInvoice, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Print Order Details"}},
     { path: '/admin/order/payment/invoice-print/:payment_number/:order_id', component: PrintPaymentInvoice, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Print Order Payment Details"}},
     { path: '/admin/orders/payment', component: OrderPayment, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Order Payment Details"}},
-
+    { path: '/admin/sale-return', component: SaleReturn, meta: { requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Sale Return - Mercuviax - Pos Software | Bangladesh's Best POS Software Company" } },
+     
     // Sale Report
     { path: '/admin/reports/sale', component: SaleReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Sale Reports"}},
     { path: '/admin/reports/purchase', component: PurchaseReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Purchase Report's"}},

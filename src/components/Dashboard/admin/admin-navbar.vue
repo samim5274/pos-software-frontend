@@ -71,6 +71,18 @@
                     </button>
                 </li>
 
+                <li>
+                    <button
+                        type="button"
+                        class="menu-item"
+                        :class="activeKey === 'saleReturn' ? activeMenu : ''"
+                        @click="pick('saleReturn')"
+                    >
+                        <span class="menu-icon"><i class="fa-solid fa-arrow-rotate-left"></i></span>
+                        <span class="menu-title">Sale Return</span>
+                    </button>
+                </li>
+
                 <!-- Products -->
                 <li class="px-3 pt-4 pb-2">
                     <span class="section-title">Products</span>
@@ -629,6 +641,7 @@ const routeMap = {
     profile: "/admin/profile",
     cart: "/sale-cart",
     dueCollection: "/admin/payment/due",
+    saleReturn: "/admin/sale-return",
 
     products: "/admin/products",
     create: "/admin/create-product",
@@ -666,6 +679,7 @@ const routeMatch = [
     { key: "profile", prefixes: ["/admin/profile"] },
     { key: "cart", prefixes: ["/sale-cart"] },
     { key: "dueCollection", prefixes: ["/admin/payment/due"] },
+    { key: "saleReturn", prefixes: ["/admin/sale-return"] },
 
     { key: "products", prefixes: ["/admin/products", "/admin/product-edit"] },
     { key: "create", prefixes: ["/admin/create-product"] },
