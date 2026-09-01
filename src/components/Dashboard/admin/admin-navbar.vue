@@ -641,7 +641,7 @@ const routeMap = {
     profile: "/admin/profile",
     cart: "/sale-cart",
     dueCollection: "/admin/payment/due",
-    saleReturn: "/admin/sale-return",
+    saleReturn: "/admin/sale/order",
 
     products: "/admin/products",
     create: "/admin/create-product",
@@ -679,7 +679,7 @@ const routeMatch = [
     { key: "profile", prefixes: ["/admin/profile"] },
     { key: "cart", prefixes: ["/sale-cart"] },
     { key: "dueCollection", prefixes: ["/admin/payment/due"] },
-    { key: "saleReturn", prefixes: ["/admin/sale-return"] },
+    { key: "saleReturn", prefixes: ["/admin/sale/order", "/admin/sale/order/return/"] },
 
     { key: "products", prefixes: ["/admin/products", "/admin/product-edit"] },
     { key: "create", prefixes: ["/admin/create-product"] },
