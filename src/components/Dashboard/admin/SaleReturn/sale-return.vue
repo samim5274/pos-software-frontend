@@ -56,10 +56,10 @@
                                                 <tr>
                                                     <th class="py-3 px-4">Product</th>
                                                     <th class="py-3 px-3 text-center">Qty</th>
+                                                    <th class="py-3 px-3 text-center">Return Qty</th>
                                                     <th class="py-3 px-3 text-right">Unit Price</th>
                                                     <th class="py-3 px-3 text-right">Discount</th>
                                                     <th class="py-3 px-3 text-right">Subtotal</th>
-                                                    <th class="py-3 px-3 text-center">Action</th>
                                                 </tr>
                                             </thead>
 
@@ -131,28 +131,35 @@
                                                     <!-- Quantity -->
                                                     <td class="py-3 px-3 text-center whitespace-nowrap">
 
-                                                        <div
-                                                            class="inline-flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                                                        <div class="inline-flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                                                            <span
+                                                                class="w-7 text-center text-xs font-bold text-slate-800 dark:text-slate-200">
+                                                                {{ item.quantity }}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+
+                                                    <!-- Return Quantity -->
+                                                    <td class="py-3 px-3 text-center whitespace-nowrap">
+                                                        <div class="inline-flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
 
                                                             <button
                                                                 type="button"
                                                                 @click="decreaseQty(item)"
-                                                                :disabled="item.quantity <= 1"
+                                                                :disabled="(item.returned_quantity || 0) <= 0"
                                                                 class="w-5 h-5 flex items-center justify-center rounded bg-white text-slate-600 hover:text-emerald-600 disabled:opacity-40 dark:bg-slate-700 dark:text-slate-300 dark:hover:text-orange-400">
-
                                                                 <i class="fa-solid fa-minus text-[8px]"></i>
                                                             </button>
 
-                                                            <span
-                                                                class="w-7 text-center text-xs font-bold text-slate-800 dark:text-slate-200">
-                                                                {{ item.quantity }}
+                                                            <span class="w-7 text-center text-xs font-bold text-slate-800 dark:text-slate-200">
+                                                                {{ item.returned_quantity || 0 }}
                                                             </span>
 
                                                             <button
                                                                 type="button"
                                                                 @click="increaseQty(item)"
-                                                                class="w-5 h-5 flex items-center justify-center rounded bg-white text-slate-600 hover:text-emerald-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:text-orange-400">
-
+                                                                :disabled="(item.returned_quantity || 0) >= item.quantity"
+                                                                class="w-5 h-5 flex items-center justify-center rounded bg-white text-slate-600 hover:text-emerald-600 disabled:opacity-40 dark:bg-slate-700 dark:text-slate-300 dark:hover:text-orange-400">
                                                                 <i class="fa-solid fa-plus text-[8px]"></i>
                                                             </button>
                                                         </div>
@@ -176,25 +183,6 @@
                                                     <td
                                                         class="py-3 px-3 text-right whitespace-nowrap text-xs font-black text-slate-900 dark:text-white">
                                                         ৳{{ formatMoney(getItemTotal(item)) }}
-                                                    </td>
-
-                                                    <!-- Stock/User -->
-                                                    <td class="py-3 px-3 text-center whitespace-nowrap">
-
-                                                        <div class="flex flex-col gap-1">
-
-                                                            <span
-                                                                v-if="item.stock?.batch_no"
-                                                                class="text-[10px] text-slate-500 dark:text-slate-400">
-                                                                Batch: {{ item.stock.batch_no }}
-                                                            </span>
-
-                                                            <span
-                                                                v-if="item.user?.name"
-                                                                class="text-[10px] font-semibold text-slate-600 dark:text-slate-300">
-                                                                {{ item.user.name }}
-                                                            </span>
-                                                        </div>
                                                     </td>
                                                 </tr>
 
@@ -226,93 +214,7 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
 
-
-                            <!-- ================= ORDER INFORMATION ================= -->
-                            <div class="lg:col-span-4">
-
-                                <div
-                                    class="bg-white dark:bg-[#0F172E] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-5 space-y-3">
-
-                                    <div
-                                        class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-
-                                        <h3
-                                            class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-
-                                            <i
-                                                class="fa-solid fa-file-invoice text-[#16a34a] dark:text-[#f97316]">
-                                            </i>
-
-                                            Order Information
-                                        </h3>
-
-                                        <span
-                                            class="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                                            {{ order?.status || '-' }}
-                                        </span>
-                                    </div>
-
-
-                                    <div class="space-y-2 text-xs">
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Order Reg</span>
-
-                                            <span
-                                                class="font-bold text-slate-800 dark:text-slate-200">
-                                                {{ order?.reg || '-' }}
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Order Slug</span>
-
-                                            <span
-                                                class="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[60%]">
-                                                {{ order?.slug || '-' }}
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Created At</span>
-
-                                            <span
-                                                class="font-semibold text-slate-700 dark:text-slate-300">
-                                                {{ formatDate(order?.created_at) }}
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Created By</span>
-
-                                            <span
-                                                class="font-semibold text-slate-700 dark:text-slate-300">
-                                                {{ order?.user?.name || '-' }}
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Customer</span>
-
-                                            <span
-                                                class="font-semibold text-slate-700 dark:text-slate-300">
-                                                {{ order?.customer?.name || '-' }}
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between gap-3">
-                                            <span class="text-slate-400">Phone</span>
-
-                                            <span
-                                                class="font-semibold text-slate-700 dark:text-slate-300">
-                                                {{ order?.customer?.phone || '-' }}
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                </div>
 
                                 <!-- ================= CUSTOMER + PAYMENT ================= -->
                                 <div class="bg-white dark:bg-[#0F172E] p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5 mt-4">
@@ -444,6 +346,94 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+
+                            <!-- ================= ORDER INFORMATION ================= -->
+                            <div class="lg:col-span-4">
+
+                                <div
+                                    class="bg-white dark:bg-[#0F172E] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-5 space-y-3">
+
+                                    <div
+                                        class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+
+                                        <h3
+                                            class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+
+                                            <i
+                                                class="fa-solid fa-file-invoice text-[#16a34a] dark:text-[#f97316]">
+                                            </i>
+
+                                            Order Information
+                                        </h3>
+
+                                        <span
+                                            class="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                            {{ order?.status || '-' }}
+                                        </span>
+                                    </div>
+
+
+                                    <div class="space-y-2 text-xs">
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Order Reg</span>
+
+                                            <span
+                                                class="font-bold text-slate-800 dark:text-slate-200">
+                                                {{ order?.reg || '-' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Order Slug</span>
+
+                                            <span
+                                                class="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[60%]">
+                                                {{ order?.slug || '-' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Created At</span>
+
+                                            <span
+                                                class="font-semibold text-slate-700 dark:text-slate-300">
+                                                {{ formatDate(order?.created_at) }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Created By</span>
+
+                                            <span
+                                                class="font-semibold text-slate-700 dark:text-slate-300">
+                                                {{ order?.user?.name || '-' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Customer</span>
+
+                                            <span
+                                                class="font-semibold text-slate-700 dark:text-slate-300">
+                                                {{ order?.customer?.customer_name || '-' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="flex justify-between gap-3">
+                                            <span class="text-slate-400">Phone</span>
+
+                                            <span
+                                                class="font-semibold text-slate-700 dark:text-slate-300">
+                                                {{ order?.customer?.phone || '-' }}
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
 
                                 <!-- ================= ORDER SUMMARY ================= -->
                                 <div class="lg:col-span-5 xl:col-span-4 mt-4">
@@ -531,6 +521,183 @@
                                             </div>
                                         </div>
 
+
+                                        <div class="space-y-2.5">
+                                            <div class="h-px bg-slate-100 dark:bg-slate-700"></div>
+                                            
+                                            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                                <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                                    <i class="fa-solid fa-coins text-[#16a34a] dark:text-[#f97316]"></i>
+                                                    Financial Breakdown
+                                                </h3>
+
+                                                <span
+                                                    class="text-[10px] font-bold px-2 py-1 rounded-md"
+                                                    :class="order?.status === 'partially_paid'
+                                                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'
+                                                        : order?.status === 'paid'
+                                                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
+                                                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'">
+                                                    {{ formatStatus(order?.status) }}
+                                                </span>
+                                            </div>
+
+                                            <!-- Order Number / Currency -->
+                                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                                <div>
+                                                    <p class="text-slate-400 mb-0.5">Order Number</p>
+                                                    <p class="font-bold text-slate-800 dark:text-slate-200 truncate">
+                                                        {{ order?.order_number || '-' }}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-slate-400 mb-0.5">Currency</p>
+                                                    <p class="font-bold text-slate-800 dark:text-slate-200">
+                                                        {{ order?.currency || '-' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                            <!-- Money Breakdown -->
+                                            <div class="space-y-2 text-xs">
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">Subtotal</span>
+                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                        ৳{{ formatMoney(order?.subtotal) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">Discount</span>
+                                                    <span class="font-bold text-red-500">
+                                                        - ৳{{ formatMoney(order?.discount) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">
+                                                        VAT ({{ order?.vat_percentage || 0 }}%)
+                                                    </span>
+                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                        + ৳{{ formatMoney(order?.vat) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                                <div class="flex justify-between items-center pt-1">
+                                                    <span class="text-sm font-bold text-slate-900 dark:text-white">Payable Amount</span>
+                                                    <span class="text-lg font-black text-[#16a34a] dark:text-[#F97316]">
+                                                        ৳{{ formatMoney(order?.payable_amount) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">Due Amount</span>
+                                                    <span
+                                                        class="font-bold"
+                                                        :class="Number(order?.due_amount) > 0 ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'">
+                                                        ৳{{ formatMoney(order?.due_amount) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">Refunded Amount</span>
+                                                    <span class="font-bold text-red-500">
+                                                        ৳{{ formatMoney(order?.refunded_amount) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-500 dark:text-slate-400">Earned Points</span>
+                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                        {{ formatPoints(order?.point) }} pts
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                            <!-- Payment Method & Timeline -->
+                                            <div class="space-y-2 text-xs">
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-400">Payment Method</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300 capitalize">
+                                                        {{ order?.payment_method || '-' }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-400">Order Date</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                        {{ formatDate(order?.order_date) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between">
+                                                    <span class="text-slate-400">Paid At</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                        {{ order?.paid_at ? formatDate(order.paid_at) : '-' }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between" v-if="order?.completed_at">
+                                                    <span class="text-slate-400">Completed At</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                        {{ formatDate(order.completed_at) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between" v-if="order?.returned_at">
+                                                    <span class="text-slate-400">Returned At</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                        {{ formatDate(order.returned_at) }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex justify-between" v-if="order?.returned_by">
+                                                    <span class="text-slate-400">Returned By</span>
+                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                        {{ order?.returned_by_user?.name || order?.returned_by }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Remarks -->
+                                            <div v-if="order?.remarks" class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                                <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Remarks</p>
+                                                <p class="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2.5 leading-relaxed">
+                                                    {{ order.remarks }}
+                                                </p>
+                                            </div>
+
+                                            <!-- Technical Meta (collapsible) -->
+                                            <details class="pt-2 border-t border-slate-100 dark:border-slate-800 group">
+                                                <summary class="text-[10px] uppercase font-bold tracking-wider text-slate-400 cursor-pointer select-none flex items-center justify-between">
+                                                    Technical Info
+                                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform group-open:rotate-180"></i>
+                                                </summary>
+
+                                                <div class="mt-2 space-y-1.5 text-[11px]">
+                                                    <div class="flex justify-between gap-3">
+                                                        <span class="text-slate-400">IP Address</span>
+                                                        <span class="font-mono text-slate-600 dark:text-slate-300">
+                                                            {{ order?.ip_address || '-' }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex justify-between gap-3">
+                                                        <span class="text-slate-400 flex-shrink-0">User Agent</span>
+                                                        <span class="font-mono text-slate-600 dark:text-slate-300 truncate max-w-[65%] text-right" :title="order?.user_agent">
+                                                            {{ order?.user_agent || '-' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        </div>
 
                                         <!-- PAYMENT SUMMARY -->
                                         <div
@@ -779,30 +946,6 @@
                         </div>
                     </div>
 
-
-                    <!-- ================= BOTTOM CHECKOUT ================= -->
-                    <div class="px-4 sm:px-6 lg:px-8 pb-5">
-
-                        <button
-                            @click="handleCheckout"
-                            :disabled="checkoutLoading || !cartItems?.length"
-                            class="w-full mt-3 bg-[#16a34a] hover:bg-[#15803d] dark:bg-[#F97316] hover:dark:bg-[#d85a00] disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-black text-base tracking-wide transition-all shadow-lg shadow-[#16a34a]/20 dark:shadow-none flex items-center justify-center gap-3 group active:scale-[0.99]">
-
-                            <span v-if="checkoutLoading">
-                                <i class="fa-solid fa-spinner fa-spin mr-2"></i>
-                                Processing...
-                            </span>
-
-                            <span v-else>
-                                Checkout Now
-
-                                <i
-                                    class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform">
-                                </i>
-                            </span>
-                        </button>
-                    </div>
-
                 </div>
             </div>
 
@@ -838,6 +981,30 @@ const successMsg = ref("");
 function toggleMenu() {
     mobileMenu.value = !mobileMenu.value;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // =====================================
 // Backend Main Data
@@ -1001,14 +1168,8 @@ async function getCartItems() {
         // =================================
 
         if (order.value?.customer) {
-            form.customer_name =
-                order.value.customer?.name ||
-                "";
-
-            form.phone_number =
-                order.value.customer?.phone ||
-                order.value.customer?.phone_number ||
-                "";
+            form.customer_name = order.value.customer?.customer_name || "";
+            form.phone_number = order.value.customer?.phone || order.value.customer?.phone_number || "";
         }
 
         // =================================
@@ -1088,6 +1249,14 @@ const orderCustomer = computed(() => {
 const orderUser = computed(() => {
     return order.value?.user || null;
 });
+
+const formatStatus = (status) => {
+    if (!status) return '-';
+    return status
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
 
 // =====================================
 // Money Helpers
@@ -1487,6 +1656,97 @@ const getReturnProductImage = (item) => {
 
     return defaultProductImage;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// qty update
+const qtyTimers = {};
+
+// 1. Return quantity increase (max = cart.quantity)
+function increaseQty(item) {
+    const current = Number(item.returned_quantity || 0);
+    const max = Number(item.quantity);
+    if (current < max) {
+        item.returned_quantity = current + 1;
+        queueQtyUpdate(item);
+    }
+}
+
+// 2. Return quantity decrease (min = 0)
+function decreaseQty(item) {
+    const current = Number(item.returned_quantity || 0);
+    if (current > 0) {
+        item.returned_quantity = current - 1;
+        queueQtyUpdate(item);
+    }
+}
+
+// 3. Debounce
+function queueQtyUpdate(item) {
+    const key = `${item.reg}_${item.product_id}`;
+    if (qtyTimers[key]) clearTimeout(qtyTimers[key]);
+    qtyTimers[key] = setTimeout(() => {
+        updateQty(item);
+    }, 500);
+}
+
+
+async function updateQty(item) {
+    try {
+        const res = await api.post(`/admin/return/cart/qty-update/${item.reg}/${item.product_id}`, {
+            quantity: Number(item.returned_quantity),
+        });
+        if (res?.data?.success) {
+            item.returned_quantity = Number(res.data.data.returned_quantity);
+            item.quantity = Number(res.data.data.quantity);
+            if (res.data.data.available_return_quantity !== undefined) {
+                item.available_return_quantity = res.data.data.available_return_quantity;
+            }
+        }
+        await getCartItems();
+    } catch (err) {
+        await getCartItems();
+        const msg = err?.response?.data?.message || "Something went wrong or Out of stock.";
+        errorMsg.value = msg;
+        setTimeout(() => {
+            errorMsg.value = "";
+        }, 3000);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =====================================
