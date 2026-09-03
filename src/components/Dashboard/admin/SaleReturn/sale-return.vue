@@ -1826,11 +1826,44 @@ const getItemReturnTotal = (item) => {
     );
 };
 
-const calculatedReturnAmount = computed(() => {
+const totalReturnSubtotal = computed(() => {
     return roundMoney(
+        cartItems.value.reduce(
+            (sum, item) => sum + getItemReturnSubtotal(item),
+            0
+        )
+    );
+});
+
+const returnRatio = computed(() => {
+    const orderSubtotal = Number(order.value?.subtotal) || 0;
+    if (orderSubtotal <= 0) return 0;
+    return totalReturnSubtotal.value / orderSubtotal;
+});
+
+const proportionalReturnVat = computed(() => {
+    const orderVat = Number(order.value?.vat) || 0;
+    return roundMoney(orderVat * returnRatio.value);
+});
+
+const proportionalReturnDiscount = computed(() => {
+    const orderDiscount = Number(order.value?.discount) || 0;
+    return roundMoney(orderDiscount * returnRatio.value);
+});
+
+// ===== Final Calculated Return Amount =====
+const calculatedReturnAmount = computed(() => {
+    const itemsReturnTotal = roundMoney(
         cartItems.value.reduce(
             (sum, item) => sum + getItemReturnTotal(item),
             0
+        )
+    );
+
+    return roundMoney(
+        Math.max(
+            0,
+            itemsReturnTotal - proportionalReturnVat.value + proportionalReturnDiscount.value
         )
     );
 });
@@ -1920,6 +1953,127 @@ async function updateQty(item) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const handleCheckout = async () => {
+    if (checkoutLoading.value) return;
+
+    errorMsg.value = "";
+    successMsg.value = "";
+
+    if (!cartItems.value?.length) {
+        errorMsg.value = "Cart is empty.";
+        return;
+    }
+
+    if (totalPayable.value <= 0) {
+        errorMsg.value = "Total payable amount must be greater than 0.";
+        return;
+    }
+
+    // ================================
+    // Full Return Amount Validation
+    // ================================
+    if (calculatedReturnAmount.value > 0 && receivedAmount.value < calculatedReturnAmount.value) {
+        errorMsg.value = `Return amount cannot be less than ৳${formatMoney(calculatedReturnAmount.value)}. Full return amount is required.`;
+        return;
+    }
+
+    if (dueAmount.value > 0) {
+        if (!form.phone_number?.trim()) {
+            errorMsg.value = "Customer phone number is required for partial payments.";
+            return;
+        }
+        if (!form.customer_name?.trim()) {
+            errorMsg.value = "Customer name is required for partial payments.";
+            return;
+        }
+    }
+
+    const reg = cartReg.value;
+    if (!reg) {
+        errorMsg.value = "Cart registration not found.";
+        return;
+    }
+
+    const confirmed = window.confirm(
+        `Are you sure you want to place this order?\n\nPayable Amount: ${Number(totalPayable.value).toFixed(2)}`
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const checkoutData = {
+        customer_name: form.customer_name?.trim() || null,
+        phone_number: form.phone_number?.trim() || null,
+        payment_method: form.payment_method || "cash",
+        vat: roundMoney(form.vat),
+        discount: roundMoney(manualDiscount.value),
+        received_amount: roundMoney(receivedAmount.value),
+    };
+
+    try {
+        checkoutLoading.value = true;
+
+        const res = await api.post(`/admin/return/cart/checkout/${reg}`, checkoutData);
+
+        if (res.data?.success) {
+            successMsg.value = res.data?.message || "Order placed successfully.";
+            await getCartItems();
+            form.received_amount = 0;
+            form.discount = 0;
+            form.vat = 0;
+            form.payment_method = "cash";
+            form.customer_name = "";
+            form.phone_number = "";
+        } else {
+            errorMsg.value = res.data?.message || "Checkout failed.";
+        }
+
+        const win = window.open("about:blank", "_blank");
+        if (!win) {
+            alert("Popup Blocked! Allow popups");
+            return;
+        }
+        win.location.href = `/admin/order/invoice-print/${res.data.data.order.reg}`;
+    } catch (error) {
+        console.error("Checkout Error:", error);
+        if (error.response) {
+            if (error.response.status === 422) {
+                const errors = error.response.data?.errors;
+                if (errors) {
+                    const firstError = Object.values(errors)[0];
+                    errorMsg.value = Array.isArray(firstError) ? firstError[0] : firstError;
+                } else {
+                    errorMsg.value = error.response.data?.message || "Validation failed.";
+                }
+            } else {
+                errorMsg.value = error.response.data?.message || "Checkout failed.";
+            }
+        } else {
+            errorMsg.value = "Network error. Please try again.";
+        }
+    } finally {
+        checkoutLoading.value = false;
+    }
+};
 
 
 
