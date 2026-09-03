@@ -234,39 +234,6 @@
                                     </div>
 
 
-                                    <!-- Customer -->
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                                        <div class="space-y-1.5">
-
-                                            <label
-                                                class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                                Customer Phone
-                                            </label>
-
-                                            <input
-                                                type="tel"
-                                                v-model="form.phone_number"
-                                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-[#16a34a]/30 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-200 dark:focus:ring-[#f97316]/30"
-                                            />
-                                        </div>
-
-                                        <div class="space-y-1.5">
-
-                                            <label
-                                                class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                                Customer Name
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                v-model="form.customer_name"
-                                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-[#16a34a]/30 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-200 dark:focus:ring-[#f97316]/30"
-                                            />
-                                        </div>
-                                    </div>
-
-
                                     <!-- Payment History -->
                                     <div
                                         v-if="payments?.length"
@@ -344,6 +311,183 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="space-y-2.5">
+                                        <div class="h-px bg-slate-100 dark:bg-slate-700"></div>
+                                        
+                                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                            <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                                <i class="fa-solid fa-coins text-[#16a34a] dark:text-[#f97316]"></i>
+                                                Financial Breakdown
+                                            </h3>
+
+                                            <span
+                                                class="text-[10px] font-bold px-2 py-1 rounded-md"
+                                                :class="order?.status === 'partially_paid'
+                                                    ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'
+                                                    : order?.status === 'paid'
+                                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
+                                                        : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'">
+                                                {{ formatStatus(order?.status) }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Order Number / Currency -->
+                                        <div class="grid grid-cols-2 gap-3 text-xs">
+                                            <div>
+                                                <p class="text-slate-400 mb-0.5">Order Number</p>
+                                                <p class="font-bold text-slate-800 dark:text-slate-200 truncate">
+                                                    {{ order?.order_number || '-' }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-400 mb-0.5">Currency</p>
+                                                <p class="font-bold text-slate-800 dark:text-slate-200">
+                                                    {{ order?.currency || '-' }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                        <!-- Money Breakdown -->
+                                        <div class="space-y-2 text-xs">
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Subtotal</span>
+                                                <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                    ৳{{ formatMoney(order?.subtotal) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Discount</span>
+                                                <span class="font-bold text-red-500">
+                                                    - ৳{{ formatMoney(order?.discount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">
+                                                    VAT ({{ order?.vat_percentage || 0 }}%)
+                                                </span>
+                                                <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                    + ৳{{ formatMoney(order?.vat) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                            <div class="flex justify-between items-center pt-1">
+                                                <span class="text-sm font-bold text-slate-900 dark:text-white">Payable Amount</span>
+                                                <span class="text-lg font-black text-[#16a34a] dark:text-[#F97316]">
+                                                    ৳{{ formatMoney(order?.payable_amount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Due Amount</span>
+                                                <span
+                                                    class="font-bold"
+                                                    :class="Number(order?.due_amount) > 0 ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'">
+                                                    ৳{{ formatMoney(order?.due_amount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Refunded Amount</span>
+                                                <span class="font-bold text-red-500">
+                                                    ৳{{ formatMoney(order?.refunded_amount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Earned Points</span>
+                                                <span class="font-bold text-slate-800 dark:text-slate-200">
+                                                    {{ formatPoints(order?.point) }} pts
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+                                        <!-- Payment Method & Timeline -->
+                                        <div class="space-y-2 text-xs">
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-400">Payment Method</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300 capitalize">
+                                                    {{ order?.payment_method || '-' }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-400">Order Date</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                    {{ formatDate(order?.order_date) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-400">Paid At</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                    {{ order?.paid_at ? formatDate(order.paid_at) : '-' }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between" v-if="order?.completed_at">
+                                                <span class="text-slate-400">Completed At</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                    {{ formatDate(order.completed_at) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between" v-if="order?.returned_at">
+                                                <span class="text-slate-400">Returned At</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                    {{ formatDate(order.returned_at) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between" v-if="order?.returned_by">
+                                                <span class="text-slate-400">Returned By</span>
+                                                <span class="font-semibold text-slate-700 dark:text-slate-300">
+                                                    {{ order?.returned_by_user?.name || order?.returned_by }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Remarks -->
+                                        <div v-if="order?.remarks" class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Remarks</p>
+                                            <p class="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2.5 leading-relaxed">
+                                                {{ order.remarks }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Technical Meta (collapsible) -->
+                                        <details class="pt-2 border-t border-slate-100 dark:border-slate-800 group">
+                                            <summary class="text-[10px] uppercase font-bold tracking-wider text-slate-400 cursor-pointer select-none flex items-center justify-between">
+                                                Technical Info
+                                                <i class="fa-solid fa-chevron-down text-[8px] transition-transform group-open:rotate-180"></i>
+                                            </summary>
+
+                                            <div class="mt-2 space-y-1.5 text-[11px]">
+                                                <div class="flex justify-between gap-3">
+                                                    <span class="text-slate-400">IP Address</span>
+                                                    <span class="font-mono text-slate-600 dark:text-slate-300">
+                                                        {{ order?.ip_address || '-' }}
+                                                    </span>
+                                                </div>
+                                                <div class="flex justify-between gap-3">
+                                                    <span class="text-slate-400 flex-shrink-0">User Agent</span>
+                                                    <span class="font-mono text-slate-600 dark:text-slate-300 truncate max-w-[65%] text-right" :title="order?.user_agent">
+                                                        {{ order?.user_agent || '-' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </details>
                                     </div>
                                 </div>
                             </div>
@@ -522,182 +666,7 @@
                                         </div>
 
 
-                                        <div class="space-y-2.5">
-                                            <div class="h-px bg-slate-100 dark:bg-slate-700"></div>
-                                            
-                                            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                                                <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                                    <i class="fa-solid fa-coins text-[#16a34a] dark:text-[#f97316]"></i>
-                                                    Financial Breakdown
-                                                </h3>
-
-                                                <span
-                                                    class="text-[10px] font-bold px-2 py-1 rounded-md"
-                                                    :class="order?.status === 'partially_paid'
-                                                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'
-                                                        : order?.status === 'paid'
-                                                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
-                                                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'">
-                                                    {{ formatStatus(order?.status) }}
-                                                </span>
-                                            </div>
-
-                                            <!-- Order Number / Currency -->
-                                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                                <div>
-                                                    <p class="text-slate-400 mb-0.5">Order Number</p>
-                                                    <p class="font-bold text-slate-800 dark:text-slate-200 truncate">
-                                                        {{ order?.order_number || '-' }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-slate-400 mb-0.5">Currency</p>
-                                                    <p class="font-bold text-slate-800 dark:text-slate-200">
-                                                        {{ order?.currency || '-' }}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
-
-                                            <!-- Money Breakdown -->
-                                            <div class="space-y-2 text-xs">
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">Subtotal</span>
-                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
-                                                        ৳{{ formatMoney(order?.subtotal) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">Discount</span>
-                                                    <span class="font-bold text-red-500">
-                                                        - ৳{{ formatMoney(order?.discount) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">
-                                                        VAT ({{ order?.vat_percentage || 0 }}%)
-                                                    </span>
-                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
-                                                        + ৳{{ formatMoney(order?.vat) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
-
-                                                <div class="flex justify-between items-center pt-1">
-                                                    <span class="text-sm font-bold text-slate-900 dark:text-white">Payable Amount</span>
-                                                    <span class="text-lg font-black text-[#16a34a] dark:text-[#F97316]">
-                                                        ৳{{ formatMoney(order?.payable_amount) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">Due Amount</span>
-                                                    <span
-                                                        class="font-bold"
-                                                        :class="Number(order?.due_amount) > 0 ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400'">
-                                                        ৳{{ formatMoney(order?.due_amount) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">Refunded Amount</span>
-                                                    <span class="font-bold text-red-500">
-                                                        ৳{{ formatMoney(order?.refunded_amount) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-500 dark:text-slate-400">Earned Points</span>
-                                                    <span class="font-bold text-slate-800 dark:text-slate-200">
-                                                        {{ formatPoints(order?.point) }} pts
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
-
-                                            <!-- Payment Method & Timeline -->
-                                            <div class="space-y-2 text-xs">
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-400">Payment Method</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300 capitalize">
-                                                        {{ order?.payment_method || '-' }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-400">Order Date</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
-                                                        {{ formatDate(order?.order_date) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between">
-                                                    <span class="text-slate-400">Paid At</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
-                                                        {{ order?.paid_at ? formatDate(order.paid_at) : '-' }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between" v-if="order?.completed_at">
-                                                    <span class="text-slate-400">Completed At</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
-                                                        {{ formatDate(order.completed_at) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between" v-if="order?.returned_at">
-                                                    <span class="text-slate-400">Returned At</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
-                                                        {{ formatDate(order.returned_at) }}
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex justify-between" v-if="order?.returned_by">
-                                                    <span class="text-slate-400">Returned By</span>
-                                                    <span class="font-semibold text-slate-700 dark:text-slate-300">
-                                                        {{ order?.returned_by_user?.name || order?.returned_by }}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <!-- Remarks -->
-                                            <div v-if="order?.remarks" class="pt-2 border-t border-slate-100 dark:border-slate-800">
-                                                <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider mb-1">Remarks</p>
-                                                <p class="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2.5 leading-relaxed">
-                                                    {{ order.remarks }}
-                                                </p>
-                                            </div>
-
-                                            <!-- Technical Meta (collapsible) -->
-                                            <details class="pt-2 border-t border-slate-100 dark:border-slate-800 group">
-                                                <summary class="text-[10px] uppercase font-bold tracking-wider text-slate-400 cursor-pointer select-none flex items-center justify-between">
-                                                    Technical Info
-                                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform group-open:rotate-180"></i>
-                                                </summary>
-
-                                                <div class="mt-2 space-y-1.5 text-[11px]">
-                                                    <div class="flex justify-between gap-3">
-                                                        <span class="text-slate-400">IP Address</span>
-                                                        <span class="font-mono text-slate-600 dark:text-slate-300">
-                                                            {{ order?.ip_address || '-' }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="flex justify-between gap-3">
-                                                        <span class="text-slate-400 flex-shrink-0">User Agent</span>
-                                                        <span class="font-mono text-slate-600 dark:text-slate-300 truncate max-w-[65%] text-right" :title="order?.user_agent">
-                                                            {{ order?.user_agent || '-' }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </details>
-                                        </div>
+                                        
 
                                         <!-- PAYMENT SUMMARY -->
                                         <div
@@ -809,6 +778,169 @@
                                                 <strong class="text-red-500">
                                                     ৳{{ formatMoney(summary?.return?.refund_amount) }}
                                                 </strong>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="lg:col-span-4 space-y-5 border-t border-slate-100 dark:border-slate-800 pt-3">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            
+                                                <!-- Phone Number Input -->
+                                                <div class="space-y-1.5">
+                                                    <label for="phone_number" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                    Customer Phone
+                                                    </label>
+                                                    <input 
+                                                    type="tel" readonly
+                                                    id="phone_number" 
+                                                    name="phone_number" 
+                                                    v-model="form.phone_number" 
+                                                    placeholder="017XXXXXXXX"
+                                                    class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" 
+                                                    />
+                                                </div>
+
+                                                <!-- Customer Name Input -->
+                                                <div class="space-y-1.5">
+                                                    <label for="customer_name" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                    Customer Name
+                                                    </label>
+                                                    <input 
+                                                    type="text" readonly
+                                                    id="customer_name" 
+                                                    name="customer_name" 
+                                                    v-model="form.customer_name" 
+                                                    placeholder="Mr. Hossain"
+                                                    class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all" 
+                                                    />
+                                                </div>
+
+                                                <!-- Payment Method Selection -->
+                                                <div class="space-y-2 md:col-span-2 border-t border-slate-100 dark:border-slate-800 pt-3">
+                                                    <div class="flex items-center justify-between">
+                                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                                                        Select Payment Method
+                                                    </label>
+                                                    <span class="text-[11px] font-medium text-slate-400 dark:text-slate-500">
+                                                        Selected: <strong class="capitalize text-slate-700 dark:text-slate-200">{{ form.payment_method }}</strong>
+                                                    </span>
+                                                    </div>
+
+                                                    <!-- 7-Column Responsive Layout -->
+                                                    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
+                                                    <label 
+                                                        v-for="method in paymentMethods" 
+                                                        :key="method.id" 
+                                                        class="cursor-pointer group relative"
+                                                    >
+                                                        <input 
+                                                        type="radio" 
+                                                        v-model="form.payment_method" 
+                                                        :value="method.id" 
+                                                        class="peer hidden" 
+                                                        />
+                                                        <div class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 text-xs font-medium text-slate-600 dark:text-slate-300 peer-checked:border-[#16a34a] dark:peer-checked:border-[#f97316] peer-checked:bg-[#16a34a]/10 dark:peer-checked:bg-[#f97316]/15 peer-checked:text-[#16a34a] dark:peer-checked:text-[#fb923c] peer-checked:font-semibold hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-150 select-none">
+                                                        
+                                                        <!-- Checkmark badge when selected -->
+                                                        <span class="absolute top-1 right-1 opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                            <svg class="w-3 h-3 text-[#16a34a] dark:text-[#f97316]" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </span>
+
+                                                        <span>{{ method.label }}</span>
+                                                        </div>
+                                                    </label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- VAT Input -->
+                                                <div class="space-y-1.5">
+                                                    <label for="vat" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                    VAT (%)
+                                                    </label>
+                                                    <div class="relative flex">
+                                                    <input
+                                                        v-model.number="form.vat" 
+                                                        readonly
+                                                        type="number"
+                                                        id="vat"
+                                                        name="vat"
+                                                        placeholder="0"
+                                                        min="0"
+                                                        max="100"
+                                                        step="any"
+                                                        class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                                    />
+                                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">%</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Discount Input -->
+                                                <div class="space-y-1.5">
+                                                    <label for="discount" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                    Discount
+                                                    </label>
+                                                    <div class="relative flex">
+                                                    <input
+                                                        v-model.number="form.discount" 
+                                                        readonly
+                                                        type="number"
+                                                        id="discount"
+                                                        name="discount"
+                                                        placeholder="0.00"
+                                                        min="0"
+                                                        :max="subtotal"
+                                                        step="any"
+                                                        class="w-full pl-3.5 pr-12 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                                    />
+                                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">৳</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Received Amount Input -->
+                                                <div class="space-y-1.5 md:col-span-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+
+                                                    <!-- Calculated Return Amount (Qty wise) -->
+                                                    <div class="flex justify-between items-center text-xs mb-1">
+                                                        <span class="text-slate-500 dark:text-slate-400">
+                                                            Calculated Return Amount (Qty wise)
+                                                        </span>
+                                                        <span class="font-bold text-slate-800 dark:text-white">
+                                                            ৳{{ formatMoney(calculatedReturnAmount) }}
+                                                        </span>
+                                                    </div>
+
+                                                    <label for="received_amount" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                        Return Amount (৳)
+                                                    </label>
+                                                    <div class="relative">
+                                                        <input
+                                                            v-model.number="form.received_amount" 
+                                                            @keydown.enter="handleCheckout"
+                                                            type="number"
+                                                            id="received_amount"
+                                                            name="received_amount"
+                                                            placeholder="0.00"
+                                                            min="0"
+                                                            step="any"
+                                                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-base font-semibold text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#16a34a] dark:focus:ring-[#f97316] focus:border-transparent transition-all"
+                                                        />
+                                                    </div>
+
+                                                    <!-- Returnable / Excess Amount -->
+                                                    <div class="flex justify-between items-center text-xs pt-1">
+                                                        <span class="text-slate-500 dark:text-slate-400">
+                                                            {{ excessAmount > 0 ? 'Excess Amount' : 'Returnable Amount' }}
+                                                        </span>
+                                                        <span
+                                                            class="font-bold"
+                                                            :class="excessAmount > 0 ? 'text-amber-500' : 'text-emerald-600 dark:text-orange-400'">
+                                                            ৳{{ formatMoney(excessAmount > 0 ? excessAmount : returnableAmount) }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -1656,6 +1788,64 @@ const getReturnProductImage = (item) => {
 
     return defaultProductImage;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =====================================
+// Return Amount Calculations (Qty wise)
+// =====================================
+
+const getItemReturnSubtotal = (item) => {
+    const price = Number(item?.price) || 0;
+    const returnedQty = Number(item?.returned_quantity) || 0;
+    return roundMoney(price * returnedQty);
+};
+
+const getItemReturnDiscount = (item) => {
+    const discount = Number(item?.discount) || 0;
+    const returnedQty = Number(item?.returned_quantity) || 0;
+    return roundMoney(discount * returnedQty);
+};
+
+const getItemReturnTotal = (item) => {
+    return roundMoney(
+        Math.max(0, getItemReturnSubtotal(item) - getItemReturnDiscount(item))
+    );
+};
+
+const calculatedReturnAmount = computed(() => {
+    return roundMoney(
+        cartItems.value.reduce(
+            (sum, item) => sum + getItemReturnTotal(item),
+            0
+        )
+    );
+});
+
+const returnableAmount = computed(() => {
+    return roundMoney(
+        Math.max(0, calculatedReturnAmount.value - receivedAmount.value)
+    );
+});
+
+const excessAmount = computed(() => {
+    return roundMoney(
+        Math.max(0, receivedAmount.value - calculatedReturnAmount.value)
+    );
+});
 
 
 

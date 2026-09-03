@@ -464,7 +464,7 @@
                                     <!-- Phone Number Input -->
                                     <div class="space-y-1.5">
                                         <label for="phone_number" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                        Customer Phone Number
+                                        Customer Phone
                                         </label>
                                         <input 
                                         type="tel" 
