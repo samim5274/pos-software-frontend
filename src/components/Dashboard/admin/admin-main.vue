@@ -159,7 +159,7 @@
             </div>
 
 
-            <!-- =========================== Balance Section =========================== -->
+            <!-- =========================== Balance Section (Orders) =========================== -->
             <div class="mb-8 space-y-6">
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
@@ -345,9 +345,6 @@
             <!-- =========================== Balance Section =========================== -->
 
 
-
-
-
             <!-- Payment Summary -->
             <div class="mt-8 space-y-4">
                 <div>
@@ -402,9 +399,6 @@
             </div>
 
 
-
-
-
             <!-- =========================== Card Section (Dynamic Order Statuses) =========================== -->
             <div class="mt-8 space-y-4">
                 <!-- Header Title -->
@@ -456,7 +450,7 @@
 
 
 
-            <!-- =========================== Extra Stat Groups (all remaining API fields) =========================== -->
+            <!-- =========================== Extra Stat Groups (all remaining Order/Payment API fields) =========================== -->
             <div v-for="group in statGroups" :key="group.title" class="mt-8 space-y-4">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
@@ -492,9 +486,338 @@
             <!-- =========================== Extra Stat Groups =========================== -->
 
 
+            <!-- ======================================================================= -->
+            <!-- ===================== PURCHASE ORDER SECTIONS (NEW) ================== -->
+            <!-- ======================================================================= -->
+            <div class="mt-12 pt-8 border-t-2 border-dashed border-slate-200 dark:border-slate-800">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Purchase Overview</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Supplier purchases, purchase orders and purchase payments</p>
+            </div>
+
+            <!-- =========================== Purchase Order Balance Section =========================== -->
+            <div class="mb-8 space-y-6">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+                    <!-- Total Purchase Subtotal -->
+                    <div class="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all hover:border-amber-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex min-h-[125px] flex-col justify-between">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                                        <i class="fa-solid fa-truck-ramp-box text-sm"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Purchase</span>
+                                </div>
+                                <span class="rounded-md bg-amber-50 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
+                                    Gross
+                                </span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="mr-1.5 text-xl text-slate-400">৳</span>
+                                <h2 class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">
+                                    {{ Number(purchaseOrderSummary.total_subtotal || 0).toLocaleString() }}
+                                </h2>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-2.5 text-[11px] text-slate-400 dark:border-slate-800">
+                                Total purchase subtotal
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Payable -->
+                    <div class="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all hover:border-purple-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex min-h-[125px] flex-col justify-between">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400">
+                                        <i class="fa-solid fa-hand-holding-dollar text-sm"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Payable</span>
+                                </div>
+                                <span class="rounded-md bg-purple-50 px-2 py-0.5 text-[10px] font-bold uppercase text-purple-700 dark:bg-purple-500/10 dark:text-purple-400">
+                                    Payable
+                                </span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="mr-1.5 text-xl text-slate-400">৳</span>
+                                <h2 class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">
+                                    {{ Number(purchaseOrderSummary.total_payable_amount || 0).toLocaleString() }}
+                                </h2>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-2.5 text-[11px] text-slate-400 dark:border-slate-800">
+                                Total payable amount
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paid Amount -->
+                    <div class="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all hover:border-indigo-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex min-h-[125px] flex-col justify-between">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                                        <i class="fa-solid fa-wallet text-sm"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Paid Amount</span>
+                                </div>
+                                <span class="rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-bold uppercase text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400">
+                                    Paid
+                                </span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="mr-1.5 text-xl text-slate-400">৳</span>
+                                <h2 class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">
+                                    {{ Number(purchaseOrderSummary.total_paid_amount || 0).toLocaleString() }}
+                                </h2>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-2.5 text-[11px] text-slate-400 dark:border-slate-800">
+                                Paid to suppliers
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Due Amount -->
+                    <div class="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-sm transition-all hover:border-rose-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex min-h-[125px] flex-col justify-between">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">
+                                        <i class="fa-solid fa-file-invoice-dollar text-sm"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Due</span>
+                                </div>
+                                <span class="rounded-md bg-rose-50 px-2 py-0.5 text-[10px] font-bold uppercase text-rose-700 dark:bg-rose-500/10 dark:text-rose-400">
+                                    Payable to supplier
+                                </span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="mr-1.5 text-xl text-slate-400">৳</span>
+                                <h2 class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">
+                                    {{ Number(purchaseOrderSummary.total_due_amount || 0).toLocaleString() }}
+                                </h2>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-2.5 text-[11px] text-slate-400 dark:border-slate-800">
+                                Outstanding to suppliers
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Additional Summary -->
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+                    <!-- Discount -->
+                    <div class="rounded-xl border border-slate-200/60 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                                <i class="fa-solid fa-tag"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Discount</p>
+                                <h4 class="mt-0.5 font-mono text-xl font-extrabold text-slate-800 dark:text-slate-200">
+                                    ৳{{ Number(purchaseOrderSummary.total_discount || 0).toLocaleString() }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VAT -->
+                    <div class="rounded-xl border border-slate-200/60 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total VAT</p>
+                                <h4 class="mt-0.5 font-mono text-xl font-extrabold text-slate-800 dark:text-slate-200">
+                                    ৳{{ Number(purchaseOrderSummary.total_vat || 0).toLocaleString() }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Suppliers -->
+                    <div class="rounded-xl border border-slate-200/60 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400">
+                                <i class="fa-solid fa-truck-field"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Suppliers</p>
+                                <h4 class="mt-0.5 font-mono text-xl font-extrabold text-slate-800 dark:text-slate-200">
+                                    {{ Number(purchaseOrderSummary.total_suppliers || 0).toLocaleString() }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Purchase Orders -->
+                    <div class="rounded-xl border border-slate-200/60 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                                <i class="fa-solid fa-box"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Purchase Orders</p>
+                                <h4 class="mt-0.5 font-mono text-xl font-extrabold text-slate-800 dark:text-slate-200">
+                                    {{ Number(purchaseOrderSummary.total_purchase_orders || 0).toLocaleString() }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- =========================== Purchase Order Balance Section =========================== -->
 
 
-            
+            <!-- Purchase Order Payment Summary -->
+            <div class="mt-8 space-y-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
+                        Purchase Payment Summary
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Supplier payment transactions, methods and collection overview
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div
+                        v-for="card in purchasePaymentCards"
+                        :key="card.title"
+                        class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+                    >
+                        <div class="flex min-h-[120px] flex-col justify-between">
+
+                            <div class="flex items-center gap-3">
+                                <div :class="[
+                                    'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl',
+                                    card.iconWrap
+                                ]">
+                                    <i :class="[card.icon, 'text-sm']"></i>
+                                </div>
+
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                        {{ card.title }}
+                                    </p>
+
+                                    <span class="text-[10px] font-semibold text-slate-400">
+                                        {{ card.pill }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="my-3">
+                                <h2 class="font-mono text-2xl font-extrabold text-slate-900 dark:text-white">
+                                    {{ formatCount(card.value) }}
+                                </h2>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-2.5 text-[11px] text-slate-400 dark:border-slate-800">
+                                {{ card.subtext }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- =========================== Purchase Order Details (status cards) =========================== -->
+            <div class="mt-8 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Purchase Order Details</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Real-time breakdown of purchase order status and payment methods</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div
+                        v-for="card in purchaseStatusCards"
+                        :key="card.key"
+                        class="group relative overflow-hidden rounded-xl border border-slate-300 dark:border-slate-800 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-100 dark:border-slate-800/80 dark:bg-slate-900 dark:hover:shadow-none">
+                        <div class="flex h-full flex-col justify-between min-h-[140px]">
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div :class="['flex h-10 w-10 items-center justify-center rounded-xl border border-transparent', card.iconWrap]">
+                                        <i :class="card.icon" class="text-base"></i>
+                                    </div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                                        {{ card.title }}
+                                    </span>
+                                </div>
+                                <span class="inline-flex items-center rounded-md bg-slate-50 px-2 py-0.5 text-[10px] font-bold text-slate-500 border border-slate-100 dark:bg-slate-800/50 dark:text-slate-400 dark:border-transparent">
+                                    {{ card.pill }}
+                                </span>
+                            </div>
+
+                            <div class="my-4 flex items-baseline text-slate-900 dark:text-white">
+                                <h2 class="font-mono text-3xl font-black tracking-tight">
+                                    {{ formatCount(card.value) }}
+                                </h2>
+                            </div>
+
+                            <div class="flex items-center gap-1.5 border-t border-slate-50 pt-3 dark:border-slate-800/40 text-slate-800 dark:text-slate-100">
+                                <i :class="[card.subIcon, card.subtextClass]" class="text-[11px]"></i>
+                                <span :class="['text-[11px] font-semibold tracking-wide', card.subtextClass]">
+                                    {{ card.subtext }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =========================== Purchase Order Details =========================== -->
+
+
+            <!-- =========================== Extra Purchase Stat Groups (remaining API fields) =========================== -->
+            <div v-for="group in purchaseStatGroups" :key="group.title" class="mt-8 space-y-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
+                        {{ group.title }}
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        {{ group.subtitle }}
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div
+                        v-for="item in group.items"
+                        :key="item.label"
+                        class="rounded-xl border border-slate-200/60 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div :class="['flex h-10 w-10 shrink-0 items-center justify-center rounded-lg', item.iconWrap]">
+                                <i :class="item.icon"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                    {{ item.label }}
+                                </p>
+                                <h4 class="mt-0.5 font-mono text-xl font-extrabold text-slate-800 dark:text-slate-200 truncate">
+                                    {{ item.display }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =========================== Extra Purchase Stat Groups =========================== -->
+
         </div>
     </main>
 </template>
@@ -511,8 +834,8 @@ const errorMsg = ref("");
 
 /* Dashboard State Variables
    NOTE: these keys are matched 1:1 to DashboardController@dashboard's
-   $orderSummary / $paymentSummary response — do not rename without
-   updating the backend as well. */
+   $orderSummary / $paymentSummary / $purchaseOrderSummary / $purchasePaymentSummary
+   response — do not rename without updating the backend as well. */
 const user = ref({});
 const summary = ref({
     // Order Summary
@@ -616,7 +939,6 @@ const summary = ref({
     bdt_orders: 0,
     total_sales_users: 0,
     net_sales: 0,
-    first_order_date: null,
     last_order_date: null,
     completed_with_date: 0,
     returned_with_date: 0,
@@ -671,11 +993,156 @@ const paymentSummary = ref({
     today_amount: 0,
     this_month_amount: 0,
     average_payment: 0,
-    first_payment_date: null,
-    last_payment_date: null,
     total_orders_paid: 0,
     total_payment_users: 0,
 });
+
+/* ===================== NEW: Purchase Order state ===================== */
+const purchaseOrderSummary = ref({
+    total_purchase_orders: 0,
+    pending_purchase_orders: 0,
+    unpaid_purchase_orders: 0,
+    paid_purchase_orders: 0,
+    partially_paid_purchase_orders: 0,
+    completed_purchase_orders: 0,
+    returned_purchase_orders: 0,
+
+    pending_percentage: 0,
+    unpaid_percentage: 0,
+    paid_percentage: 0,
+    partially_paid_percentage: 0,
+    completed_percentage: 0,
+    returned_percentage: 0,
+
+    total_subtotal: 0,
+    total_discount: 0,
+    total_vat: 0,
+    total_payable_amount: 0,
+    total_due_amount: 0,
+    total_paid_amount: 0,
+    total_outstanding: 0,
+
+    fully_paid_purchase_orders: 0,
+    due_purchase_orders: 0,
+    zero_value_purchase_orders: 0,
+
+    cash_purchase_orders: 0,
+    card_purchase_orders: 0,
+    bank_transfer_purchase_orders: 0,
+    bkash_purchase_orders: 0,
+    nagad_purchase_orders: 0,
+    rocket_purchase_orders: 0,
+    wallet_purchase_orders: 0,
+
+    cash_amount: 0,
+    card_amount: 0,
+    bank_transfer_amount: 0,
+    bkash_amount: 0,
+    nagad_amount: 0,
+    rocket_amount: 0,
+    wallet_amount: 0,
+
+    total_suppliers: 0,
+    supplier_purchases: 0,
+    supplier_due: 0,
+
+    orders_with_discount: 0,
+    orders_without_discount: 0,
+    average_discount: 0,
+    orders_with_vat: 0,
+    orders_without_vat: 0,
+    average_vat: 0,
+
+    average_purchase_order_value: 0,
+    average_subtotal: 0,
+    average_due_per_order: 0,
+
+    today_purchase_orders: 0,
+    today_purchase_amount: 0,
+    today_purchase_due: 0,
+
+    this_month_purchase_orders: 0,
+    this_month_purchase_amount: 0,
+    this_month_purchase_discount: 0,
+    this_month_purchase_vat: 0,
+    this_month_purchase_due: 0,
+
+    first_purchase_order_date: null,
+    last_purchase_order_date: null,
+
+    completed_with_date: 0,
+    returned_with_date: 0,
+
+    bdt_purchase_orders: 0,
+    total_purchase_users: 0,
+
+    returned_purchase_amount: 0,
+    returned_purchase_due: 0,
+    completed_purchase_amount: 0,
+    completed_purchase_due: 0,
+    pending_purchase_amount: 0,
+    pending_purchase_due: 0,
+    unpaid_purchase_amount: 0,
+    unpaid_purchase_due: 0,
+    paid_purchase_amount: 0,
+    partial_paid_purchase_amount: 0,
+    partial_paid_purchase_due: 0,
+    net_purchase: 0,
+});
+
+const purchasePaymentSummary = ref({
+    total_transactions: 0,
+
+    payment: 0,
+    refund: 0,
+    adjustment: 0,
+
+    cash: 0,
+    card: 0,
+    bank_transfer: 0,
+    bkash: 0,
+    nagad: 0,
+    rocket: 0,
+    wallet: 0,
+
+    total_amount: 0,
+    total_discount: 0,
+    net_amount: 0,
+
+    payment_amount: 0,
+    refund_amount: 0,
+    adjustment_amount: 0,
+
+    cash_amount: 0,
+    card_amount: 0,
+    bank_transfer_amount: 0,
+    bkash_amount: 0,
+    nagad_amount: 0,
+    rocket_amount: 0,
+    wallet_amount: 0,
+
+    total_suppliers: 0,
+    supplier_transactions: 0,
+
+    verified_transactions: 0,
+    unverified_transactions: 0,
+    received_transactions: 0,
+
+    today_transactions: 0,
+    today_amount: 0,
+
+    this_month_transactions: 0,
+    this_month_amount: 0,
+
+    average_payment: 0,
+
+    first_payment_date: null,
+    last_payment_date: null,
+
+    total_orders_paid: 0,
+    total_payment_users: 0,
+});
+/* ===================== END NEW: Purchase Order state ===================== */
 
 /* Fetch API Data */
 const fetchDashBoardData = async () => {
@@ -690,6 +1157,9 @@ const fetchDashBoardData = async () => {
             user.value = data.user ?? {};
             summary.value = data.summary ?? {};
             paymentSummary.value = data.payment_summary ?? {};
+            purchaseOrderSummary.value = data.purchase_order_summary ?? {};
+            purchasePaymentSummary.value = data.purchase_order_payment_summary ?? {};
+            console.log(summary.value);
         } else {
             errorMsg.value = response.data?.message || "Failed to fetch dashboard data.";
         }
@@ -705,11 +1175,7 @@ function WithdrawCreate() {
     router.push('/withdraw/create');
 }
 
-/* Computed Dynamic Order Status / Payment Method Cards
-   Fixed to use the actual keys returned by the backend
-   (previously used non-existent keys like confirmed_orders,
-   processing_orders, cod_orders, advance_orders, etc. which
-   always rendered as 0). */
+/* Computed Dynamic Order Status / Payment Method Cards */
 const statusCards = computed(() => [
     // ---- Order Status ----
     {
@@ -1065,8 +1531,7 @@ const paymentCards = computed(() => [
 ]);
 
 /* Every remaining field from $orderSummary / $paymentSummary that isn't
-   already covered by the balance cards, statusCards, or paymentCards above.
-   Grouped into sections so nothing from the API response goes unused. */
+   already covered by the balance cards, statusCards, or paymentCards above. */
 const statGroups = computed(() => {
     const s = summary.value || {};
     const p = paymentSummary.value || {};
@@ -1180,7 +1645,6 @@ const statGroups = computed(() => {
                 { label: "BDT Orders", display: formatNumber(s.bdt_orders), icon: "fa-solid fa-money-bill-1", iconWrap: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-400" },
                 { label: "Total Sales Users", display: formatNumber(s.total_sales_users), icon: "fa-solid fa-user-tie", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
                 { label: "Net Sales", display: formatCurrency(s.net_sales), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
-                { label: "First Order Date", display: formatDate(s.first_order_date), icon: "fa-solid fa-calendar-days", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
                 { label: "Last Order Date", display: formatDate(s.last_order_date), icon: "fa-solid fa-calendar-days", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
                 { label: "Completed With Date", display: formatNumber(s.completed_with_date), icon: "fa-solid fa-check-double", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
                 { label: "Returned With Date", display: formatNumber(s.returned_with_date), icon: "fa-solid fa-rotate-left", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
@@ -1229,8 +1693,448 @@ const statGroups = computed(() => {
                 { label: "Average Payment", display: formatCurrency(p.average_payment), icon: "fa-solid fa-chart-simple", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
                 { label: "Total Orders Paid", display: formatNumber(p.total_orders_paid), icon: "fa-solid fa-box", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
                 { label: "Total Payment Users", display: formatNumber(p.total_payment_users), icon: "fa-solid fa-user-tie", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
-                { label: "First Payment Date", display: formatDate(p.first_payment_date), icon: "fa-solid fa-calendar-days", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
-                { label: "Last Payment Date", display: formatDate(p.last_payment_date), icon: "fa-solid fa-calendar-days", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+            ],
+        },
+    ];
+});
+
+/* ===================== NEW: Purchase Order Status Cards ===================== */
+const purchaseStatusCards = computed(() => [
+    {
+        key: "total_purchase_orders",
+        title: "Total Purchase",
+        value: purchaseOrderSummary.value.total_purchase_orders,
+        icon: "fa-solid fa-boxes-packing",
+        iconWrap: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+        pill: "All",
+        subIcon: "fa-solid fa-layer-group",
+        subtext: "All purchase orders",
+        subtextClass: "text-indigo-500",
+    },
+    {
+        key: "pending_purchase_orders",
+        title: "Pending",
+        value: purchaseOrderSummary.value.pending_purchase_orders,
+        icon: "fa-solid fa-clock",
+        iconWrap: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-hourglass-half",
+        subtext: "Awaiting confirmation",
+        subtextClass: "text-amber-500",
+    },
+    {
+        key: "unpaid_purchase_orders",
+        title: "Unpaid",
+        value: purchaseOrderSummary.value.unpaid_purchase_orders,
+        icon: "fa-solid fa-file-invoice-dollar",
+        iconWrap: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-triangle-exclamation",
+        subtext: "No payment made",
+        subtextClass: "text-rose-500",
+    },
+    {
+        key: "paid_purchase_orders",
+        title: "Paid",
+        value: purchaseOrderSummary.value.paid_purchase_orders,
+        icon: "fa-solid fa-money-check-dollar",
+        iconWrap: "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-check",
+        subtext: "Fully paid to supplier",
+        subtextClass: "text-green-500",
+    },
+    {
+        key: "partially_paid_purchase_orders",
+        title: "Partially Paid",
+        value: purchaseOrderSummary.value.partially_paid_purchase_orders,
+        icon: "fa-solid fa-coins",
+        iconWrap: "bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-coins",
+        subtext: "Partial payment made",
+        subtextClass: "text-orange-500",
+    },
+    {
+        key: "completed_purchase_orders",
+        title: "Completed",
+        value: purchaseOrderSummary.value.completed_purchase_orders,
+        icon: "fa-solid fa-circle-check",
+        iconWrap: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-check-double",
+        subtext: "Completed purchase orders",
+        subtextClass: "text-emerald-500",
+    },
+    {
+        key: "returned_purchase_orders",
+        title: "Returned",
+        value: purchaseOrderSummary.value.returned_purchase_orders,
+        icon: "fa-solid fa-rotate-left",
+        iconWrap: "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300",
+        pill: "Purchase",
+        subIcon: "fa-solid fa-arrow-rotate-left",
+        subtext: "Returned to supplier",
+        subtextClass: "text-slate-500",
+    },
+    {
+        key: "due_purchase_orders",
+        title: "Due Orders",
+        value: purchaseOrderSummary.value.due_purchase_orders,
+        icon: "fa-solid fa-wallet",
+        iconWrap: "bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
+        pill: "Payment",
+        subIcon: "fa-solid fa-hourglass-half",
+        subtext: "Balance still due",
+        subtextClass: "text-yellow-500",
+    },
+    {
+        key: "cash_purchase_orders",
+        title: "Cash",
+        value: purchaseOrderSummary.value.cash_purchase_orders,
+        icon: "fa-solid fa-money-bill-wave",
+        iconWrap: "bg-lime-50 dark:bg-lime-500/10 text-lime-600 dark:text-lime-400",
+        pill: "Method",
+        subIcon: "fa-solid fa-sack-dollar",
+        subtext: "Cash purchases",
+        subtextClass: "text-lime-500",
+    },
+    {
+        key: "card_purchase_orders",
+        title: "Card",
+        value: purchaseOrderSummary.value.card_purchase_orders,
+        icon: "fa-solid fa-credit-card",
+        iconWrap: "bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400",
+        pill: "Method",
+        subIcon: "fa-solid fa-credit-card",
+        subtext: "Card purchases",
+        subtextClass: "text-sky-500",
+    },
+    {
+        key: "bank_transfer_purchase_orders",
+        title: "Bank Transfer",
+        value: purchaseOrderSummary.value.bank_transfer_purchase_orders,
+        icon: "fa-solid fa-building-columns",
+        iconWrap: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+        pill: "Method",
+        subIcon: "fa-solid fa-building-columns",
+        subtext: "Bank transfer purchases",
+        subtextClass: "text-indigo-500",
+    },
+    {
+        key: "bkash_purchase_orders",
+        title: "bKash",
+        value: purchaseOrderSummary.value.bkash_purchase_orders,
+        icon: "fa-solid fa-mobile-screen",
+        iconWrap: "bg-pink-50 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400",
+        pill: "Method",
+        subIcon: "fa-solid fa-mobile-screen",
+        subtext: "bKash purchases",
+        subtextClass: "text-pink-500",
+    },
+]);
+
+/* ===================== NEW: Purchase Payment Cards ===================== */
+const purchasePaymentCards = computed(() => [
+    {
+        title: "Transactions",
+        value: purchasePaymentSummary.value?.total_transactions ?? 0,
+        icon: "fa-solid fa-money-check-dollar",
+        iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400",
+        pill: "Total",
+        subtext: "Total supplier transactions",
+    },
+    {
+        title: "Payments",
+        value: purchasePaymentSummary.value?.payment ?? 0,
+        icon: "fa-solid fa-circle-check",
+        iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+        pill: "Type",
+        subtext: "Payment transactions",
+    },
+    {
+        title: "Refunds",
+        value: purchasePaymentSummary.value?.refund ?? 0,
+        icon: "fa-solid fa-rotate-left",
+        iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400",
+        pill: "Type",
+        subtext: "Refund transactions",
+    },
+    {
+        title: "Adjustments",
+        value: purchasePaymentSummary.value?.adjustment ?? 0,
+        icon: "fa-solid fa-sliders",
+        iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+        pill: "Type",
+        subtext: "Adjustment transactions",
+    },
+    {
+        title: "Cash",
+        value: purchasePaymentSummary.value?.cash ?? 0,
+        icon: "fa-solid fa-money-bill-wave",
+        iconWrap: "bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400",
+        pill: "Method",
+        subtext: "Cash transactions",
+    },
+    {
+        title: "Card",
+        value: purchasePaymentSummary.value?.card ?? 0,
+        icon: "fa-solid fa-credit-card",
+        iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400",
+        pill: "Method",
+        subtext: "Card transactions",
+    },
+    {
+        title: "Bank Transfer",
+        value: purchasePaymentSummary.value?.bank_transfer ?? 0,
+        icon: "fa-solid fa-building-columns",
+        iconWrap: "bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400",
+        pill: "Method",
+        subtext: "Bank transactions",
+    },
+    {
+        title: "bKash",
+        value: purchasePaymentSummary.value?.bkash ?? 0,
+        icon: "fa-solid fa-mobile-screen",
+        iconWrap: "bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400",
+        pill: "Method",
+        subtext: "bKash transactions",
+    },
+    {
+        title: "Nagad",
+        value: purchasePaymentSummary.value?.nagad ?? 0,
+        icon: "fa-solid fa-wallet",
+        iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400",
+        pill: "Method",
+        subtext: "Nagad transactions",
+    },
+    {
+        title: "Rocket",
+        value: purchasePaymentSummary.value?.rocket ?? 0,
+        icon: "fa-solid fa-rocket",
+        iconWrap: "bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400",
+        pill: "Method",
+        subtext: "Rocket transactions",
+    },
+    {
+        title: "Wallet",
+        value: purchasePaymentSummary.value?.wallet ?? 0,
+        icon: "fa-solid fa-wallet",
+        iconWrap: "bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400",
+        pill: "Method",
+        subtext: "Wallet transactions",
+    },
+    {
+        title: "Total Amount",
+        value: purchasePaymentSummary.value?.total_amount ?? 0,
+        icon: "fa-solid fa-sack-dollar",
+        iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+        pill: "Amount",
+        subtext: "Total payment amount",
+    },
+    {
+        title: "Discount",
+        value: purchasePaymentSummary.value?.total_discount ?? 0,
+        icon: "fa-solid fa-tag",
+        iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+        pill: "Amount",
+        subtext: "Total payment discount",
+    },
+    {
+        title: "Net Amount",
+        value: purchasePaymentSummary.value?.net_amount ?? 0,
+        icon: "fa-solid fa-coins",
+        iconWrap: "bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400",
+        pill: "Amount",
+        subtext: "Amount after discount",
+    },
+    {
+        title: "Verified",
+        value: purchasePaymentSummary.value?.verified_transactions ?? 0,
+        icon: "fa-solid fa-circle-check",
+        iconWrap: "bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400",
+        pill: "Verification",
+        subtext: "Verified transactions",
+    },
+    {
+        title: "Unverified",
+        value: purchasePaymentSummary.value?.unverified_transactions ?? 0,
+        icon: "fa-solid fa-circle-question",
+        iconWrap: "bg-yellow-50 text-yellow-600 dark:bg-yellow-500/10 dark:text-yellow-400",
+        pill: "Verification",
+        subtext: "Unverified transactions",
+    },
+    {
+        title: "Today",
+        value: purchasePaymentSummary.value?.today_transactions ?? 0,
+        icon: "fa-solid fa-calendar-day",
+        iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400",
+        pill: "Today",
+        subtext: "Today's transactions",
+    },
+    {
+        title: "This Month",
+        value: purchasePaymentSummary.value?.this_month_transactions ?? 0,
+        icon: "fa-solid fa-calendar",
+        iconWrap: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400",
+        pill: "Month",
+        subtext: "This month's transactions",
+    },
+]);
+
+/* ===================== NEW: Purchase Order remaining fields grouped ===================== */
+const purchaseStatGroups = computed(() => {
+    const s = purchaseOrderSummary.value || {};
+    const p = purchasePaymentSummary.value || {};
+
+    return [
+        {
+            title: "Purchase Order Status Percentage",
+            subtitle: "Share of each purchase order status out of total purchase orders",
+            items: [
+                { label: "Pending %", display: formatPercent(s.pending_percentage), icon: "fa-solid fa-clock", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "Unpaid %", display: formatPercent(s.unpaid_percentage), icon: "fa-solid fa-file-invoice-dollar", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+                { label: "Paid %", display: formatPercent(s.paid_percentage), icon: "fa-solid fa-money-check-dollar", iconWrap: "bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400" },
+                { label: "Partially Paid %", display: formatPercent(s.partially_paid_percentage), icon: "fa-solid fa-coins", iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400" },
+                { label: "Completed %", display: formatPercent(s.completed_percentage), icon: "fa-solid fa-circle-check", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Returned %", display: formatPercent(s.returned_percentage), icon: "fa-solid fa-rotate-left", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+            ],
+        },
+        {
+            title: "Purchase Amount by Payment Method",
+            subtitle: "Total payable amount by payment method",
+            items: [
+                { label: "Cash Amount", display: formatCurrency(s.cash_amount), icon: "fa-solid fa-money-bill-wave", iconWrap: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-400" },
+                { label: "Card Amount", display: formatCurrency(s.card_amount), icon: "fa-solid fa-credit-card", iconWrap: "bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400" },
+                { label: "Bank Transfer Amount", display: formatCurrency(s.bank_transfer_amount), icon: "fa-solid fa-building-columns", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
+                { label: "bKash Amount", display: formatCurrency(s.bkash_amount), icon: "fa-solid fa-mobile-screen", iconWrap: "bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400" },
+                { label: "Nagad Amount", display: formatCurrency(s.nagad_amount), icon: "fa-solid fa-wallet", iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400" },
+                { label: "Rocket Amount", display: formatCurrency(s.rocket_amount), icon: "fa-solid fa-rocket", iconWrap: "bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400" },
+                { label: "Wallet Amount", display: formatCurrency(s.wallet_amount), icon: "fa-solid fa-wallet", iconWrap: "bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400" },
+            ],
+        },
+        {
+            title: "Supplier Breakdown",
+            subtitle: "Purchases and dues linked to suppliers",
+            items: [
+                { label: "Total Suppliers", display: formatNumber(s.total_suppliers), icon: "fa-solid fa-truck-field", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Supplier Purchases", display: formatCurrency(s.supplier_purchases), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Supplier Due", display: formatCurrency(s.supplier_due), icon: "fa-solid fa-wallet", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+                { label: "Fully Paid Purchase Orders", display: formatNumber(s.fully_paid_purchase_orders), icon: "fa-solid fa-circle-check", iconWrap: "bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400" },
+                { label: "Zero Value Purchase Orders", display: formatNumber(s.zero_value_purchase_orders), icon: "fa-solid fa-ban", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+            ],
+        },
+        {
+            title: "Purchase Discount & VAT Breakdown",
+            subtitle: "How discount and VAT are distributed across purchase orders",
+            items: [
+                { label: "Orders with Discount", display: formatNumber(s.orders_with_discount), icon: "fa-solid fa-tag", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "Orders without Discount", display: formatNumber(s.orders_without_discount), icon: "fa-solid fa-tag", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+                { label: "Average Discount", display: formatCurrency(s.average_discount), icon: "fa-solid fa-tags", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "Orders with VAT", display: formatNumber(s.orders_with_vat), icon: "fa-solid fa-receipt", iconWrap: "bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400" },
+                { label: "Orders without VAT", display: formatNumber(s.orders_without_vat), icon: "fa-solid fa-receipt", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+                { label: "Average VAT", display: formatCurrency(s.average_vat), icon: "fa-solid fa-receipt", iconWrap: "bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400" },
+            ],
+        },
+        {
+            title: "Purchase Averages",
+            subtitle: "Average financial figures per purchase order",
+            items: [
+                { label: "Average Purchase Order Value", display: formatCurrency(s.average_purchase_order_value), icon: "fa-solid fa-chart-simple", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
+                { label: "Average Subtotal", display: formatCurrency(s.average_subtotal), icon: "fa-solid fa-chart-simple", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Average Due / Order", display: formatCurrency(s.average_due_per_order), icon: "fa-solid fa-chart-simple", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+            ],
+        },
+        {
+            title: "Today's Purchase Performance",
+            subtitle: "Purchase order activity for today",
+            items: [
+                { label: "Today's Purchase Orders", display: formatNumber(s.today_purchase_orders), icon: "fa-solid fa-calendar-day", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Today's Purchase Amount", display: formatCurrency(s.today_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Today's Purchase Due", display: formatCurrency(s.today_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+            ],
+        },
+        {
+            title: "This Month's Purchase Performance",
+            subtitle: "Purchase order activity for the current month",
+            items: [
+                { label: "This Month's Purchase Orders", display: formatNumber(s.this_month_purchase_orders), icon: "fa-solid fa-calendar", iconWrap: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400" },
+                { label: "This Month's Purchase Amount", display: formatCurrency(s.this_month_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "This Month's Discount", display: formatCurrency(s.this_month_purchase_discount), icon: "fa-solid fa-tag", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "This Month's VAT", display: formatCurrency(s.this_month_purchase_vat), icon: "fa-solid fa-receipt", iconWrap: "bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400" },
+                { label: "This Month's Due", display: formatCurrency(s.this_month_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+            ],
+        },
+        {
+            title: "Purchase Sales & Due by Status",
+            subtitle: "Payable amount and outstanding due, broken down by status",
+            items: [
+                { label: "Completed Amount", display: formatCurrency(s.completed_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Completed Due", display: formatCurrency(s.completed_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Pending Amount", display: formatCurrency(s.pending_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "Pending Due", display: formatCurrency(s.pending_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+                { label: "Unpaid Amount", display: formatCurrency(s.unpaid_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+                { label: "Unpaid Due", display: formatCurrency(s.unpaid_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+                { label: "Paid Amount", display: formatCurrency(s.paid_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400" },
+                { label: "Partial Paid Amount", display: formatCurrency(s.partial_paid_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400" },
+                { label: "Partial Paid Due", display: formatCurrency(s.partial_paid_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400" },
+                { label: "Returned Amount", display: formatCurrency(s.returned_purchase_amount), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+                { label: "Returned Due", display: formatCurrency(s.returned_purchase_due), icon: "fa-solid fa-wallet", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+            ],
+        },
+        {
+            title: "Other Purchase Stats",
+            subtitle: "Miscellaneous purchase order-level figures",
+            items: [
+                { label: "BDT Purchase Orders", display: formatNumber(s.bdt_purchase_orders), icon: "fa-solid fa-money-bill-1", iconWrap: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-400" },
+                { label: "Total Purchase Users", display: formatNumber(s.total_purchase_users), icon: "fa-solid fa-user-tie", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Net Purchase", display: formatCurrency(s.net_purchase), icon: "fa-solid fa-sack-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Completed With Date", display: formatNumber(s.completed_with_date), icon: "fa-solid fa-check-double", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Returned With Date", display: formatNumber(s.returned_with_date), icon: "fa-solid fa-rotate-left", iconWrap: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300" },
+            ],
+        },
+
+        // ---- Purchase Payment Summary ----
+        {
+            title: "Purchase Payment Type Amounts",
+            subtitle: "Amount paid by transaction type",
+            items: [
+                { label: "Payment Amount", display: formatCurrency(p.payment_amount), icon: "fa-solid fa-circle-check", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+                { label: "Refund Amount", display: formatCurrency(p.refund_amount), icon: "fa-solid fa-rotate-left", iconWrap: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+                { label: "Adjustment Amount", display: formatCurrency(p.adjustment_amount), icon: "fa-solid fa-sliders", iconWrap: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
+            ],
+        },
+        {
+            title: "Purchase Payment Amounts by Method",
+            subtitle: "Transaction amount paid per payment method",
+            items: [
+                { label: "Cash Amount", display: formatCurrency(p.cash_amount), icon: "fa-solid fa-money-bill-wave", iconWrap: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-400" },
+                { label: "Card Amount", display: formatCurrency(p.card_amount), icon: "fa-solid fa-credit-card", iconWrap: "bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400" },
+                { label: "Bank Transfer Amount", display: formatCurrency(p.bank_transfer_amount), icon: "fa-solid fa-building-columns", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
+                { label: "bKash Amount", display: formatCurrency(p.bkash_amount), icon: "fa-solid fa-mobile-screen", iconWrap: "bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400" },
+                { label: "Nagad Amount", display: formatCurrency(p.nagad_amount), icon: "fa-solid fa-wallet", iconWrap: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400" },
+                { label: "Rocket Amount", display: formatCurrency(p.rocket_amount), icon: "fa-solid fa-rocket", iconWrap: "bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400" },
+                { label: "Wallet Amount", display: formatCurrency(p.wallet_amount), icon: "fa-solid fa-wallet", iconWrap: "bg-teal-50 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400" },
+            ],
+        },
+        {
+            title: "Purchase Payment Supplier Breakdown",
+            subtitle: "Supplier-linked transaction activity",
+            items: [
+                { label: "Total Suppliers", display: formatNumber(p.total_suppliers), icon: "fa-solid fa-truck-field", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Supplier Transactions", display: formatNumber(p.supplier_transactions), icon: "fa-solid fa-user-check", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
+                { label: "Received Transactions", display: formatNumber(p.received_transactions), icon: "fa-solid fa-hand-holding-dollar", iconWrap: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+            ],
+        },
+        {
+            title: "Purchase Payment Time & Averages",
+            subtitle: "Recent activity and average transaction figures",
+            items: [
+                { label: "Today's Amount", display: formatCurrency(p.today_amount), icon: "fa-solid fa-calendar-day", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "This Month's Amount", display: formatCurrency(p.this_month_amount), icon: "fa-solid fa-calendar", iconWrap: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400" },
+                { label: "Average Payment", display: formatCurrency(p.average_payment), icon: "fa-solid fa-chart-simple", iconWrap: "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" },
+                { label: "Total Purchase Orders Paid", display: formatNumber(p.total_orders_paid), icon: "fa-solid fa-box", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
+                { label: "Total Payment Users", display: formatNumber(p.total_payment_users), icon: "fa-solid fa-user-tie", iconWrap: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
             ],
         },
     ];
