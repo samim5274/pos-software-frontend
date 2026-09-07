@@ -587,7 +587,7 @@
 
                                         <!-- Header -->
                                         <div
-                                            class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                            class="flex items-center justify-between">
 
                                             <h2
                                                 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
@@ -605,66 +605,6 @@
                                                 {{ formatPoints(totalPoint) }} pts
                                             </span>
                                         </div>
-
-
-                                        <!-- CART SUMMARY -->
-                                        <div class="space-y-2.5">
-
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Items
-                                                </span>
-
-                                                <span class="font-bold text-slate-800 dark:text-white">
-                                                    {{ summary?.cart?.total_items || 0 }}
-                                                </span>
-                                            </div>
-
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Total Quantity
-                                                </span>
-
-                                                <span class="font-bold text-slate-800 dark:text-white">
-                                                    {{ summary?.cart?.total_quantity || 0 }}
-                                                </span>
-                                            </div>
-
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Subtotal
-                                                </span>
-
-                                                <span class="font-bold text-slate-900 dark:text-white">
-                                                    ৳{{ formatMoney(summary?.cart?.subtotal) }}
-                                                </span>
-                                            </div>
-
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Discount
-                                                </span>
-
-                                                <span class="text-red-500 font-bold">
-                                                    - ৳{{ formatMoney(summary?.cart?.discount) }}
-                                                </span>
-                                            </div>
-
-                                            <div class="h-px bg-slate-100 dark:bg-slate-700"></div>
-
-                                            <div class="flex justify-between items-center">
-                                                <span
-                                                    class="text-sm font-bold text-slate-900 dark:text-white">
-                                                    Total
-                                                </span>
-
-                                                <span
-                                                    class="text-xl font-black text-[#16a34a] dark:text-[#F97316]">
-                                                    ৳{{ formatMoney(summary?.cart?.total) }}
-                                                </span>
-                                            </div>
-                                        </div>
-
 
                                         
 
@@ -712,72 +652,83 @@
 
 
                                         <!-- RETURN SUMMARY -->
-                                        <div
-                                            class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-2">
-
-                                            <p
-                                                class="text-[10px] uppercase tracking-wider font-black text-slate-400">
-                                                Return Summary
+                                        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 p-3 space-y-1.5 text-xs mb-1">
+                                            <p class="text-[10px] uppercase tracking-wider font-black text-slate-400 mb-1">
+                                                Return Amount Breakdown
                                             </p>
 
-                                            <div class="flex justify-between text-xs">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Total Returns
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Return Subtotal</span>
+                                                <span class="font-bold text-slate-800 dark:text-white">
+                                                    ৳{{ formatMoney(totalReturnSubtotal) }}
                                                 </span>
-
-                                                <strong class="text-slate-800 dark:text-white">
-                                                    {{ summary?.return?.total_returns || 0 }}
-                                                </strong>
                                             </div>
 
-                                            <div class="flex justify-between text-xs">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Returned Quantity
-                                                </span>
-
-                                                <strong class="text-slate-800 dark:text-white">
-                                                    {{ summary?.return?.returned_quantity || 0 }}
-                                                </strong>
-                                            </div>
-
-                                            <div class="flex justify-between text-xs">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Return Subtotal
-                                                </span>
-
-                                                <strong class="text-slate-800 dark:text-white">
-                                                    ৳{{ formatMoney(summary?.return?.subtotal) }}
-                                                </strong>
-                                            </div>
-
-                                            <div class="flex justify-between text-xs">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Return Discount
-                                                </span>
-
-                                                <strong class="text-red-500">
-                                                    ৳{{ formatMoney(summary?.return?.discount) }}
-                                                </strong>
-                                            </div>
-
-                                            <div class="flex justify-between text-xs">
-                                                <span class="text-slate-500 dark:text-slate-400">
-                                                    Return VAT
-                                                </span>
-
-                                                <strong class="text-slate-800 dark:text-white">
-                                                    ৳{{ formatMoney(summary?.return?.vat) }}
-                                                </strong>
-                                            </div>
-
-                                            <div class="flex justify-between text-sm pt-1">
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Return Discount</span>
                                                 <span class="font-bold text-red-500">
-                                                    Refund Amount
+                                                    - ৳{{ formatMoney(totalReturnDiscount) }}
                                                 </span>
+                                            </div>
 
-                                                <strong class="text-red-500">
-                                                    ৳{{ formatMoney(summary?.return?.refund_amount) }}
-                                                </strong>
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">
+                                                    Return VAT ({{ returnVatPercentage }}%)
+                                                </span>
+                                                <span class="font-bold text-slate-800 dark:text-white">
+                                                    + ৳{{ formatMoney(returnVatAmount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+
+                                            <div class="flex justify-between items-center pt-0.5">
+                                                <span class="text-sm font-bold text-slate-900 dark:text-white">
+                                                    Calculated Return Amount
+                                                </span>
+                                                <span class="text-base font-black text-[#16a34a] dark:text-[#F97316]">
+                                                    ৳{{ formatMoney(calculatedReturnAmount) }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- DUE ADJUSTMENT (শুধু Due থাকলে দেখাবে) -->
+                                        <div v-if="currentDueAmount > 0" class="rounded-xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 p-3 space-y-1.5 text-xs">
+                                            <p class="text-[10px] uppercase tracking-wider font-black text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                                Due Adjustment Applied
+                                            </p>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Current Due Amount</span>
+                                                <span class="font-bold text-red-500">
+                                                    ৳{{ formatMoney(currentDueAmount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-between">
+                                                <span class="text-slate-500 dark:text-slate-400">Adjusted Against Due</span>
+                                                <span class="font-bold text-amber-600 dark:text-amber-400">
+                                                    - ৳{{ formatMoney(dueSettledAmount) }}
+                                                </span>
+                                            </div>
+
+                                            <div class="h-px bg-amber-200 dark:bg-amber-500/20 my-1"></div>
+
+                                            <div class="flex justify-between items-center pt-0.5">
+                                                <span class="text-sm font-bold text-slate-900 dark:text-white">
+                                                    Net Payable to Customer
+                                                </span>
+                                                <span class="text-base font-black text-[#16a34a] dark:text-[#F97316]">
+                                                    ৳{{ formatMoney(netReturnToCustomer) }}
+                                                </span>
+                                            </div>
+
+                                            <div v-if="remainingDueAfterReturn > 0" class="flex justify-between pt-1 border-t border-amber-200 dark:border-amber-500/20 mt-1">
+                                                <span class="text-slate-500 dark:text-slate-400">Remaining Due (After Return)</span>
+                                                <span class="font-bold text-red-500">
+                                                    ৳{{ formatMoney(remainingDueAfterReturn) }}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -912,7 +863,7 @@
                                                     </div>
 
                                                     <label for="received_amount" class="block text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                                        Return Amount (৳)
+                                                        {{ currentDueAmount > 0 ? 'Net Return Amount (After Due Adjustment)' : 'Return Amount (৳)' }}
                                                     </label>
                                                     <div class="relative">
                                                         <input
@@ -1803,9 +1754,11 @@ const getReturnProductImage = (item) => {
 
 
 
-
 // =====================================
 // Return Amount Calculations (Qty wise)
+// Discount = Item-level discount + Proportional share of Order-level manual discount
+// VAT = percentage wise on taxable (post-discount) amount
+// Due = Order-এর বকেয়া থাকলে Return Amount থেকে প্রথমে settle হবে
 // =====================================
 
 const getItemReturnSubtotal = (item) => {
@@ -1814,6 +1767,7 @@ const getItemReturnSubtotal = (item) => {
     return roundMoney(price * returnedQty);
 };
 
+// Item-এর নিজস্ব per-unit discount (cart item.discount)
 const getItemReturnDiscount = (item) => {
     const discount = Number(item?.discount) || 0;
     const returnedQty = Number(item?.returned_quantity) || 0;
@@ -1826,6 +1780,7 @@ const getItemReturnTotal = (item) => {
     );
 };
 
+// Total return subtotal (price wise, before any discount)
 const totalReturnSubtotal = computed(() => {
     return roundMoney(
         cartItems.value.reduce(
@@ -1835,52 +1790,108 @@ const totalReturnSubtotal = computed(() => {
     );
 });
 
-const returnRatio = computed(() => {
-    const orderSubtotal = Number(order.value?.subtotal) || 0;
-    if (orderSubtotal <= 0) return 0;
-    return totalReturnSubtotal.value / orderSubtotal;
-});
-
-const proportionalReturnVat = computed(() => {
-    const orderVat = Number(order.value?.vat) || 0;
-    return roundMoney(orderVat * returnRatio.value);
-});
-
-const proportionalReturnDiscount = computed(() => {
-    const orderDiscount = Number(order.value?.discount) || 0;
-    return roundMoney(orderDiscount * returnRatio.value);
-});
-
-// ===== Final Calculated Return Amount =====
-const calculatedReturnAmount = computed(() => {
-    const itemsReturnTotal = roundMoney(
+// Item-level total discount (sum of each item's own discount)
+const totalItemLevelDiscount = computed(() => {
+    return roundMoney(
         cartItems.value.reduce(
-            (sum, item) => sum + getItemReturnTotal(item),
+            (sum, item) => sum + getItemReturnDiscount(item),
             0
         )
     );
+});
 
+// Order-level manual discount-এর proportional share
+// (return subtotal / order subtotal) অনুপাতে বের হবে
+const proportionalOrderDiscount = computed(() => {
+    const orderSubtotal = Number(order.value?.subtotal) || 0;
+    const orderDiscount = Number(order.value?.discount) || 0;
+
+    if (orderSubtotal <= 0 || orderDiscount <= 0) return 0;
+
+    const ratio = totalReturnSubtotal.value / orderSubtotal;
+
+    return roundMoney(orderDiscount * ratio);
+});
+
+// Final Total Discount = Item-level + Proportional Order-level
+const totalReturnDiscount = computed(() => {
     return roundMoney(
-        Math.max(
-            0,
-            itemsReturnTotal - proportionalReturnVat.value + proportionalReturnDiscount.value
-        )
+        totalItemLevelDiscount.value + proportionalOrderDiscount.value
     );
 });
 
+// Taxable amount = subtotal - total discount (item + order level)
+const returnTaxableAmount = computed(() => {
+    return roundMoney(
+        Math.max(0, totalReturnSubtotal.value - totalReturnDiscount.value)
+    );
+});
+
+// VAT % — order er vat_percentage theke
+const returnVatPercentage = computed(() => {
+    return Number(order.value?.vat_percentage) || 0;
+});
+
+// VAT amount — percentage diye calculate, taxable amount er upor
+const returnVatAmount = computed(() => {
+    return roundMoney(
+        (returnTaxableAmount.value * returnVatPercentage.value) / 100
+    );
+});
+
+// ===== Calculated Return Amount (Due settle এর আগে, raw calculation) =====
+const calculatedReturnAmount = computed(() => {
+    return roundMoney(
+        Math.max(0, returnTaxableAmount.value + returnVatAmount.value)
+    );
+});
+
+// =====================================
+// Due Adjustment on Return
+// Order-এ যদি Due থাকে, সেটা Return Amount থেকে প্রথমে settle হবে
+// =====================================
+
+// Order-এর বর্তমান Due Amount (backend থেকে আসা order.due_amount)
+const currentDueAmount = computed(() => {
+    return roundMoney(Number(order.value?.due_amount) || 0);
+});
+
+// Return Amount থেকে কতটুকু Due settle-এ যাবে
+const dueSettledAmount = computed(() => {
+    return roundMoney(
+        Math.min(calculatedReturnAmount.value, currentDueAmount.value)
+    );
+});
+
+// Due settle করার পর customer-কে actual কত cash ফেরত দিতে হবে
+const netReturnToCustomer = computed(() => {
+    return roundMoney(
+        Math.max(0, calculatedReturnAmount.value - currentDueAmount.value)
+    );
+});
+
+// Return-এর পরও Order-এ কত Due বাকি থাকবে
+const remainingDueAfterReturn = computed(() => {
+    return roundMoney(
+        Math.max(0, currentDueAmount.value - calculatedReturnAmount.value)
+    );
+});
+
+// =====================================
+// Returnable / Excess — Net amount (Due settle-এর পরের amount) এর ভিত্তিতে
+// =====================================
+
 const returnableAmount = computed(() => {
     return roundMoney(
-        Math.max(0, calculatedReturnAmount.value - receivedAmount.value)
+        Math.max(0, netReturnToCustomer.value - receivedAmount.value)
     );
 });
 
 const excessAmount = computed(() => {
     return roundMoney(
-        Math.max(0, receivedAmount.value - calculatedReturnAmount.value)
+        Math.max(0, receivedAmount.value - netReturnToCustomer.value)
     );
 });
-
-
 
 
 
@@ -1990,8 +2001,8 @@ const handleCheckout = async () => {
     // ================================
     // Full Return Amount Validation
     // ================================
-    if (calculatedReturnAmount.value > 0 && receivedAmount.value < calculatedReturnAmount.value) {
-        errorMsg.value = `Return amount cannot be less than ৳${formatMoney(calculatedReturnAmount.value)}. Full return amount is required.`;
+    if (netReturnToCustomer.value > 0 && receivedAmount.value < netReturnToCustomer.value) {
+        errorMsg.value = `Return amount cannot be less than ৳${formatMoney(netReturnToCustomer.value)} (after due adjustment). Full return amount is required.`;
         return;
     }
 
@@ -2025,9 +2036,14 @@ const handleCheckout = async () => {
         phone_number: form.phone_number?.trim() || null,
         payment_method: form.payment_method || "cash",
         vat: roundMoney(form.vat),
-        discount: roundMoney(manualDiscount.value),
+        discount: roundMoney(totalReturnDiscount.value),
         received_amount: roundMoney(receivedAmount.value),
-    };
+
+        // Due adjustment তথ্য — backend server-side পুনরায় verify করে নেবে
+        calculated_return_amount: roundMoney(calculatedReturnAmount.value),
+        due_settled_amount: roundMoney(dueSettledAmount.value),
+        net_return_amount: roundMoney(netReturnToCustomer.value),
+    };;
 
     try {
         checkoutLoading.value = true;
