@@ -1159,7 +1159,7 @@ const fetchDashBoardData = async () => {
             paymentSummary.value = data.payment_summary ?? {};
             purchaseOrderSummary.value = data.purchase_order_summary ?? {};
             purchasePaymentSummary.value = data.purchase_order_payment_summary ?? {};
-            console.log(summary.value);
+            // console.log(summary.value);
         } else {
             errorMsg.value = response.data?.message || "Failed to fetch dashboard data.";
         }
