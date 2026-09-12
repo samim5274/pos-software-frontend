@@ -67,6 +67,7 @@ const PaymentReport = () => import('../components/Dashboard/admin/reports/report
 const UserReport = () => import('../components/Dashboard/admin/reports/report-user-sale.vue');
 const CustomerReport = () => import('../components/Dashboard/admin/reports/report-customer.vue');
 const ProductSaleReport = () => import('../components/Dashboard/admin/reports/report-product-sale.vue');
+const ProductBySaleReport = () => import('../components/Dashboard/admin/reports/report-product-by-sale.vue');
 const CustomerDueReport = () => import('../components/Dashboard/admin/reports/report-customer-due.vue');
 const SupplyerDueReport = () => import('../components/Dashboard/admin/reports/report-supplyers-due.vue');
 const ExpenseReport = () => import('../components/Dashboard/admin/reports/report-expenses.vue');
@@ -178,6 +179,7 @@ const routes = [
     { path: '/admin/reports/user/sale', component: UserReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "User Sale Reports"}},
     { path: '/admin/reports/customer', component: CustomerReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Customer Due Report's"}},
     { path: '/admin/reports/product-sales', component: ProductSaleReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Product Sale Report's"}},
+    { path: '/admin/reports/product-by-sales', component: ProductBySaleReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Product By Sale Report's"}},
     { path: '/admin/reports/customer-due', component: CustomerDueReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Customer Due Report's"}},
     { path: '/admin/reports/supplier-due', component: SupplyerDueReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Supplyer Due Report's"}},
     { path: '/admin/reports/expense', component: ExpenseReport, meta: {requiresAuth: true, roles: ['admin', 'super_admin', 'staff'], title: "Expenses Report's"}},

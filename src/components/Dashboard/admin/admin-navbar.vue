@@ -430,6 +430,18 @@
                                 </button>
                             </li>
 
+                            <li>
+                                <button
+                                    type="button"
+                                    class="submenu-item"
+                                    :class="activeKey === 'report_product_by_sale' ? submenuActive : ''"
+                                    @click="pick('report_product_by_sale')"
+                                >
+                                    <i class="fa-solid fa-box-open"></i>
+                                    Product by Sales
+                                </button>
+                            </li>
+
                             <li class="my-2">
                                 <hr class="border-slate-300 dark:border-slate-700">
                             </li>
@@ -669,6 +681,7 @@ const routeMap = {
     report_sale: "/admin/reports/sale",
     report_sale_day_by_day: "/admin/reports/sale/day-by-day",
     report_purchase: "/admin/reports/purchase",
+    report_product_by_sale: "/admin/reports/product-by-sales",
     report_product_sales: "/admin/reports/product-sales",
     report_payment: "/admin/reports/payment",
     report_user: "/admin/reports/user/sale",
@@ -706,6 +719,7 @@ const routeMatch = [
     { key: "orders", prefixes: ["/admin/orders", "/admin/customer-details/"] },
 
     { key: "report_sale_day_by_day", prefixes: ["/admin/reports/sale/day-by-day"] },
+    { key: "report_product_by_sale", prefixes: ["/admin/reports/product-by-sales"] },
     { key: "report_sale", prefixes: ["/admin/reports/sale"] },
     { key: "report_purchase", prefixes: ["/admin/reports/purchase"] },
     { key: "report_product_sales", prefixes: ["/admin/reports/product-sales"] },
@@ -788,6 +802,7 @@ watch(
 
         const reportKeys = [
             "report_sale",
+            "report_product_by_sale",
             "report_sale_day_by_day",
             "report_purchase",
             "report_product_sales",
