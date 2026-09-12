@@ -398,6 +398,18 @@
                                 <button
                                     type="button"
                                     class="submenu-item"
+                                    :class="activeKey === 'report_sale_day_by_day' ? submenuActive : ''"
+                                    @click="pick('report_sale_day_by_day')"
+                                >
+                                    <i class="fa-solid fa-dolly"></i>
+                                    Sales Report Day By Day
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                    type="button"
+                                    class="submenu-item"
                                     :class="activeKey === 'report_purchase' ? submenuActive : ''"
                                     @click="pick('report_purchase')"
                                 >
@@ -655,6 +667,7 @@ const routeMap = {
     order_payment: "/admin/orders/payment",
 
     report_sale: "/admin/reports/sale",
+    report_sale_day_by_day: "/admin/reports/sale/day-by-day",
     report_purchase: "/admin/reports/purchase",
     report_product_sales: "/admin/reports/product-sales",
     report_payment: "/admin/reports/payment",
@@ -692,6 +705,7 @@ const routeMatch = [
     { key: "order_payment", prefixes: ["/admin/orders/payment"] },
     { key: "orders", prefixes: ["/admin/orders", "/admin/customer-details/"] },
 
+    { key: "report_sale_day_by_day", prefixes: ["/admin/reports/sale/day-by-day"] },
     { key: "report_sale", prefixes: ["/admin/reports/sale"] },
     { key: "report_purchase", prefixes: ["/admin/reports/purchase"] },
     { key: "report_product_sales", prefixes: ["/admin/reports/product-sales"] },
@@ -774,6 +788,7 @@ watch(
 
         const reportKeys = [
             "report_sale",
+            "report_sale_day_by_day",
             "report_purchase",
             "report_product_sales",
             "report_payment",
